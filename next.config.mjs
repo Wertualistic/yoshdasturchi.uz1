@@ -4,6 +4,8 @@ const nextConfig = {
   images: {
     domains: ['img.youtube.com'],
   },
+
+  // TOD
   webpack: (config, { isServer }) => {
     config.module.rules.push({
       test: /\.mp3$/,
