@@ -4,9 +4,8 @@ const nextConfig = {
   images: {
     domains: ['img.youtube.com'],
   },
-  server: {
-    port: 3001, // Change to the port you want
-  },
+
+  // TOD
   webpack: (config, { isServer }) => {
     config.module.rules.push({
       test: /\.mp3$/,
@@ -19,6 +18,7 @@ const nextConfig = {
         },
       },
     });
+
 
     return config;
   },
