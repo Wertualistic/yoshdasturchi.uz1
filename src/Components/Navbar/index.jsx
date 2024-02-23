@@ -189,7 +189,7 @@ const Navbar = () => {
     setIsSettingsOpen(false);
     setIsOpenUser(false);
     setIsReytingOpen(false);
-    router.navigate("/");
+    window.location.href = "/";
   };
 
   const getDate = (dateTimeString) => {

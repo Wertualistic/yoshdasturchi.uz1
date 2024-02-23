@@ -64,7 +64,7 @@ const Login = () => {
       if (response.status === 200) {
         const data = response.data;
         setCookie("token", data.object, 100); // set cookie to expire in 100 days
-        router.navigate("/");
+        window.location.href = "/";
       }
     } catch (error) {
       setValidation(true);
@@ -75,7 +75,7 @@ const Login = () => {
   useEffect(() => {
     const token = getCookie("token");
     if (token) {
-      router.navigate("/");
+      window.location.href = "/";
     }
   }, []);
 
@@ -116,13 +116,6 @@ const Login = () => {
                     onChange={handleChange}
                     required
                   />
-                  {validation && (
-                    <p
-                      style={{ color: "red", margin: "0", fontSize: "0.9rem" }}>
-                      Telefon raqamingizni {`to\'g\'ri`} formatda kiriting
-                      (+998XXXXXXXXX).
-                    </p>
-                  )}
                 </div>
               ) : (
                 <input

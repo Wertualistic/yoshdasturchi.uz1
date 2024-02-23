@@ -77,7 +77,7 @@ const ProfileEdit = () => {
         if (response.status === 200) {
           const newToken = response.data.obj;
           updateToken(newToken);
-          router.navigate("/");
+          window.location.href = "/";
         }
       } catch (error) {
         console.error(error);

@@ -20,7 +20,11 @@ const ContestDate = ({ isAdsShow, isHaveNavbar }) => {
         console.log(err);
       }
     };
-    getLastContest();
+
+    // Check if contest data is already present
+    if (!contest || !contest.id) {
+      getLastContest();
+    }
   }, []);
 
   const calculateTimeLeft = () => {

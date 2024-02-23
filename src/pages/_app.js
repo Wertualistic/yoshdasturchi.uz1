@@ -3,6 +3,7 @@ import { MainLayout } from "@/Components";
 import { DataProvider } from "@/DataContext";
 import Head from "next/head";
 import { useEffect } from "react";
+import api from "@/utils/api";
 
 export default function App({ Component, pageProps }) {
   useEffect(() => {
