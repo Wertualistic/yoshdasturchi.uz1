@@ -4,8 +4,9 @@ const nextConfig = {
   images: {
     domains: ['img.youtube.com'],
   },
-
-  // TOD
+  server: {
+    port: 3001, // Change to the port you want
+  },
   webpack: (config, { isServer }) => {
     config.module.rules.push({
       test: /\.mp3$/,
