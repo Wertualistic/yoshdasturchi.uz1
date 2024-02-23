@@ -18,7 +18,6 @@ const Register = () => {
     region: "",
     name: "",
     surname: "",
-    surname: "",
     age: "",
     deviceIp: "",
     phoneNumber: "",
@@ -33,7 +32,16 @@ const Register = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
+    let updatedFormData = { ...formData, [name]: value };
+
+    if (name === "phoneNumber") {
+      updatedFormData = {
+        ...updatedFormData,
+        validation: false,
+      };
+    }
+
+    setFormData(updatedFormData);
   };
 
   const handlePasswordChange = (e) => {
@@ -63,7 +71,7 @@ const Register = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (formData.password == repeatPassword) {
+    if (formData.password === repeatPassword) {
       setPasswordValidation(false);
       try {
         const response = await axios.post(
@@ -73,7 +81,7 @@ const Register = () => {
         if (response.status === 200) {
           const data = response.data;
           setCookie("token", data.object, 100);
-          window.location.href = "/";
+          router.push('/');
         }
       } catch (error) {
         console.error("Error registering:", error);
@@ -83,11 +91,10 @@ const Register = () => {
       setPasswordValidation(true);
     }
   };
-
   useEffect(() => {
     const token = getCookie("token");
     if (token) {
-      window.location.href = "/";
+      router.push('/');
     }
   }, []);
 
@@ -173,7 +180,7 @@ const Register = () => {
             <div className={styles.RegisterFormInput}>
               <label htmlFor="age">Yoshingiz</label>
               <input
-                type="text"
+                type="number"
                 name="age"
                 placeholder="Yoshingizni kiriting"
                 value={formData.age}
@@ -184,15 +191,18 @@ const Register = () => {
             <div className={styles.RegisterFormInput}>
               <label htmlFor="phone">Telefon Raqam</label>
               {validation ? (
-                <input
-                  style={{ border: "1px solid red" }}
-                  type="text"
-                  name="phoneNumber"
-                  placeholder="Telefon raqamingizni kiriting"
-                  value={formData.phoneNumber}
-                  onChange={handleChange}
-                  required
-                />
+                <div>
+                  <input
+                    style={{ border: "1px solid red" }}
+                    type="text"
+                    name="phoneNumber"
+                    placeholder="Telefon raqamingizni kiriting"
+                    value={formData.phoneNumber}
+                    onChange={handleChange}
+                    required
+                  />
+                  
+                </div>
               ) : (
                 <input
                   type="text"
@@ -224,6 +234,7 @@ const Register = () => {
                     onChange={handleChange}
                     autoComplete="new-password"
                     required
+                    pattern="(?=.*\d)(?=.*[A-Z]).{8,}"
                   />
                 ) : (
                   <input
@@ -234,6 +245,7 @@ const Register = () => {
                     onChange={handleChange}
                     autoComplete="new-password"
                     required
+                    pattern="(?=.*\d)(?=.*[A-Z]).{8,}"
                   />
                 )}
                 <div
@@ -242,6 +254,12 @@ const Register = () => {
                   <i className={`ri-eye-${showPassword ? "off-" : ""}line`}></i>
                 </div>
               </div>
+              {passwordvalidation && (
+                <p style={{ color: "red", margin: "0", fontSize: "0.7rem" }}>
+                  Parol 8 ta belgidan {`ko\'p`}, 1 ta raqam va 1 ta katta harf
+                  kerak.
+                </p>
+              )}
             </div>
             <div className={styles.RegisterFormInput}>
               <label htmlFor="passwordRepeat">Parolni takrorlang</label>
@@ -277,12 +295,10 @@ const Register = () => {
                     }line`}></i>
                 </div>
               </div>
-              {passwordvalidation ? (
-                <p style={{ color: "red", margin: "0", fontSize: "1rem" }}>
+              {passwordvalidation && (
+                <p style={{ color: "red", margin: "0", fontSize: "0.7rem" }}>
                   Parol bir xil emas.
                 </p>
-              ) : (
-                ""
               )}
             </div>
           </div>
@@ -292,6 +308,7 @@ const Register = () => {
             <Link style={{ textDecoration: "none" }} href="/login">
               <span>Kirish</span>
             </Link>
+            <br />
           </p>
         </form>
       </div>

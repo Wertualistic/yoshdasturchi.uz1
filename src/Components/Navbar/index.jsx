@@ -65,7 +65,7 @@ const Navbar = () => {
     if (
       router.pathname == "/register" ||
       router.pathname == "/login" ||
-      router.pathname.includes('/admin')
+      router.pathname.includes("/admin")
     ) {
       setIsNavbarHas(false);
     } else {
@@ -87,34 +87,65 @@ const Navbar = () => {
   }, []);
 
   useEffect(() => {
+    const token = getCookie("token");
     const lastContest = JSON.parse(localStorage.getItem("lastContest"));
-    const fetchRating = async () => {
-      try {
-        const response = await api.get(
-          lastContest.status === "JARAYONDA"
-            ? "/attemptContest/rate/1?page=0&size=10"
-            : "/regular/getRate?limitSecond=60&page=0&size=10"
-        );
-        if (
-          Array.isArray(
+    if (token != null) {
+      const fetchRating = async () => {
+        try {
+          const response = await api.get(
             lastContest.status === "JARAYONDA"
-              ? response.data.attemptRateDTOS.content
-              : response.data.regularDTOPage.content
-          )
-        ) {
-          setCards(
-            lastContest.status === "JARAYONDA"
-              ? response.data.attemptRateDTOS.content
-              : response.data.regularDTOPage.content
+              ? "/attemptContest/rate/1?page=0&size=100"
+              : "/regular/getRate?limitSecond=60&page=0&size=100"
           );
+          if (
+            Array.isArray(
+              lastContest.status === "JARAYONDA"
+                ? response.data.attemptRateDTOS.content
+                : response.data.regularDTOPage.content
+            )
+          ) {
+            setCards(
+              lastContest.status === "JARAYONDA"
+                ? response.data.attemptRateDTOS.content
+                : response.data.regularDTOPage.content
+            );
+          }
+        } catch (error) {
+          if (error.response?.status == 401) {
+            handleLogout();
+          }
         }
-      } catch (error) {
-        console.log(error);
-      }
-    };
+      };
 
-    fetchRating();
-  }, []);
+      fetchRating();
+    } else {
+      const fetchRating = async () => {
+        try {
+          const response = await axios.get(
+            lastContest.status === "JARAYONDA"
+              ? "https://api.yoshdasturchi.uz/api/v1/attemptContest/rate/notUser/1?page=0&size=100"
+              : "https://api.yoshdasturchi.uz/api/v1/regular/getRateNotUser?limitSecond=60&page=0&size=100"
+          );
+          if (
+            Array.isArray(
+              lastContest.status === "JARAYONDA"
+                ? response.data.attemptRateDTOS.content
+                : response.data.regularDTOPage.content
+            )
+          ) {
+            setCards(
+              lastContest.status === "JARAYONDA"
+                ? response.data.attemptRateDTOS.content
+                : response.data.regularDTOPage.content
+            );
+          }
+        } catch (error) {
+          console.log(error);
+        }
+      };
+      fetchRating();
+    }
+  }, [token]);
 
   const handleColorClick = (color) => {
     setSelectedColor(color);
@@ -158,6 +189,7 @@ const Navbar = () => {
     setIsSettingsOpen(false);
     setIsOpenUser(false);
     setIsReytingOpen(false);
+    router.navigate("/");
   };
 
   const getDate = (dateTimeString) => {
@@ -184,7 +216,10 @@ const Navbar = () => {
             <div className="container">
               <div className={styles.navbar__inner}>
                 <div>
-                  <Link href="/" className={styles.navbar__logo}>
+                  <Link
+                    href="/"
+                    className={styles.navbar__logo}
+                    onClick={() => (window.location.href = "/")}>
                     {selectedTheme === "dark" ? (
                       <Image src={DarkKeyboard} alt="img" />
                     ) : (
@@ -284,7 +319,9 @@ const Navbar = () => {
                       </div>
                     </div>
                   </div>
-                  <ContestDate isHaveNavbar={true} />
+                  <div className={styles.ContestDate}>
+                    <ContestDate isHaveNavbar={true} />
+                  </div>
                   <Timer selectedTheme={selectedTheme} />
                   <div className={styles.navbar__setting}>
                     <button onClick={toggleDropdownSettings}>
@@ -417,10 +454,22 @@ const Navbar = () => {
                       {token ? (
                         <>
                           <li>
-                            <Link href="/profileEdit">O’zgartirish</Link>
+                            <Link
+                              href="/profileEdit"
+                              onClick={() =>
+                                (window.location.href = "/profileEdit")
+                              }>
+                              O’zgartirish
+                            </Link>
                           </li>
                           <li>
-                            <Link href="/results">Natijalar</Link>
+                            <Link
+                              href="/results"
+                              onClick={() =>
+                                (window.location.href = "/results")
+                              }>
+                              Natijalar
+                            </Link>
                           </li>
                           <li onClick={handleLogout}>
                             Chiqish
@@ -430,10 +479,18 @@ const Navbar = () => {
                       ) : (
                         <>
                           <li>
-                            <Link href="/login">Kirish</Link>
+                            <Link
+                              href="/login"
+                              onClick={() => (window.location.href = "/login")}>
+                              Kirish
+                            </Link>
                           </li>
                           <li style={{ whiteSpace: "nowrap" }}>
-                            <Link href="/register">{`Ro\'yxatdan o\'tish`}</Link>
+                            <Link
+                              href="/register"
+                              onClick={() =>
+                                (window.location.href = "/register")
+                              }>{`Ro\'yxatdan o\'tish`}</Link>
                           </li>
                         </>
                       )}

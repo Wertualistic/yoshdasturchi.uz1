@@ -25,7 +25,16 @@ const Login = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
+    let updatedFormData = { ...formData, [name]: value };
+
+    if (name === "phoneNumber") {
+      updatedFormData = {
+        ...updatedFormData,
+        validation: false,
+      };
+    }
+
+    setFormData(updatedFormData);
   };
 
   const togglePasswordVisibility = () => {
@@ -55,13 +64,7 @@ const Login = () => {
       if (response.status === 200) {
         const data = response.data;
         setCookie("token", data.object, 100); // set cookie to expire in 100 days
-        window.location.href = "/";
-        if (
-          formData.phoneNumber == "+998950960153" ||
-          formData.password == "admin"
-        ) {
-          window.location.href = "/admin";
-        }
+        router.navigate("/");
       }
     } catch (error) {
       setValidation(true);
@@ -72,7 +75,7 @@ const Login = () => {
   useEffect(() => {
     const token = getCookie("token");
     if (token) {
-      window.location.href = "/";
+      router.navigate("/");
     }
   }, []);
 
@@ -103,15 +106,24 @@ const Login = () => {
             <div className={styles.LoginFormInput}>
               <label htmlFor="phone">Telefon Raqam</label>
               {validation ? (
-                <input
-                  style={{ border: "1px solid red" }}
-                  type="text"
-                  name="phoneNumber"
-                  placeholder="Telefon raqamingizni kiriting"
-                  value={formData.phoneNumber}
-                  onChange={handleChange}
-                  required
-                />
+                <div>
+                  <input
+                    style={{ border: "1px solid red" }}
+                    type="text"
+                    name="phoneNumber"
+                    placeholder="Telefon raqamingizni kiriting"
+                    value={formData.phoneNumber}
+                    onChange={handleChange}
+                    required
+                  />
+                  {validation && (
+                    <p
+                      style={{ color: "red", margin: "0", fontSize: "0.9rem" }}>
+                      Telefon raqamingizni {`to\'g\'ri`} formatda kiriting
+                      (+998XXXXXXXXX).
+                    </p>
+                  )}
+                </div>
               ) : (
                 <input
                   type="text"
@@ -158,7 +170,7 @@ const Login = () => {
             </div>
             {validation ? (
               <p style={{ color: "red", margin: "0", fontSize: "1rem" }}>
-                Login yoki parol xato!
+                Telefon raqam yoki parol xato!
               </p>
             ) : (
               ""
@@ -172,6 +184,9 @@ const Login = () => {
             </Link>
           </p>
         </form>
+        <Link style={{ textDecoration: "none" }} href="/">
+          <span style={{ color: "red" }}>Asosiy sahifaga qaytish</span>
+        </Link>
       </div>
     </div>
   );

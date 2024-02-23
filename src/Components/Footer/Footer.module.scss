@@ -1,6 +1,8 @@
 .footer {
   margin-top: 245px;
   padding: 30px 0px;
+  z-index: 10000;
+  position: relative;
   &__inner {
     display: flex;
     align-items: center;

@@ -9,7 +9,7 @@ const Results = () => {
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const res = await api.get("/regular/getRegularByPage?page=0&size=10");
+        const res = await api.get("/regular/getRegularByPage?page=0&size=100");
         sessionStorage.setItem("userResult", JSON.stringify(res.data));
         setUserResult(res.data);
       } catch (err) {
@@ -19,8 +19,6 @@ const Results = () => {
 
     fetchUserData();
   }, []);
-
-  console.log(userResult);
 
   return (
     <div className={styles.Result}>

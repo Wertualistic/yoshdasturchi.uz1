@@ -1,11 +1,10 @@
 .contestdate_sec_nav {
-  width: 100%;
+  width: 100px;
   height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
-  position: relative;
-  width: 100px;
+  position: absolute;
   .contestdate_inner {
     width: 100%;
     h3 {

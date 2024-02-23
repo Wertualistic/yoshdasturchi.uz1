@@ -367,6 +367,7 @@ li {
 
 .ads_and_contest {
   position: relative;
+  top: -15px;
   width: 100%;
   display: flex;
   flex-direction: column;

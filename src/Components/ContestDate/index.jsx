@@ -1,11 +1,33 @@
 import React, { useState, useEffect } from "react";
 import styles from "./ContestDate.module.scss";
+import axios from "axios";
+import api from "@/utils/api";
 
 const ContestDate = ({ isAdsShow, isHaveNavbar }) => {
-  const contest = JSON.parse(localStorage.getItem("lastContest"));
+  const [contest, setContest] = useState(
+    JSON.parse(sessionStorage.getItem("lastContest")) || []
+  );
+
+  useEffect(() => {
+    const getLastContest = async () => {
+      try {
+        const res = await api.get(
+          "https://api.yoshdasturchi.uz/api/v1/contest/getLastContest"
+        );
+        sessionStorage.setItem("lastContest", JSON.stringify(res.data));
+        setContest(res.data);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    getLastContest();
+  }, []);
 
   const calculateTimeLeft = () => {
-    const difference = +new Date(contest.endAt) - +new Date();
+    const difference =
+      contest.status == "BOSHLANMAGAN"
+        ? +new Date(contest.startAt) - +new Date()
+        : +new Date(contest.endAt) - +new Date();
     let timeLeft = {};
     const millisecondsPerDay = 24 * 60 * 60 * 1000;
 
@@ -17,11 +39,13 @@ const ContestDate = ({ isAdsShow, isHaveNavbar }) => {
         seconds: Math.floor((difference / 1000) % 60),
       };
     }
-
     return timeLeft;
   };
 
   const padZero = (num) => {
+    if (num === undefined) {
+      return "";
+    }
     return num.toString().padStart(2, "0");
   };
 
@@ -44,7 +68,7 @@ const ContestDate = ({ isAdsShow, isHaveNavbar }) => {
             : styles.contestdate_sec_none
         }>
         <div className={styles.contestdate_inner}>
-          {timeLeft.days > 0 ? (
+          {contest.status !== "TUGADI" ? (
             <h3>{`${padZero(timeLeft.days)}:${padZero(
               timeLeft.hours
             )}:${padZero(timeLeft.minutes)}:${padZero(timeLeft.seconds)}`}</h3>
@@ -56,9 +80,15 @@ const ContestDate = ({ isAdsShow, isHaveNavbar }) => {
       {isAdsShow && (
         <div className={styles.contestdate_sec_ads}>
           <div className={styles.contestdate_inner}>
-            {timeLeft.days >= 0 ? <span>Musobaqa tugashigacha</span> : ""}
+            {contest.status == "JARAYONDA" ? (
+              <span>Musobaqa tugashigacha</span>
+            ) : contest.status == "BOSHLANMAGAN" ? (
+              <span>Musobaqa boshlanishigacha</span>
+            ) : (
+              ""
+            )}
             <h3>
-              {timeLeft.days > 0 ? (
+              {contest.status !== "TUGADI" ? (
                 `${padZero(timeLeft.days)}:${padZero(timeLeft.hours)}:${padZero(
                   timeLeft.minutes
                 )}:${padZero(timeLeft.seconds)}`

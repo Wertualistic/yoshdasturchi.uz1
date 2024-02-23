@@ -1,21 +1,17 @@
 import api from "@/utils/api";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import React, { useEffect } from "react";
 
 const Admin = () => {
-  const getCookie = (key) => {
-    const cookieValue = document.cookie.match(
-      `(^|;)\\s*${key}\\s*=\\s*([^;]+)`
-    );
-    return cookieValue ? cookieValue.pop() : null;
-  };
+  const router = useRouter();
 
   useEffect(() => {
     const getUserInfo = async () => {
       try {
         const res = await api.get("/user/getSelfInformation");
         if (res.data.systemRoleName !== "ROLE_ADMIN") {
-          window.location.href = "/";
+          router.push("/");
         }
       } catch (err) {
         console.error(err);
@@ -25,7 +21,11 @@ const Admin = () => {
   }, []);
   return (
     <div style={{ display: "flex", gap: "50px" }}>
-      <Link href="/admin/activeUsers">Active userlar</Link>
+      <Link
+        href="/admin/activeUsers"
+        onClick={() => (window.location.href = "/admin/activeUsers")}>
+        Active userlar
+      </Link>
       <Link href="/admin/inactiveUsers">Active emas userlar</Link>
     </div>
   );

@@ -2,19 +2,31 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import styles from "./admin.module.scss"; // Import your module.scss file
 import Link from "next/link";
+import api from "@/utils/api";
+import { useRouter } from "next/router";
 
 const TrueUsers = () => {
   const [users, setUsers] = useState([]);
+  const [token, setToken] = useState("");
+  const router = useRouter();
+
+  const getCookie = (key) => {
+    const cookieValue = document.cookie.match(
+      `(^|;)\\s*${key}\\s*=\\s*([^;]+)`
+    );
+    return cookieValue ? cookieValue.pop() : null;
+  };
 
   useEffect(() => {
+    const token = getCookie("token");
+    setToken(token);
     const getUsers = async () => {
       try {
         const res = await axios.get(
-          "https://api.yoshdasturchi.uz/api/v1/user/getUserByStatus?status=true&page=0&size=10",
+          "https://api.yoshdasturchi.uz/api/v1/user/getUserByStatus?status=true&page=0&size=100",
           {
             headers: {
-              Authorization:
-                "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIrOTk4OTUwOTYwMTUzIiwiaWF0IjoxNzA4Njc3NjQ4LCJleHAiOjg2NDAwMDE3MDg2Nzc2NDh9.D5jgI2vlpOyVfNJPRMQHiTguRupeBcsefKfa2PIY8fo",
+              Authorization: `Bearer ${token}`,
             },
           }
         );
@@ -36,8 +48,7 @@ const TrueUsers = () => {
         {},
         {
           headers: {
-            Authorization:
-              "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIrOTk4OTUwOTYwMTUzIiwiaWF0IjoxNzA4Njc3NjQ4LCJleHAiOjg2NDAwMDE3MDg2Nzc2NDh9.D5jgI2vlpOyVfNJPRMQHiTguRupeBcsefKfa2PIY8fo",
+            Authorization: `Bearer ${token}`,
           },
         }
       );
@@ -55,19 +66,12 @@ const TrueUsers = () => {
     }
   };
 
-  const getCookie = (key) => {
-    const cookieValue = document.cookie.match(
-      `(^|;)\\s*${key}\\s*=\\s*([^;]+)`
-    );
-    return cookieValue ? cookieValue.pop() : null;
-  };
-
   useEffect(() => {
     const getUserInfo = async () => {
       try {
         const res = await api.get("/user/getSelfInformation");
         if (res.data.systemRoleName !== "ROLE_ADMIN") {
-          window.location.href = "/";
+          router.push("/");
         }
       } catch (err) {
         console.error(err);

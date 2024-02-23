@@ -44,7 +44,6 @@ const Result = () => {
         chat_id: chatId,
         text: message,
       });
-      console.log(response.data);
     } catch (error) {
       console.error("Error sending message:", error);
     }
@@ -112,7 +111,6 @@ const Result = () => {
 
   // Post data when timer reaches 0
   useEffect(() => {
-    console.log(data1.length);
     if (time === 0) {
       const lastContest = JSON.parse(localStorage.getItem("lastContest"));
       const getCurrentDateTime = () => {
@@ -155,6 +153,7 @@ const Result = () => {
                 ? { ...requestData, contestId: lastContest.id }
                 : { ...requestData, limitSecondRegular: 60 }
             );
+            console.log(response.data);
           } catch (error) {
             console.error(error);
           }
@@ -170,11 +169,11 @@ const Result = () => {
   // Redirect if no result or calculate statistics
   useEffect(() => {
     if (result.length === 0) {
-      router.push("/");
+      window.location.href = "/";
     } else {
       calculateStatistics();
     }
-  }, [result.length, router]);
+  }, []);
 
   // Get session data from storage
   useEffect(() => {

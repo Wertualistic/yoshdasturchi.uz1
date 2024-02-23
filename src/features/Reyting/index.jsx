@@ -46,8 +46,8 @@ const Reyting = () => {
       try {
         const response = await api.get(
           lastContest.status === "JARAYONDA"
-            ? "/attemptContest/rate/1?page=0&size=10"
-            : "/regular/getRate?limitSecond=60&page=0&size=10"
+            ? "/attemptContest/rate/1?page=0&size=100"
+            : "/regular/getRate?limitSecond=60&page=0&size=100"
         );
         if (
           Array.isArray(
