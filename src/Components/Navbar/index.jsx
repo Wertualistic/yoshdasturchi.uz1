@@ -214,7 +214,7 @@ const Navbar = () => {
             <div className="container">
               <div className={styles.navbar__inner}>
                 <div>
-                  <Link
+                  <a
                     href="/"
                     className={styles.navbar__logo}
                     onClick={() => (window.location.href = "/")}>
@@ -224,7 +224,7 @@ const Navbar = () => {
                       <Image src={Logo} alt="img" />
                     )}
                     <h2>Klaviatura trenajori</h2>
-                  </Link>
+                  </a>
                 </div>
                 <div className={styles.navbar__settings}>
                   <div className={styles.navbar__reyting}>

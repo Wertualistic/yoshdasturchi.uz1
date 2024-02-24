@@ -153,7 +153,7 @@ const Result = () => {
     setData(sessionData);
     if (result.length === 0) {
       window.location.href = "/";
-    } else {
+    } else { 
       calculateStatistics();
     }
   }, [data1]);
@@ -175,7 +175,7 @@ const Result = () => {
     }
 
     const filteredData = sessionData.filter(
-      (item) => !(item.name === 1 && item.harflar === 0)
+      (item) => !(item.harflar === 0)
     );
     const mergedData = [...filteredData, newData];
     setData(mergedData);

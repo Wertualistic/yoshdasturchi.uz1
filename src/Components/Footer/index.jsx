@@ -48,7 +48,7 @@ const Footer = () => {
           <div className="container">
             <div className={styles.footer__inner}>
               <div className={styles.footer__name}>
-                <h2>Devolped by </h2>{" "}
+                <h2>Developed by </h2>{" "}
                 <a target="_blank" href="https://t.me/alicoderuz">
                   AliCoder
                 </a>

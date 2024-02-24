@@ -12,8 +12,11 @@ const Register = () => {
   const [showPasswordRepeat, setShowPasswordRepeat] = useState(false);
   const router = useRouter();
   const [validation, setValidation] = useState(false);
-  const [passwordvalidation, setPasswordValidation] = useState(false);
   const [repeatPassword, setRepeatPassword] = useState("");
+  const [phoneError, setPhoneError] = useState(false);
+  const [passwordValidation, setPasswordValidation] = useState(false);
+  const [passwordNotSame, setPasswordNotSame] = useState(false);
+  const [otherErrors, setOtherErrors] = useState({});
   const [formData, setFormData] = useState({
     region: "",
     name: "",
@@ -33,12 +36,6 @@ const Register = () => {
   const handleChange = (e) => {
     const { name, value } = e.target;
     let updatedFormData = { ...formData, [name]: value };
-    if (name === "phoneNumber") {
-      updatedFormData = {
-        ...updatedFormData,
-        validation: false,
-      };
-    }
 
     setFormData(updatedFormData);
   };
@@ -70,24 +67,59 @@ const Register = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (formData.password === repeatPassword) {
+    // Phone number validation
+    const phonePattern = /^\+998\d{9}$/;
+    const isValidPhone = phonePattern.test(formData.phoneNumber);
+    setPhoneError(!isValidPhone);
+
+    const isPasswordValid =
+      formData.password.length >= 8 &&
+      /\d/.test(formData.password) &&
+      /[A-Z]/.test(formData.password);
+    setPasswordValidation(!isPasswordValid);
+    setValidation(false);
+
+    if (formData.password !== repeatPassword) {
+      setPasswordNotSame(true);
       setPasswordValidation(false);
-      try {
-        const response = await axios.post(
-          "https://api.yoshdasturchi.uz/api/v1/auth/register",
-          formData
-        );
-        if (response.status === 200) {
-          const data = response.data;
-          setCookie("token", data.object, 100);
-          router.push("/");
-        }
-      } catch (error) {
-        console.error("Error registering:", error);
-        setValidation(true);
-      }
     } else {
       setPasswordValidation(true);
+      setPasswordNotSame(false);
+    }
+
+    // Check for other required fields and set errors
+    setOtherErrors({
+      region: !formData.region,
+      name: !formData.name,
+      surname: !formData.surname,
+      age: !formData.age,
+    });
+
+    if (
+      !formData.password === repeatPassword ||
+      !isValidPhone ||
+      Object.values(otherErrors).some(Boolean)
+    ) {
+      return;
+    }
+
+    try {
+      const response = await axios.post(
+        "https://api.yoshdasturchi.uz/api/v1/auth/register",
+        formData
+      );
+      if (response.status === 200) {
+        const data = response.data;
+        setCookie("token", data.object, 100);
+        router.push("/");
+      }
+    } catch (error) {
+      console.error("Error registering:", error);
+      if (error.response.status == 409) {
+        setValidation(true);
+      } else {
+        setValidation(false);
+      }
     }
   };
   useEffect(() => {
@@ -189,7 +221,7 @@ const Register = () => {
             </div>
             <div className={styles.RegisterFormInput}>
               <label htmlFor="phone">Telefon Raqam</label>
-              {validation ? (
+              {phoneError || validation ? (
                 <div>
                   <input
                     style={{ border: "1px solid red" }}
@@ -211,18 +243,21 @@ const Register = () => {
                   required
                 />
               )}
+              {phoneError && (
+                <p style={{ color: "red", margin: "0", fontSize: "0.7rem" }}>
+                  Telefon raqam formati: +998999999999
+                </p>
+              )}
+              {validation && (
+                <p style={{ color: "red", margin: "0", fontSize: "0.7rem" }}>
+                  Bunday raqamli foydalanuvchi mavjud!
+                </p>
+              )}
             </div>
-            {validation ? (
-              <p style={{ color: "red", margin: "0", fontSize: "1rem" }}>
-                Bunday raqamli foydalanuvchi mavjud!
-              </p>
-            ) : (
-              ""
-            )}
             <div className={styles.RegisterFormInput}>
               <label htmlFor="password">Parol</label>
               <div className={styles.passwordInputContainer}>
-                {passwordvalidation ? (
+                {passwordValidation || passwordNotSame ? (
                   <input
                     style={{ border: "1px solid red" }}
                     type={showPassword ? "text" : "password"}
@@ -250,17 +285,24 @@ const Register = () => {
                   <i className={`ri-eye-${showPassword ? "off-" : ""}line`}></i>
                 </div>
               </div>
-              {passwordvalidation && (
+              {passwordValidation && (
                 <p style={{ color: "red", margin: "0", fontSize: "0.7rem" }}>
                   Parol 8 ta belgidan {`ko\'p`}, 1 ta raqam va 1 ta katta harf
                   kerak.
                 </p>
               )}
+              {passwordNotSame ? (
+                <p style={{ color: "red", margin: "0", fontSize: "0.7rem" }}>
+                  Parol bir xil emas!
+                </p>
+              ) : (
+                ""
+              )}
             </div>
             <div className={styles.RegisterFormInput}>
               <label htmlFor="passwordRepeat">Parolni takrorlang</label>
               <div className={styles.passwordInputContainer}>
-                {passwordvalidation ? (
+                {passwordValidation || passwordNotSame ? (
                   <input
                     style={{ border: "1px solid red" }}
                     type={showPasswordRepeat ? "text" : "password"}
@@ -291,9 +333,15 @@ const Register = () => {
                     }line`}></i>
                 </div>
               </div>
-              {passwordvalidation && (
+              {passwordValidation && (
                 <p style={{ color: "red", margin: "0", fontSize: "0.7rem" }}>
-                  Parol bir xil emas.
+                  Parol 8 ta belgidan {`ko\'p`}, 1 ta raqam va 1 ta katta harf
+                  kerak.
+                </p>
+              )}
+              {passwordNotSame && (
+                <p style={{ color: "red", margin: "0", fontSize: "0.7rem" }}>
+                  Parol bir xil emas!
                 </p>
               )}
             </div>

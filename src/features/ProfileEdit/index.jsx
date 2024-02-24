@@ -10,6 +10,12 @@ const ProfileEdit = () => {
   const [showPasswordRepeat, setShowPasswordRepeat] = useState(false);
   const router = useRouter();
   const [userInfo, setUserInfo] = useState(null);
+  const [validation, setValidation] = useState(false);
+  const [repeatPassword, setRepeatPassword] = useState("");
+  const [phoneError, setPhoneError] = useState(false);
+  const [passwordValidation, setPasswordValidation] = useState(false);
+  const [passwordNotSame, setPasswordNotSame] = useState(false);
+  const [otherErrors, setOtherErrors] = useState({});
   const [formData, setFormData] = useState({
     region: "",
     surname: "",
@@ -21,6 +27,10 @@ const ProfileEdit = () => {
 
   const updateToken = (token) => {
     api.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+  };
+
+  const handlePasswordChange = (e) => {
+    setRepeatPassword(e.target.value);
   };
 
   const handleChange = (e) => {
@@ -55,6 +65,42 @@ const ProfileEdit = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    // Phone number validation
+    const phonePattern = /^\+998\d{9}$/;
+    const isValidPhone = phonePattern.test(formData.phoneNumber);
+    setPhoneError(!isValidPhone);
+
+    const isPasswordValid =
+      formData.passwords.length >= 8 &&
+      /\d/.test(formData.passwords) &&
+      /[A-Z]/.test(formData.passwords);
+    setPasswordValidation(!isPasswordValid);
+    setValidation(false);
+
+    if (formData.passwords !== repeatPassword) {
+      setPasswordNotSame(true);
+      setPasswordValidation(false);
+    } else {
+      setPasswordValidation(true);
+      setPasswordNotSame(false);
+    }
+
+    // Check for other required fields and set errors
+    setOtherErrors({
+      region: !formData.region,
+      name: !formData.name,
+      surname: !formData.surname,
+      age: !formData.age,
+    });
+
+    if (
+      !formData.passwords === repeatPassword ||
+      !isValidPhone ||
+      Object.values(otherErrors).some(Boolean)
+    ) {
+      return;
+    }
+
     try {
       const response = await api.put("/user/updateInformation", formData);
       if (response.status === 200) {
@@ -63,7 +109,12 @@ const ProfileEdit = () => {
         router.push("/");
       }
     } catch (error) {
-      console.error(error);
+      console.error("Error ProfileEditing:", error);
+      if (error.response.status == 409) {
+        setValidation(true);
+      } else {
+        setValidation(false);
+      }
     }
   };
 
@@ -145,7 +196,7 @@ const ProfileEdit = () => {
             <div className={styles.ProfileEditFormInput}>
               <label htmlFor="age">Yoshingiz</label>
               <input
-                type="text"
+                type="number"
                 name="age"
                 placeholder="Yoshingizni kiriting"
                 value={formData.age}
@@ -155,44 +206,105 @@ const ProfileEdit = () => {
             </div>
             <div className={styles.ProfileEditFormInput}>
               <label htmlFor="phone">Telefon Raqam</label>
-              <input
-                type="text"
-                name="phoneNumber"
-                placeholder="Telefon raqamingizni kiriting"
-                value={formData.phoneNumber}
-                onChange={handleChange}
-                required
-              />
-            </div>
-            <div className={styles.ProfileEditFormInput}>
-              <label htmlFor="passwords">Parol</label>
-              <div className={styles.passwordInputContainer}>
+              {phoneError || validation ? (
+                <div>
+                  <input
+                    style={{ border: "1px solid red" }}
+                    type="text"
+                    name="phoneNumber"
+                    placeholder="Telefon raqamingizni kiriting"
+                    value={formData.phoneNumber}
+                    onChange={handleChange}
+                    required
+                  />
+                </div>
+              ) : (
                 <input
-                  type={showPassword ? "text" : "password"}
-                  name="passwords"
-                  placeholder="Parol kiriting"
-                  value={formData.passwords}
+                  type="text"
+                  name="phoneNumber"
+                  placeholder="Telefon raqamingizni kiriting"
+                  value={formData.phoneNumber}
                   onChange={handleChange}
-                  autoComplete="new-password"
                   required
                 />
+              )}
+              {phoneError && (
+                <p style={{ color: "red", margin: "0", fontSize: "0.7rem" }}>
+                  Telefon raqam formati: +998999999999
+                </p>
+              )}
+              {validation && (
+                <p style={{ color: "red", margin: "0", fontSize: "0.7rem" }}>
+                  Bunday raqamli foydalanuvchi mavjud!
+                </p>
+              )}
+            </div>
+            <div className={styles.ProfileEditFormInput}>
+              <label htmlFor="password">Parol</label>
+              <div className={styles.passwordInputContainer}>
+                {passwordValidation || passwordNotSame ? (
+                  <input
+                    style={{ border: "1px solid red" }}
+                    type={showPassword ? "text" : "password"}
+                    name="password"
+                    placeholder="Parol kiriting"
+                    value={formData.passwords}
+                    onChange={handleChange}
+                    autoComplete="new-password"
+                  />
+                ) : (
+                  <input
+                    type={showPassword ? "text" : "password"}
+                    name="password"
+                    placeholder="Parol kiriting"
+                    value={formData.password}
+                    onChange={handleChange}
+                    autoComplete="new-password"
+                  />
+                )}
                 <div
                   className={styles.eyeIcon}
                   onClick={togglePasswordVisibility}>
                   <i className={`ri-eye-${showPassword ? "off-" : ""}line`}></i>
                 </div>
               </div>
+              {passwordValidation && (
+                <p style={{ color: "red", margin: "0", fontSize: "0.7rem" }}>
+                  Parol 8 ta belgidan {`ko\'p`}, 1 ta raqam va 1 ta katta harf
+                  kerak.
+                </p>
+              )}
+              {passwordNotSame ? (
+                <p style={{ color: "red", margin: "0", fontSize: "0.7rem" }}>
+                  Parol bir xil emas!
+                </p>
+              ) : (
+                ""
+              )}
             </div>
             <div className={styles.ProfileEditFormInput}>
               <label htmlFor="passwordRepeat">Parolni takrorlang</label>
               <div className={styles.passwordInputContainer}>
-                <input
-                  type={showPasswordRepeat ? "text" : "password"}
-                  name="passwordRepeat"
-                  placeholder="Parol takrorlang"
-                  autoComplete="new-password"
-                  required
-                />
+                {passwordValidation || passwordNotSame ? (
+                  <input
+                    style={{ border: "1px solid red" }}
+                    type={showPasswordRepeat ? "text" : "password"}
+                    name="passwordRepeat"
+                    value={repeatPassword}
+                    onChange={handlePasswordChange}
+                    placeholder="Parol takrorlang"
+                    autoComplete="new-password"
+                  />
+                ) : (
+                  <input
+                    type={showPasswordRepeat ? "text" : "password"}
+                    name="passwordRepeat"
+                    value={repeatPassword}
+                    onChange={handlePasswordChange}
+                    placeholder="Parol takrorlang"
+                    autoComplete="new-password"
+                  />
+                )}
                 <div
                   className={styles.eyeIcon}
                   onClick={togglePasswordVisibilityRepeat}>
@@ -202,6 +314,17 @@ const ProfileEdit = () => {
                     }line`}></i>
                 </div>
               </div>
+              {passwordValidation && (
+                <p style={{ color: "red", margin: "0", fontSize: "0.7rem" }}>
+                  Parol 8 ta belgidan {`ko\'p`}, 1 ta raqam va 1 ta katta harf
+                  kerak.
+                </p>
+              )}
+              {passwordNotSame && (
+                <p style={{ color: "red", margin: "0", fontSize: "0.7rem" }}>
+                  Parol bir xil emas!
+                </p>
+              )}
             </div>
           </div>
           <button name="submit">Saqlash</button>
