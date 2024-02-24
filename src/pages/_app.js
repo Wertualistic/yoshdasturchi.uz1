@@ -61,6 +61,7 @@ export default function App({ Component, pageProps }) {
         <meta name="google" content="klaviaturada tez yozish, klaviaturada tez yozish online, klaviaturada tez yozish o'yin, Islombek Baxromov, alicoder, alicoder.uz" />
         <meta name="keywords" content="HTML, CSS, JavaScript, klaviaturada tez yozish, klaviaturada tez yozish online, klaviaturada tez yozish o'yin, Islombek Baxromov, alicoder, alicoder.uz, amaliyot, klaviaturada, klaviatura, islom, baxromov, tez yozish, klaviaturada yozish" />
         <meta name="author" content="Islom Baxromov || Alicoder.uz || Alicoder" />
+        <title>Yoshdasturchi</title>
       </Head>
       <MainLayout>
         <div className="minHeight">
