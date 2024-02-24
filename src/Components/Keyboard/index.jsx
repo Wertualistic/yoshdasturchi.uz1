@@ -69,7 +69,7 @@ const Keyboard = ({ letter, setKey }) => {
     return () => {
       document.removeEventListener("keydown", handleKeyDown);
     };
-  }, [setKey]);
+  });
 
   return (
     <>

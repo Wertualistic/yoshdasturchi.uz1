@@ -86,7 +86,7 @@ export default function Home() {
     return () => {
       document.removeEventListener("keydown", handleKeyDown, true);
     };
-  }, [result, data, gameStarted]);
+  });
 
   const handleGenerate = () => {
     const generateRandomData = () => {

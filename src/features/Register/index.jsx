@@ -127,7 +127,7 @@ const Register = () => {
     if (token) {
       router.push("/");
     }
-  }, []);
+  });
 
   return (
     <div className={styles.RegisterContainer}>

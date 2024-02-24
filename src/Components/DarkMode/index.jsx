@@ -24,7 +24,7 @@ const DarkMode = ({ setSelectedTheme }) => {
             setDarkMode();
             setIsDarkModeChecked(true);
         }
-    }, []);
+    });
 
     const toggleTheme = () => {
         if (isDarkModeChecked) setLightMode();

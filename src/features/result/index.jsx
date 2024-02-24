@@ -68,7 +68,7 @@ const Result = () => {
     if (typeof window !== "undefined") {
       getUserInfo();
     }
-  }, []);
+  });
 
   useEffect(() => {
     const getCookie = (key) => {
