@@ -8,30 +8,31 @@ const ContestDate = ({ isAdsShow, isHaveNavbar }) => {
     JSON.parse(sessionStorage.getItem("lastContest")) || []
   );
 
-  useEffect(() => {
-    const getLastContest = async () => {
-      try {
-        const res = await api.get(
-          "https://api.yoshdasturchi.uz/api/v1/contest/getLastContest"
-        );
-        sessionStorage.setItem("lastContest", JSON.stringify(res.data));
-        setContest(res.data);
-      } catch (err) {
-        console.log(err);
-      }
-    };
-
-    // Check if contest data is already present
-    if (!contest || !contest.id) {
-      getLastContest();
-    }
-  }, []);
-
   const calculateTimeLeft = () => {
     const difference =
       contest.status == "BOSHLANMAGAN"
         ? +new Date(contest.startAt) - +new Date()
         : +new Date(contest.endAt) - +new Date();
+    if (difference < 0) {
+      const updateContest = async () => {
+        try {
+          const res = await axios.put(
+            `https://api.yoshdasturchi.uz/api/v1/contest/updateStatus/${contest.id}?status=JARAYONDA`,
+            {
+              headers: {
+                Authorization:
+                  "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIrOTk4OTUwOTYwMTUzIiwiaWF0IjoxNzA4NzYxODM3LCJleHAiOjg2NDAwMDE3MDg3NjE4Mzd9.FB9OblciIcWYfarIocDil_FS3PWflFXGKon-bWZODbk",
+              },
+            }
+          );
+          sessionStorage.setItem("lastContest", JSON.stringify(res.data));
+          setContest(res.data);
+        } catch (err) {
+          console.log(err);
+        }
+      };
+      updateContest();
+    }
     let timeLeft = {};
     const millisecondsPerDay = 24 * 60 * 60 * 1000;
 

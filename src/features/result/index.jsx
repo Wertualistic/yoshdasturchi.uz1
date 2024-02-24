@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState, useMemo } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import {
   AreaChart,
   Area,
@@ -27,10 +27,11 @@ SwiperCore.use([Navigation, Pagination, Autoplay]);
 
 const Result = () => {
   const { result, time, setTime } = useContext(DataContext);
+  const [data, setData] = useState(
+    JSON.parse(sessionStorage.getItem("sessionData")) || []
+  );
   const [data1, setData1] = useState([]);
   const [data0, setData0] = useState([]);
-  const [data, setData] = useState([]);
-  const router = useRouter();
   const [userInfo, setUserInfo] = useState(null);
   const [token, setToken] = useState("");
 
@@ -69,17 +70,14 @@ const Result = () => {
     }
   }, []);
 
-  // Usage
-  useEffect(() => {}, [data1, data0]);
-  const getCookie = (key) => {
-    const cookieValue = document.cookie.match(
-      `(^|;)\\s*${key}\\s*=\\s*([^;]+)`
-    );
-    return cookieValue ? cookieValue.pop() : null;
-  };
-
-  // Set initial countdown timer
   useEffect(() => {
+    const getCookie = (key) => {
+      const cookieValue = document.cookie.match(
+        `(^|;)\\s*${key}\\s*=\\s*([^;]+)`
+      );
+      return cookieValue ? cookieValue.pop() : null;
+    };
+
     const token = getCookie("token");
     setToken(token);
     setTimeout(() => {
@@ -87,7 +85,6 @@ const Result = () => {
     }, 1000);
   }, [setTime]);
 
-  // Calculate count of correct and incorrect answers
   useEffect(() => {
     const newData1 = result.filter((point) => point === 1);
     const newData0 = result.filter((point) => point === 0);
@@ -95,24 +92,9 @@ const Result = () => {
     setData0(newData0);
   }, [result]);
 
-  // Fetch contest data
-  useEffect(() => {
-    const fetchContest = async () => {
-      try {
-        const response = await api.get("/contest/getLastContest");
-        localStorage.setItem("lastContest", JSON.stringify(response.data));
-      } catch (error) {
-        console.log(error);
-      }
-    };
-
-    fetchContest();
-  }, []);
-
-  // Post data when timer reaches 0
   useEffect(() => {
     if (time === 0) {
-      const lastContest = JSON.parse(localStorage.getItem("lastContest"));
+      const lastContest = JSON.parse(sessionStorage.getItem("lastContest"));
       const getCurrentDateTime = () => {
         const currentDateTime = new Date();
         const year = currentDateTime.getFullYear();
@@ -166,22 +148,16 @@ const Result = () => {
     }
   }, [time, data1, data0]);
 
-  // Redirect if no result or calculate statistics
   useEffect(() => {
+    const sessionData = JSON.parse(sessionStorage.getItem("sessionData")) || [];
+    setData(sessionData);
     if (result.length === 0) {
       window.location.href = "/";
     } else {
       calculateStatistics();
     }
-  }, []);
+  }, [data1]);
 
-  // Get session data from storage
-  useEffect(() => {
-    const sessionData = JSON.parse(sessionStorage.getItem("sessionData")) || [];
-    setData(sessionData);
-  }, []);
-
-  // Calculate and store statistics in session storage
   const calculateStatistics = () => {
     const newData = {
       name: data.length + 1,
@@ -206,7 +182,6 @@ const Result = () => {
     sessionStorage.setItem("sessionData", JSON.stringify(mergedData));
   };
 
-  // Render the component
   return (
     <div className={styles.result_sec}>
       <div className="container">
@@ -284,62 +259,22 @@ const Result = () => {
                 },
               }}
               modules={[Navigation, Pagination, Autoplay]}>
-              <SwiperSlide className={styles.swiperSlide}>
-                <a
-                  blank
-                  href="https://www.youtube.com/watch?v=V1PyfsaPnLo"
-                  target="_blank"
-                  rel="noopener noreferrer">
-                  <Image
-                    src="https://img.youtube.com/vi/V1PyfsaPnLo/maxresdefault.jpg"
-                    width={270}
-                    height={160}
-                    alt="Video Preview"
-                  />
-                </a>
-              </SwiperSlide>
-              <SwiperSlide className={styles.swiperSlide}>
-                <a
-                  blank
-                  href="https://www.youtube.com/watch?v=V1PyfsaPnLo"
-                  target="_blank"
-                  rel="noopener noreferrer">
-                  <Image
-                    src="https://img.youtube.com/vi/V1PyfsaPnLo/maxresdefault.jpg"
-                    width={270}
-                    height={160}
-                    alt="Video Preview"
-                  />
-                </a>
-              </SwiperSlide>
-              <SwiperSlide className={styles.swiperSlide}>
-                <a
-                  blank
-                  href="https://www.youtube.com/watch?v=V1PyfsaPnLo"
-                  target="_blank"
-                  rel="noopener noreferrer">
-                  <Image
-                    src="https://img.youtube.com/vi/V1PyfsaPnLo/maxresdefault.jpg"
-                    width={270}
-                    height={160}
-                    alt="Video Preview"
-                  />
-                </a>
-              </SwiperSlide>
-              <SwiperSlide className={styles.swiperSlide}>
-                <a
-                  blank
-                  href="https://www.youtube.com/watch?v=V1PyfsaPnLo"
-                  target="_blank"
-                  rel="noopener noreferrer">
-                  <Image
-                    src="https://img.youtube.com/vi/V1PyfsaPnLo/maxresdefault.jpg"
-                    width={270}
-                    height={160}
-                    alt="Video Preview"
-                  />
-                </a>
-              </SwiperSlide>
+              {[1, 2, 3, 4].map((item) => (
+                <SwiperSlide key={item} className={styles.swiperSlide}>
+                  <a
+                    blank
+                    href="https://www.youtube.com/watch?v=V1PyfsaPnLo"
+                    target="_blank"
+                    rel="noopener noreferrer">
+                    <Image
+                      src="https://img.youtube.com/vi/V1PyfsaPnLo/maxresdefault.jpg"
+                      width={270}
+                      height={160}
+                      alt="Video Preview"
+                    />
+                  </a>
+                </SwiperSlide>
+              ))}
               <div className="swiper-buttons-container">
                 <div className="swiper-buttons">
                   <div className="swiper-button-next"></div>

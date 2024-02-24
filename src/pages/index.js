@@ -5,7 +5,6 @@ import { useContext, useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { DataContext } from "@/DataContext";
 import dynamic from "next/dynamic";
-import ContestDate from "@/Components/ContestDate";
 
 export default function Home() {
   const { hiddenInputRef, timer, time, setTime, result, setResult, isKeyboardTrueChecked, isKeyboardFalseChecked } = useContext(DataContext);

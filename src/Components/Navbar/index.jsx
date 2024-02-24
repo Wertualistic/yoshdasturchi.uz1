@@ -77,7 +77,7 @@ const Navbar = () => {
     const fetchContest = async () => {
       try {
         const response = await api.get("/contest/getLastContest");
-        localStorage.setItem("lastContest", JSON.stringify(response.data));
+        sessionStorage.setItem("lastContest", JSON.stringify(response.data));
       } catch (error) {
         console.log(error);
       }
@@ -88,7 +88,7 @@ const Navbar = () => {
 
   useEffect(() => {
     const token = getCookie("token");
-    const lastContest = JSON.parse(localStorage.getItem("lastContest"));
+    const lastContest = JSON.parse(sessionStorage.getItem("lastContest"));
     if (token != null) {
       const fetchRating = async () => {
         try {
@@ -145,7 +145,7 @@ const Navbar = () => {
       };
       fetchRating();
     }
-  }, [token]);
+  }, []);
 
   const handleColorClick = (color) => {
     setSelectedColor(color);
@@ -204,9 +204,7 @@ const Navbar = () => {
     return dateTime.toLocaleTimeString("en-US", options);
   };
 
-  const ContestDate = dynamic(() => import("../../Components/ContestDate"), {
-    ssr: false,
-  });
+  const ContestDate = dynamic(() => import("../../Components/ContestDate"));
 
   return (
     <>
@@ -281,11 +279,10 @@ const Navbar = () => {
                                 {index + 1}
                               </span>
                               <p className={styles.reytingdropdown__profile}>
-                                <img
+                                <div
                                   className={
                                     styles.reytingdropdown__profileimage
-                                  }
-                                />
+                                  }></div>
                                 {card.user.name}
                               </p>
                             </div>

@@ -28,20 +28,7 @@ const Reyting = () => {
   // }, [swiper]);
 
   useEffect(() => {
-    const fetchContest = async () => {
-      try {
-        const response = await api.get("/contest/getLastContest");
-        localStorage.setItem("lastContest", JSON.stringify(response.data));
-      } catch (error) {
-        console.log(error);
-      }
-    };
-
-    fetchContest();
-  }, []);
-
-  useEffect(() => {
-    const lastContest = JSON.parse(localStorage.getItem("lastContest"));
+    const lastContest = JSON.parse(sessionStorage.getItem("lastContest"));
     const fetchRating = async () => {
       try {
         const response = await api.get(
@@ -152,9 +139,10 @@ const Reyting = () => {
                                   {index + idx + 1}
                                 </span>
                                 <p className={styles.reyting__profile}>
-                                  <img
-                                    className={styles.reyting__profileimage}
-                                  />
+                                  <div
+                                    className={
+                                      styles.reyting__profileimage
+                                    }></div>
                                   {innerCard.user.name}
                                 </p>
                               </div>

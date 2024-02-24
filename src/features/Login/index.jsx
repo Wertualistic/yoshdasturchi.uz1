@@ -77,6 +77,7 @@ const Login = () => {
     if (token) {
       window.location.href = "/";
     }
+
   }, []);
 
   return (

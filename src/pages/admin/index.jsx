@@ -15,10 +15,13 @@ const Admin = () => {
         }
       } catch (err) {
         console.error(err);
+        if (err.response.status === 409) {
+          router.push("/");
+        }
       }
     };
     getUserInfo();
-  }, []);
+  }, [router]);
   return (
     <div style={{ display: "flex", gap: "50px" }}>
       <Link
