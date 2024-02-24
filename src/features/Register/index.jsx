@@ -33,7 +33,6 @@ const Register = () => {
   const handleChange = (e) => {
     const { name, value } = e.target;
     let updatedFormData = { ...formData, [name]: value };
-
     if (name === "phoneNumber") {
       updatedFormData = {
         ...updatedFormData,
@@ -81,7 +80,7 @@ const Register = () => {
         if (response.status === 200) {
           const data = response.data;
           setCookie("token", data.object, 100);
-          router.push('/');
+          router.push("/");
         }
       } catch (error) {
         console.error("Error registering:", error);
@@ -94,7 +93,7 @@ const Register = () => {
   useEffect(() => {
     const token = getCookie("token");
     if (token) {
-      router.push('/');
+      router.push("/");
     }
   }, []);
 
@@ -201,7 +200,6 @@ const Register = () => {
                     onChange={handleChange}
                     required
                   />
-                  
                 </div>
               ) : (
                 <input
@@ -234,7 +232,6 @@ const Register = () => {
                     onChange={handleChange}
                     autoComplete="new-password"
                     required
-                    pattern="(?=.*\d)(?=.*[A-Z]).{8,}"
                   />
                 ) : (
                   <input
@@ -245,7 +242,6 @@ const Register = () => {
                     onChange={handleChange}
                     autoComplete="new-password"
                     required
-                    pattern="(?=.*\d)(?=.*[A-Z]).{8,}"
                   />
                 )}
                 <div
