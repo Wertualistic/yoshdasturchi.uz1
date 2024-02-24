@@ -189,7 +189,7 @@ const Navbar = () => {
     setIsSettingsOpen(false);
     setIsOpenUser(false);
     setIsReytingOpen(false);
-    window.location.href = "/";
+    window.location.href = "/reyting";
   };
 
   const getDate = (dateTimeString) => {
