@@ -28,33 +28,64 @@ const Reyting = () => {
   // }, [swiper]);
 
   useEffect(() => {
+    const token = getCookie("token");
     const lastContest = JSON.parse(sessionStorage.getItem("lastContest"));
-    const fetchRating = async () => {
-      try {
-        const response = await api.get(
-          lastContest.status === "JARAYONDA"
-            ? "/attemptContest/rate/1?page=0&size=100"
-            : "/regular/getRate?limitSecond=60&page=0&size=100"
-        );
-        if (
-          Array.isArray(
+    if (token != null) {
+      const fetchRating = async () => {
+        try {
+          const response = await api.get(
             lastContest.status === "JARAYONDA"
-              ? response.data.attemptRateDTOS.content
-              : response.data.regularDTOPage.content
-          )
-        ) {
-          setCards(
-            lastContest.status === "JARAYONDA"
-              ? response.data.attemptRateDTOS.content
-              : response.data.regularDTOPage.content
+              ? "/attemptContest/rate/1?page=0&size=100"
+              : "/regular/getRate?limitSecond=60&page=0&size=100"
           );
+          if (
+            Array.isArray(
+              lastContest.status === "JARAYONDA"
+                ? response.data.attemptRateDTOS.content
+                : response.data.regularDTOPage.content
+            )
+          ) {
+            setCards(
+              lastContest.status === "JARAYONDA"
+                ? response.data.attemptRateDTOS.content
+                : response.data.regularDTOPage.content
+            );
+          }
+        } catch (error) {
+          if (error.response?.status == 401) {
+            handleLogout();
+          }
         }
-      } catch (error) {
-        console.log(error);
-      }
-    };
+      };
 
-    fetchRating();
+      fetchRating();
+    } else {
+      const fetchRating = async () => {
+        try {
+          const response = await axios.get(
+            lastContest.status === "JARAYONDA"
+              ? "https://api.yoshdasturchi.uz/api/v1/attemptContest/rate/notUser/1?page=0&size=100"
+              : "https://api.yoshdasturchi.uz/api/v1/regular/getRateNotUser?limitSecond=60&page=0&size=100"
+          );
+          if (
+            Array.isArray(
+              lastContest.status === "JARAYONDA"
+                ? response.data.attemptRateDTOS.content
+                : response.data.regularDTOPage.content
+            )
+          ) {
+            setCards(
+              lastContest.status === "JARAYONDA"
+                ? response.data.attemptRateDTOS.content
+                : response.data.regularDTOPage.content
+            );
+          }
+        } catch (error) {
+          console.log(error);
+        }
+      };
+      fetchRating();
+    }
   }, []);
 
   // function updateSlidesHeight() {
