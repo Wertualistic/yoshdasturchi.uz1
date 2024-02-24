@@ -15,6 +15,15 @@ const Reyting = () => {
   const [activeIndex, setActiveIndex] = useState(0);
   const [cards, setCards] = useState([]);
 
+  const [token, setToken] = useState("");
+
+  const getCookie = (key) => {
+    const cookieValue = document.cookie.match(
+      `(^|;)\\s*${key}\\s*=\\s*([^;]+)`
+    );
+    return cookieValue ? cookieValue.pop() : null;
+  };
+
   const handlePaginationClick = (index) => {
     if (swiper) {
       swiper.slideTo(index);
