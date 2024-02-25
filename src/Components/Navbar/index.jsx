@@ -146,7 +146,7 @@ const Navbar = () => {
       };
       fetchRating();
     }
-  }, []);
+  });
 
   const handleColorClick = (color) => {
     setSelectedColor(color);

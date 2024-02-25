@@ -18,7 +18,7 @@ const Ads = ({ isAdsShow, isRight }) => {
     <div className={styles.ads_sec}>
       {isAdsShow ? (
         <div className={isRight ? styles.ads_inner : styles.ads_inner_left}>
-          {[0, 1, 2].map((index) => (
+          {[0].map((index) => (
             <div
               key={index}
               className={styles.ads_card}
