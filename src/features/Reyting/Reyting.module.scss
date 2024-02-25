@@ -76,9 +76,6 @@
     width: 180px;
   }
 
-  &__name {
-  }
-
   &__right {
     display: flex;
     white-space: nowrap;
@@ -176,6 +173,7 @@
 
 .reyting__userreyt.active {
   background-color: #ededed;
+  color: var(--white-color);
 }
 
 .swiper {

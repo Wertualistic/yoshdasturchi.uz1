@@ -22,7 +22,7 @@ const ProfileEdit = () => {
     name: "",
     age: "",
     phoneNumber: "",
-    passwords: "",
+    password: "",
   });
 
   const updateToken = (token) => {
@@ -35,6 +35,7 @@ const ProfileEdit = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
+    console.log(value);
     setFormData({ ...formData, [name]: value });
   };
 
@@ -51,16 +52,14 @@ const ProfileEdit = () => {
             name: userData.name,
             age: userData.age,
             phoneNumber: userData.phoneNumber,
-            passwords: "",
+            password: "",
           });
         }
       } catch (err) {
         console.error(err);
       }
     };
-    if (typeof window !== "undefined") {
-      getUserInfo();
-    }
+    getUserInfo();
   }, []);
 
   const handleSubmit = async (e) => {
@@ -71,13 +70,13 @@ const ProfileEdit = () => {
     setPhoneError(!isValidPhone);
 
     const isPasswordValid =
-      formData.passwords.length >= 8 &&
-      /\d/.test(formData.passwords) &&
-      /[A-Z]/.test(formData.passwords);
+      formData.password?.length >= 8 &&
+      /\d/.test(formData.password) &&
+      /[A-Z]/.test(formData.password);
     setPasswordValidation(!isPasswordValid);
     setValidation(false);
-
-    if (formData.passwords !== repeatPassword) {
+    console.log(formData);
+    if (formData.password !== repeatPassword) {
       setPasswordNotSame(true);
       setPasswordValidation(false);
     } else {
@@ -94,26 +93,27 @@ const ProfileEdit = () => {
     });
 
     if (
-      !formData.passwords === repeatPassword ||
       !isValidPhone ||
+      !isPasswordValid ||
+      formData.password !== repeatPassword ||
       Object.values(otherErrors).some(Boolean)
     ) {
       return;
-    }
-
-    try {
-      const response = await api.put("/user/updateInformation", formData);
-      if (response.status === 200) {
-        const newToken = response.data.obj;
-        updateToken(newToken);
-        router.push("/");
-      }
-    } catch (error) {
-      console.error("Error ProfileEditing:", error);
-      if (error.response.status == 409) {
-        setValidation(true);
-      } else {
-        setValidation(false);
+    } else {
+      try {
+        const response = await api.put("/user/updateInformation", formData);
+        if (response.status === 200) {
+          const newToken = response.data.obj;
+          updateToken(newToken);
+          router.push("/");
+        }
+      } catch (error) {
+        console.error("Error ProfileEditing:", error);
+        if (error.response.status == 409) {
+          setValidation(true);
+        } else {
+          setValidation(false);
+        }
       }
     }
   };
@@ -248,9 +248,9 @@ const ProfileEdit = () => {
                     type={showPassword ? "text" : "password"}
                     name="password"
                     placeholder="Parol kiriting"
-                    value={formData.passwords}
+                    value={formData.password}
                     onChange={handleChange}
-                    autoComplete="new-password"
+                    autoComplete="password"
                   />
                 ) : (
                   <input
@@ -259,7 +259,7 @@ const ProfileEdit = () => {
                     placeholder="Parol kiriting"
                     value={formData.password}
                     onChange={handleChange}
-                    autoComplete="new-password"
+                    autoComplete="password"
                   />
                 )}
                 <div

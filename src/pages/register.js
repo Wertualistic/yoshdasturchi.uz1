@@ -5,7 +5,7 @@ import React from 'react';
 const Register = () => {
     return (
         <div>
-            <RegisterPage />
+            <RegisterPage profileEdit={false} />
         </div>
     )
 }

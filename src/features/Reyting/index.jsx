@@ -75,6 +75,7 @@ const Reyting = () => {
     } else {
       const fetchRating = async () => {
         try {
+          setLoader(true);
           const response = await axios.get(
             lastContest.status === "JARAYONDA"
               ? "https://api.yoshdasturchi.uz/api/v1/attemptContest/rate/notUser/1?page=0&size=100"
@@ -93,6 +94,7 @@ const Reyting = () => {
                 : response.data.regularDTOPage.content
             );
           }
+          setLoader(false);
         } catch (error) {
           console.log(error);
         }
