@@ -7,6 +7,7 @@ import SwiperCore, { Pagination } from "swiper/core";
 import "swiper/css/pagination";
 import CustomPagination from "./components/CustomPagination";
 import api from "@/utils/api";
+import axios from "axios";
 
 SwiperCore.use([Pagination]);
 

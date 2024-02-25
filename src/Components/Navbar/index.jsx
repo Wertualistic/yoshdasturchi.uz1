@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-html-link-for-pages */
 import React, { useState, useEffect, useContext } from "react";
 import Image from "next/image";
 import Logo from "../../assets/navbarLogo.png";

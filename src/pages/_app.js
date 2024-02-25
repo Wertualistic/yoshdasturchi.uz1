@@ -26,31 +26,31 @@ export default function App({ Component, pageProps }) {
     });
   }, []);
 
-  // useEffect(() => {
-  //   document.addEventListener('contextmenu', event => event.preventDefault());
+  useEffect(() => {
+    document.addEventListener('contextmenu', event => event.preventDefault());
 
-  //   document.onkeydown = function (e) {
-  //     // disable F12 key
-  //     if (e.keyCode == 123) {
-  //       return false;
-  //     }
+    document.onkeydown = function (e) {
+      // disable F12 key
+      if (e.keyCode == 123) {
+        return false;
+      }
 
-  //     // disable I key
-  //     if (e.ctrlKey && e.shiftKey && e.keyCode == 73) {
-  //       return false;
-  //     }
+      // disable I key
+      if (e.ctrlKey && e.shiftKey && e.keyCode == 73) {
+        return false;
+      }
 
-  //     // disable J key
-  //     if (e.ctrlKey && e.shiftKey && e.keyCode == 74) {
-  //       return false;
-  //     }
+      // disable J key
+      if (e.ctrlKey && e.shiftKey && e.keyCode == 74) {
+        return false;
+      }
 
-  //     // disable U key
-  //     if (e.ctrlKey && e.keyCode == 85) {
-  //       return false;
-  //     }
-  //   };
-  // }, []);
+      // disable U key
+      if (e.ctrlKey && e.keyCode == 85) {
+        return false;
+      }
+    };
+  }, []);
 
   return (
     <DataProvider>
@@ -61,6 +61,10 @@ export default function App({ Component, pageProps }) {
         <meta name="google" content="klaviaturada tez yozish, klaviaturada tez yozish online, klaviaturada tez yozish o'yin, Islombek Baxromov, alicoder, alicoder.uz" />
         <meta name="keywords" content="HTML, CSS, JavaScript, klaviaturada tez yozish, klaviaturada tez yozish online, klaviaturada tez yozish o'yin, Islombek Baxromov, alicoder, alicoder.uz, amaliyot, klaviaturada, klaviatura, islom, baxromov, tez yozish, klaviaturada yozish" />
         <meta name="author" content="Islom Baxromov || Alicoder.uz || Alicoder" />
+        <link
+          href="https://cdn.jsdelivr.net/npm/remixicon@4.1.0/fonts/remixicon.css"
+          rel="stylesheet"
+        />
         <title>Yoshdasturchi</title>
       </Head>
       <MainLayout>

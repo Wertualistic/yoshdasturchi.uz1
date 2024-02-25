@@ -1,38 +1,52 @@
 import React, { useState, useEffect } from "react";
 import styles from "./ContestDate.module.scss";
 import axios from "axios";
-import api from "@/utils/api";
 
 const ContestDate = ({ isAdsShow, isHaveNavbar }) => {
   const [contest, setContest] = useState(
-    JSON.parse(sessionStorage.getItem("lastContest")) || []
+    JSON.parse(sessionStorage.getItem("lastContest")) || {}
   );
 
+  const updateContestStatus = async (contestId, status) => {
+    try {
+      const headers = {
+        Authorization:
+          "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIrOTk4OTUwOTYwMTUzIiwiaWF0IjoxNzA4NzYxODM3LCJleHAiOjg2NDAwMDE3MDg3NjE4Mzd9.FB9OblciIcWYfarIocDil_FS3PWflFXGKon-bWZODbk",
+      };
+      const res = await axios.put(
+        `https://api.yoshdasturchi.uz/api/v1/contest/updateStatus/${contestId}?status=${status}`,
+        {},
+        { headers }
+      );
+      // Handle response if needed
+    } catch (err) {
+      console.log(err);
+      // Handle error
+    }
+  };
+
   const calculateTimeLeft = () => {
-    const difference =
-      contest.status == "BOSHLANMAGAN"
+    const differenceTime = +new Date(contest.startAt) > +new Date();
+    let difference =
+      contest.status === "BOSHLANMAGAN"
         ? +new Date(contest.startAt) - +new Date()
         : +new Date(contest.endAt) - +new Date();
-    if (difference < 0) {
-      const updateContest = async () => {
-        try {
-          const res = await axios.put(
-            `https://api.yoshdasturchi.uz/api/v1/contest/updateStatus/${contest.id}?status=JARAYONDA`,
-            {
-              headers: {
-                Authorization:
-                  "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIrOTk4OTUwOTYwMTUzIiwiaWF0IjoxNzA4NzYxODM3LCJleHAiOjg2NDAwMDE3MDg3NjE4Mzd9.FB9OblciIcWYfarIocDil_FS3PWflFXGKon-bWZODbk",
-              },
-            }
-          );
-          sessionStorage.setItem("lastContest", JSON.stringify(res.data));
-          setContest(res.data);
-        } catch (err) {
-          console.log(err);
+
+    if (difference > 0) {
+      if (differenceTime) {
+        difference = +new Date(contest.startAt) - +new Date();
+        if (contest.status !== "BOSHLANMAGAN") {
+          updateContestStatus(contest.id, "BOSHLANMAGAN");
         }
-      };
-      updateContest();
+      } else {
+        if (contest.status !== "JARAYONDA") {
+          updateContestStatus(contest.id, "JARAYONDA");
+        }
+      }
+    } else if (difference < 0 && contest.status !== "TUGADI") {
+      updateContestStatus(contest.id, "TUGADI");
     }
+
     let timeLeft = {};
     const millisecondsPerDay = 24 * 60 * 60 * 1000;
 
@@ -40,7 +54,7 @@ const ContestDate = ({ isAdsShow, isHaveNavbar }) => {
       timeLeft = {
         days: Math.floor(difference / millisecondsPerDay),
         hours: Math.floor((difference / (1000 * 60 * 60)) % 24),
-        minutes: Math.floor((difference / 1000 / 60) % 60),
+        minutes: Math.floor((difference / (1000 * 60)) % 60),
         seconds: Math.floor((difference / 1000) % 60),
       };
     }
@@ -85,9 +99,9 @@ const ContestDate = ({ isAdsShow, isHaveNavbar }) => {
       {isAdsShow && (
         <div className={styles.contestdate_sec_ads}>
           <div className={styles.contestdate_inner}>
-            {contest.status == "JARAYONDA" ? (
+            {contest.status === "JARAYONDA" ? (
               <span>Musobaqa tugashigacha</span>
-            ) : contest.status == "BOSHLANMAGAN" ? (
+            ) : contest.status === "BOSHLANMAGAN" ? (
               <span>Musobaqa boshlanishigacha</span>
             ) : (
               ""

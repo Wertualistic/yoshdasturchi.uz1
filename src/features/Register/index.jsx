@@ -96,29 +96,30 @@ const Register = () => {
     });
 
     if (
-      !formData.password === repeatPassword ||
       !isValidPhone ||
+      !isPasswordValid ||
+      formData.password !== repeatPassword ||
       Object.values(otherErrors).some(Boolean)
     ) {
       return;
-    }
-
-    try {
-      const response = await axios.post(
-        "https://api.yoshdasturchi.uz/api/v1/auth/register",
-        formData
-      );
-      if (response.status === 200) {
-        const data = response.data;
-        setCookie("token", data.object, 100);
-        router.push("/");
-      }
-    } catch (error) {
-      console.error("Error registering:", error);
-      if (error.response.status == 409) {
-        setValidation(true);
-      } else {
-        setValidation(false);
+    } else {
+      try {
+        const response = await axios.post(
+          "https://api.yoshdasturchi.uz/api/v1/auth/register",
+          formData
+        );
+        if (response.status === 200) {
+          const data = response.data;
+          setCookie("token", data.object, 100);
+          router.push("/");
+        }
+      } catch (error) {
+        console.error("Error registering:", error);
+        if (error.response.status == 409) {
+          setValidation(true);
+        } else {
+          setValidation(false);
+        }
       }
     }
   };
