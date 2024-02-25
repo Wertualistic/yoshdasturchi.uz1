@@ -94,27 +94,26 @@ const ProfileEdit = () => {
     });
 
     if (
+      !formData.passwords === repeatPassword ||
       !isValidPhone ||
-      !isPasswordValid ||
-      formData.passwords !== repeatPassword ||
       Object.values(otherErrors).some(Boolean)
     ) {
       return;
-    } else {
-      try {
-        const response = await api.put("/user/updateInformation", formData);
-        if (response.status === 200) {
-          const newToken = response.data.obj;
-          updateToken(newToken);
-          router.push("/");
-        }
-      } catch (error) {
-        console.error("Error ProfileEditing:", error);
-        if (error.response.status == 409) {
-          setValidation(true);
-        } else {
-          setValidation(false);
-        }
+    }
+
+    try {
+      const response = await api.put("/user/updateInformation", formData);
+      if (response.status === 200) {
+        const newToken = response.data.obj;
+        updateToken(newToken);
+        router.push("/");
+      }
+    } catch (error) {
+      console.error("Error ProfileEditing:", error);
+      if (error.response.status == 409) {
+        setValidation(true);
+      } else {
+        setValidation(false);
       }
     }
   };

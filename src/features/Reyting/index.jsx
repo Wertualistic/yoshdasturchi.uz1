@@ -41,7 +41,7 @@ const Reyting = () => {
 
   useEffect(() => {
     const token = getCookie("token");
-    const lastContest = JSON.parse(sessionStorage.getItem("lastContest"));
+    const lastContest = JSON.parse(sessionStorage.getItem("lastContest")) || [];
     if (token != null) {
       const fetchRating = async () => {
         try {
@@ -71,7 +71,6 @@ const Reyting = () => {
           }
         }
       };
-
       fetchRating();
     } else {
       const fetchRating = async () => {

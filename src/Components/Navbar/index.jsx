@@ -45,7 +45,6 @@ const Navbar = () => {
   const [isReytingOpen, setIsReytingOpen] = useState(false);
   const [cards, setCards] = useState([]);
   const [loader, setLoader] = useState(true);
-
   const [isNavbarHas, setIsNavbarHas] = useState(true);
   const router = useRouter();
   const [token, setToken] = useState("");
@@ -91,7 +90,7 @@ const Navbar = () => {
 
   useEffect(() => {
     const token = getCookie("token");
-    const lastContest = JSON.parse(sessionStorage.getItem("lastContest"));
+    const lastContest = JSON.parse(sessionStorage.getItem("lastContest")) || [];
     if (token != null) {
       const fetchRating = async () => {
         try {
@@ -122,7 +121,6 @@ const Navbar = () => {
           setLoader(false);
         }
       };
-
       fetchRating();
     } else {
       const fetchRating = async () => {
