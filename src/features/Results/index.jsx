@@ -2,16 +2,20 @@ import React, { useEffect, useState } from "react";
 import styles from "./Results.module.scss";
 import Image from "next/image";
 import api from "@/utils/api";
+import Loader from "@/Components/Loader/Loader";
 
 const Results = () => {
   const [userResult, setUserResult] = useState(null);
+  const [loader, setLoader] = useState(true);
 
   useEffect(() => {
     const fetchUserData = async () => {
       try {
+        setLoader(true);
         const res = await api.get("/regular/getRegularByPage?page=0&size=100");
         sessionStorage.setItem("userResult", JSON.stringify(res.data));
         setUserResult(res.data);
+        setLoader(false);
       } catch (err) {
         console.log(err);
       }
@@ -32,6 +36,7 @@ const Results = () => {
         {userResult && (
           <>
             <div className={styles.ResultsAll}>
+              {loader && <Loader />}
               <div className={styles.ResultsContainer}>
                 <div className={styles.ResultCard}></div>
                 <div className={styles.ResultTest}>

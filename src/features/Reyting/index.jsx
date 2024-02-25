@@ -8,6 +8,7 @@ import "swiper/css/pagination";
 import CustomPagination from "./components/CustomPagination";
 import api from "@/utils/api";
 import axios from "axios";
+import Loader from "@/Components/Loader/Loader";
 
 SwiperCore.use([Pagination]);
 
@@ -15,6 +16,7 @@ const Reyting = () => {
   const [swiper, setSwiper] = useState(null);
   const [activeIndex, setActiveIndex] = useState(0);
   const [cards, setCards] = useState([]);
+  const [loader, setLoader] = useState(true);
 
   const [token, setToken] = useState("");
 
@@ -43,6 +45,7 @@ const Reyting = () => {
     if (token != null) {
       const fetchRating = async () => {
         try {
+          setLoader(true);
           const response = await api.get(
             lastContest.status === "JARAYONDA"
               ? "/attemptContest/rate/1?page=0&size=100"
@@ -61,6 +64,7 @@ const Reyting = () => {
                 : response.data.regularDTOPage.content
             );
           }
+          setLoader(false);
         } catch (error) {
           if (error.response?.status == 401) {
             handleLogout();
@@ -134,6 +138,7 @@ const Reyting = () => {
                 Next update in : 6:50
               </p>
             </div>
+            {loader && <Loader />}
             <Swiper
               pagination={{
                 el: ".swiper-pagination",

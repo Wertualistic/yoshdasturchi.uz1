@@ -24,6 +24,7 @@ import api from "@/utils/api";
 import { useRouter } from "next/router";
 import axios from "axios";
 import dynamic from "next/dynamic";
+import Loader from "../Loader/Loader";
 
 const Navbar = () => {
   const {
@@ -43,6 +44,7 @@ const Navbar = () => {
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [isReytingOpen, setIsReytingOpen] = useState(false);
   const [cards, setCards] = useState([]);
+  const [loader, setLoader] = useState(true);
 
   const [isNavbarHas, setIsNavbarHas] = useState(true);
   const router = useRouter();
@@ -93,6 +95,7 @@ const Navbar = () => {
     if (token != null) {
       const fetchRating = async () => {
         try {
+          setLoader(true);
           const response = await api.get(
             lastContest.status === "JARAYONDA"
               ? "/attemptContest/rate/1?page=0&size=100"
@@ -111,10 +114,12 @@ const Navbar = () => {
                 : response.data.regularDTOPage.content
             );
           }
+          setLoader(false);
         } catch (error) {
           if (error.response?.status == 401) {
             handleLogout();
           }
+          setLoader(false);
         }
       };
 
@@ -122,6 +127,7 @@ const Navbar = () => {
     } else {
       const fetchRating = async () => {
         try {
+          setLoader(true);
           const response = await axios.get(
             lastContest.status === "JARAYONDA"
               ? "https://api.yoshdasturchi.uz/api/v1/attemptContest/rate/notUser/1?page=0&size=100"
@@ -140,13 +146,14 @@ const Navbar = () => {
                 : response.data.regularDTOPage.content
             );
           }
+          setLoader(false);
         } catch (error) {
           console.log(error);
         }
       };
       fetchRating();
     }
-  });
+  }, []);
 
   const handleColorClick = (color) => {
     setSelectedColor(color);
@@ -271,6 +278,7 @@ const Navbar = () => {
                           </div>
                           <p className={styles.reytingdropdown__date}>Sana</p>
                         </div>
+                        {loader && <Loader />}
                         {cards.slice(0, 10).map((card, index) => (
                           <div
                             key={index}

@@ -21,6 +21,7 @@ import SwiperCore from "swiper";
 import { Autoplay, Navigation, Pagination } from "swiper/modules";
 import Image from "next/image";
 import axios from "axios";
+import Loader from "@/Components/Loader/Loader";
 
 // Initialize Swiper core components
 SwiperCore.use([Navigation, Pagination, Autoplay]);
@@ -135,7 +136,6 @@ const Result = () => {
                 ? { ...requestData, contestId: lastContest.id }
                 : { ...requestData, limitSecondRegular: 60 }
             );
-            console.log(response.data);
           } catch (error) {
             console.error(error);
           }
@@ -153,7 +153,7 @@ const Result = () => {
     setData(sessionData);
     if (result.length === 0) {
       window.location.href = "/";
-    } else { 
+    } else {
       calculateStatistics();
     }
   }, [data1]);
@@ -174,9 +174,7 @@ const Result = () => {
       return;
     }
 
-    const filteredData = sessionData.filter(
-      (item) => !(item.harflar === 0)
-    );
+    const filteredData = sessionData.filter((item) => !(item.harflar === 0));
     const mergedData = [...filteredData, newData];
     setData(mergedData);
     sessionStorage.setItem("sessionData", JSON.stringify(mergedData));
