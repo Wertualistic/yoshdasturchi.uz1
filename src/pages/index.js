@@ -36,7 +36,7 @@ export default function Home() {
         const pressedKey = e.key.toUpperCase();
         const pressedKeyElement = document.querySelector(
           `[data-char="${pressedKey}"]`
-        );
+        ) || "";
         setKey(pressedKey);
         // const foundItem = data[3].letter === pressedKey;
         if (data[3].letter === pressedKey) {
