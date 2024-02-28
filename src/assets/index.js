@@ -48,4 +48,6 @@ import RegisterFrame from './Register-frame.png'
 
 import ArrowRight from './arrow-right.svg';
 
-export { ArrowRight, RegisterFrame, Next, NextDark, Prev, PrevDark, SeeMore, SeeMoreDark, DarkKeyboard, YoutubeDarkMode, BotDarkMode, TelegramDark, InstagramDark, Cup, CupDarkMode, TimerImageDark, SettingImageDark, UserImageDark, RightRestingHand, LeftRestingHand, LeftTopRow1, LeftTopRow2, LeftTopRow3, LeftTopRow4, LeftHomeRow5, LeftHomeRow4, LeftHomeRow3, LeftHomeRow2, LeftHomeRow1, LeftBottomRow1, LeftBottomRow2, LeftBottomRow3, LeftBottomRow5, RightTopRow1, RightTopRow2, RightTopRow3, RightTopRow4, RightTopRow5, RightHomeRow1, RightHomeRow2, RightHomeRow3, RightHomeRow4, RightHomeRow7, RightBottomRow1, RightBottomRow2, RightBottomRow3, RightBottomRow4 };
+import logo from './logo1.png';
+
+export { logo, ArrowRight, RegisterFrame, Next, NextDark, Prev, PrevDark, SeeMore, SeeMoreDark, DarkKeyboard, YoutubeDarkMode, BotDarkMode, TelegramDark, InstagramDark, Cup, CupDarkMode, TimerImageDark, SettingImageDark, UserImageDark, RightRestingHand, LeftRestingHand, LeftTopRow1, LeftTopRow2, LeftTopRow3, LeftTopRow4, LeftHomeRow5, LeftHomeRow4, LeftHomeRow3, LeftHomeRow2, LeftHomeRow1, LeftBottomRow1, LeftBottomRow2, LeftBottomRow3, LeftBottomRow5, RightTopRow1, RightTopRow2, RightTopRow3, RightTopRow4, RightTopRow5, RightHomeRow1, RightHomeRow2, RightHomeRow3, RightHomeRow4, RightHomeRow7, RightBottomRow1, RightBottomRow2, RightBottomRow3, RightBottomRow4 };
