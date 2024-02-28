@@ -7,7 +7,7 @@ import api from "@/utils/api";
 import { logo } from "@/assets";
 
 export default function App({ Component, pageProps }) {
-
+  
   return (
     <DataProvider>
       <Head>
