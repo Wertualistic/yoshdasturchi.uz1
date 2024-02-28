@@ -65,6 +65,7 @@ export default function App({ Component, pageProps }) {
           href="https://cdn.jsdelivr.net/npm/remixicon@4.1.0/fonts/remixicon.css"
           rel="stylesheet"
         />
+        <link rel="icon" href="../assets/logo1.png" />
         <title>Yoshdasturchi</title>
       </Head>
       <MainLayout  >
