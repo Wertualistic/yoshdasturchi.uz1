@@ -1,5 +1,7 @@
 import axios from 'axios';
 
+export const BASE_URL = "https://api.yoshdasturchi.uz/api/v1/"
+
 const api = axios.create({
     baseURL: 'https://api.yoshdasturchi.uz/api/v1/',
     headers: {
@@ -38,3 +40,18 @@ api.interceptors.response.use(
 );
 
 export default api;
+
+export const  API = {
+    ////////////////////  POST
+    login: (data) => api.post("/",data)
+
+    ////////////////////  GET
+
+    ////////////////////  PUT
+
+
+    ////////////////////  DELETE
+}
+
+
+

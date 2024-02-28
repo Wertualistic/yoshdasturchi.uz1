@@ -5,9 +5,12 @@ import { useContext, useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { DataContext } from "@/DataContext";
 import dynamic from "next/dynamic";
+import axios from "axios";
 
-export default function Home() {
-  const { hiddenInputRef, timer, time, setTime, result, setResult, isKeyboardTrueChecked, isKeyboardFalseChecked } = useContext(DataContext);
+export default function Home(props) {
+  // console.log("123")
+
+  const { hiddenInputRef, WriteTime, time,setStartTime, result, setResult, isKeyboardTrueChecked, isKeyboardFalseChecked } = useContext(DataContext);
   const [hideWelcome, setHideWelcome] = useState(true);
   const [data, setData] = useState([]);
   const [key, setKey] = useState("");
@@ -15,17 +18,19 @@ export default function Home() {
   const [gameStarted, setGameStarted] = useState(false); // New state to track game start
   const router = useRouter();
   const [errors, setErrors] = useState(0);
+
+  
   let playOn = () => new Audio("/sounds/on.mp3").play();
   let playOff = () => new Audio("/sounds/off.mp3").play();
 
   const handleEnterClick = () => {
     setIsAdsShow(true);
-    hiddenInputRef.current.focus();
     setHideWelcome(false);
     setGameStarted(true);
     handleGenerate();
-    timer();
     setResult([]);
+    setStartTime(true)
+    // WriteTime()
   }
 
   useEffect(() => {
@@ -107,12 +112,7 @@ export default function Home() {
 
     generateRandomData();
   };
-
-  useEffect(() => {
-    if (time === 0) {
-      router.push('/result');
-    }
-  }, [router, time]);
+ 
 
   const ContestDate = dynamic(() => import('../Components/ContestDate'))
 
@@ -136,9 +136,29 @@ export default function Home() {
         </div>
         <div className="ads_and_contest">
           <Ads isAdsShow={isAdsShow} isRight={false} />
-          <ContestDate isAdsShow={isAdsShow} isHaveNavbar={false} />
+          <ContestDate endDate={props} isAdsShow={isAdsShow} isHaveNavbar={false} />
         </div>
       </main>
     </>
   );
+}
+
+
+
+export async function getServerSideProps() {
+  // Fetch data from API
+  // Example fetch call
+  const dateContest = await axios.get('https://api.yoshdasturchi.uz/api/v1/contest/getLastContest').then(res=>res.data)
+  // const usersList = await axios.get('https://api.yoshdasturchi.uz/api/v1/contest/getLastContest').then(res=>res.data)
+
+  // const data = await response.json();
+  // For demonstration, setting a mock end date
+  // const endDate = new Date(data.endAt.replace(' ', 'T'));
+  // const mockEndDate = new Date("2024-03-28T11:10:00");
+  return {
+    props: {
+       dateContest,
+        // Pass the end date as props to the component
+    }
+  };
 }

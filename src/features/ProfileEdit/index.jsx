@@ -35,7 +35,6 @@ const ProfileEdit = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    console.log(value);
     setFormData({ ...formData, [name]: value });
   };
 
@@ -75,7 +74,6 @@ const ProfileEdit = () => {
       /[A-Z]/.test(formData.password);
     setPasswordValidation(!isPasswordValid);
     setValidation(false);
-    console.log(formData);
     if (formData.password !== repeatPassword) {
       setPasswordNotSame(true);
       setPasswordValidation(false);

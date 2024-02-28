@@ -6,6 +6,7 @@ import getDeviceIp from "@/utils/getDeviceIp";
 import { useRouter } from "next/router";
 import Image from "next/image";
 import { RegisterFrame } from "@/assets";
+import { API } from "@/utils/api";
 
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -64,6 +65,7 @@ const Login = () => {
       if (response.status === 200) {
         const data = response.data;
         setCookie("token", data.object, 100); // set cookie to expire in 100 days
+        setCookie("status", "JARAYONDA", 100); // set cookie to expire in 100 days
         window.location.href = "/";
       }
       if (

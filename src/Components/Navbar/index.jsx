@@ -1,5 +1,5 @@
 /* eslint-disable @next/next/no-html-link-for-pages */
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect, useContext, useMemo } from "react";
 import Image from "next/image";
 import Logo from "../../assets/navbarLogo.png";
 import Setting from "../../assets/setting.svg";
@@ -39,6 +39,7 @@ const Navbar = () => {
     setSelectedColor,
     setSelectedTheme,
     selectedTheme,
+    time
   } = useContext(DataContext);
   const [isOpenUser, setIsOpenUser] = useState(false);
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
@@ -56,6 +57,7 @@ const Navbar = () => {
     return cookieValue ? cookieValue.pop() : null;
   };
 
+
   const handleLogout = () => {
     document.cookie = "token=; expires=Thu, 01 Jan 1970 00:00:00 GMT";
     window.location.href = "/login";
@@ -63,6 +65,7 @@ const Navbar = () => {
 
   useEffect(() => {
     const token = getCookie("token");
+
     setToken(token);
     if (
       router.pathname == "/register" ||
@@ -97,8 +100,8 @@ const Navbar = () => {
           setLoader(true);
           const response = await api.get(
             lastContest.status === "JARAYONDA"
-              ? "/attemptContest/rate/1?page=0&size=100"
-              : "/regular/getRate?limitSecond=60&page=0&size=100"
+              ? "/attemptContest/rate/1?page=0&size=10"
+              : "/regular/getRate?limitSecond=60&page=0&size=10"
           );
           if (
             Array.isArray(
@@ -128,8 +131,8 @@ const Navbar = () => {
           setLoader(true);
           const response = await axios.get(
             lastContest.status === "JARAYONDA"
-              ? "https://api.yoshdasturchi.uz/api/v1/attemptContest/rate/notUser/1?page=0&size=100"
-              : "https://api.yoshdasturchi.uz/api/v1/regular/getRateNotUser?limitSecond=60&page=0&size=100"
+              ? "https://api.yoshdasturchi.uz/api/v1/attemptContest/rate/notUser/1?page=0&size=10"
+              : "https://api.yoshdasturchi.uz/api/v1/regular/getRateNotUser?limitSecond=60&page=0&size=10"
           );
           if (
             Array.isArray(
@@ -211,6 +214,10 @@ const Navbar = () => {
   };
 
   const ContestDate = dynamic(() => import("../../Components/ContestDate"));
+
+  const startTime = useMemo(()=> {
+    return time
+  },[time])
 
   return (
     <>
@@ -326,7 +333,7 @@ const Navbar = () => {
                   <div className={styles.ContestDate}>
                     <ContestDate isHaveNavbar={true} />
                   </div>
-                  <Timer selectedTheme={selectedTheme} />
+                  <Timer selectedTheme={selectedTheme} startTime={startTime}/>
                   <div className={styles.navbar__setting}>
                     <button onClick={toggleDropdownSettings}>
                       {selectedTheme === "dark" ? (

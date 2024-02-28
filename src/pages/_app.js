@@ -6,51 +6,51 @@ import { useEffect } from "react";
 import api from "@/utils/api";
 
 export default function App({ Component, pageProps }) {
-  useEffect(() => {
-    // Yandex.Metrika counter script
-    (function (m, e, t, r, i, k, a) {
-      m[i] = m[i] || function () { (m[i].a = m[i].a || []).push(arguments) };
-      m[i].l = 1 * new Date();
-      for (var j = 0; j < document.scripts.length; j++) {
-        if (document.scripts[j].src === r) { return; }
-      }
-      k = e.createElement(t), a = e.getElementsByTagName(t)[0], k.async = 1, k.src = r, a.parentNode.insertBefore(k, a);
-    })(window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+  // useEffect(() => {
+  //   // Yandex.Metrika counter script
+  //   (function (m, e, t, r, i, k, a) {
+  //     m[i] = m[i] || function () { (m[i].a = m[i].a || []).push(arguments) };
+  //     m[i].l = 1 * new Date();
+  //     for (var j = 0; j < document.scripts.length; j++) {
+  //       if (document.scripts[j].src === r) { return; }
+  //     }
+  //     k = e.createElement(t), a = e.getElementsByTagName(t)[0], k.async = 1, k.src = r, a.parentNode.insertBefore(k, a);
+  //   })(window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
 
-    ym(95260097, "init", {
-      clickmap: true,
-      trackLinks: true,
-      accurateTrackBounce: true,
-      webvisor: true,
-      ecommerce: "dataLayer"
-    });
-  }, []);
+  //   ym(95260097, "init", {
+  //     clickmap: true,
+  //     trackLinks: true,
+  //     accurateTrackBounce: true,
+  //     webvisor: true,
+  //     ecommerce: "dataLayer"
+  //   });
+  // }, []);
 
-  useEffect(() => {
-    document.addEventListener('contextmenu', event => event.preventDefault());
+  // useEffect(() => {
+  //   document.addEventListener('contextmenu', event => event.preventDefault());
 
-    document.onkeydown = function (e) {
-      // disable F12 key
-      if (e.keyCode == 123) {
-        return false;
-      }
+  //   document.onkeydown = function (e) {
+  //     // disable F12 key
+  //     if (e.keyCode == 123) {
+  //       return false;
+  //     }
 
-      // disable I key
-      if (e.ctrlKey && e.shiftKey && e.keyCode == 73) {
-        return false;
-      }
+  //     // disable I key
+  //     if (e.ctrlKey && e.shiftKey && e.keyCode == 73) {
+  //       return false;
+  //     }
 
-      // disable J key
-      if (e.ctrlKey && e.shiftKey && e.keyCode == 74) {
-        return false;
-      }
+  //     // disable J key
+  //     if (e.ctrlKey && e.shiftKey && e.keyCode == 74) {
+  //       return false;
+  //     }
 
-      // disable U key
-      if (e.ctrlKey && e.keyCode == 85) {
-        return false;
-      }
-    };
-  }, []);
+  //     // disable U key
+  //     if (e.ctrlKey && e.keyCode == 85) {
+  //       return false;
+  //     }
+  //   };
+  // }, []);
 
   return (
     <DataProvider>
@@ -67,9 +67,9 @@ export default function App({ Component, pageProps }) {
         />
         <title>Yoshdasturchi</title>
       </Head>
-      <MainLayout>
+      <MainLayout  >
         <div className="minHeight">
-          <Component {...pageProps} />
+          <Component  {...pageProps} />
         </div>
       </MainLayout>
     </DataProvider>

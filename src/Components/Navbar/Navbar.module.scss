@@ -60,6 +60,7 @@
   &__time {
     display: flex;
     align-items: center;
+    justify-content: center;
     gap: 10px;
     width: 150px;
     p {
@@ -67,6 +68,11 @@
       font-weight: 500;
       font-size: 0.875rem;
       color: var(--black-color);
+      span {
+        color: var(--black-color);
+        font-size: 0.875rem;
+        padding-bottom: 10px;
+      }
     }
 
     p:nth-child(3) {
@@ -451,4 +457,11 @@
 
   opacity: 1;
   transform: translateY(0px);
+}
+
+.count {
+  white-space: nowrap;
+  font-weight: 500;
+  font-size: 0.875rem;
+  color: var(--black-color);
 }

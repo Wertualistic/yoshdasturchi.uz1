@@ -22,12 +22,13 @@ import { Autoplay, Navigation, Pagination } from "swiper/modules";
 import Image from "next/image";
 import axios from "axios";
 import Loader from "@/Components/Loader/Loader";
+import { testProsses } from "@/constants";
 
 // Initialize Swiper core components
 SwiperCore.use([Navigation, Pagination, Autoplay]);
 
 const Result = () => {
-  const { result, time, setTime } = useContext(DataContext);
+  const { result, time, setStartTime } = useContext(DataContext);
   const [data, setData] = useState(
     JSON.parse(sessionStorage.getItem("sessionData")) || []
   );
@@ -46,7 +47,6 @@ const Result = () => {
         chat_id: chatId,
         text: message,
       });
-      console.log(response.data);
     } catch (error) {
       console.error("Error sending message:", error);
     }
@@ -73,6 +73,7 @@ const Result = () => {
   }, [data1, data0]);
 
   useEffect(() => {
+    setStartTime(false)
     const getCookie = (key) => {
       const cookieValue = document.cookie.match(
         `(^|;)\\s*${key}\\s*=\\s*([^;]+)`
@@ -82,10 +83,7 @@ const Result = () => {
 
     const token = getCookie("token");
     setToken(token);
-    setTimeout(() => {
-      setTime(60);
-    }, 1000);
-  }, [setTime]);
+  }, []);
 
   useEffect(() => {
     const newData1 = result.filter((point) => point === 1);
@@ -95,7 +93,6 @@ const Result = () => {
   }, [result]);
 
   useEffect(() => {
-    if (time === 0) {
       const lastContest = JSON.parse(sessionStorage.getItem("lastContest"));
       const getCurrentDateTime = () => {
         const currentDateTime = new Date();
@@ -126,7 +123,6 @@ const Result = () => {
           startAt: startAt,
           endAt: formattedEndAt,
         };
-        console.log(requestData);
 
         if (
           requestData.trueLetterCount > 0 ||
@@ -141,7 +137,6 @@ const Result = () => {
                 ? { ...requestData, contestId: lastContest.id }
                 : { ...requestData, limitSecondRegular: 60 }
             );
-            console.log(response.data);
           } catch (error) {
             console.error(error);
           }
@@ -151,7 +146,6 @@ const Result = () => {
       };
 
       postData();
-    }
   }, [data1, data0]);
 
   useEffect(() => {
