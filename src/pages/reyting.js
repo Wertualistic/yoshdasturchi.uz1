@@ -16,7 +16,6 @@ const reyting = (props) => {
 
 export default reyting;
 export async function getServerSideProps({ req, res }) {
-  console.log("req", req.cookies["token"]);
   let users = { place: null, usersData: [] };
   if (req.cookies["token"]) {
     if (req.cookies["status"] === "JARAYONDA") {
@@ -28,7 +27,7 @@ export async function getServerSideProps({ req, res }) {
         })
         .then((res) => res.data);
 
-      users = { ...users, usersData: users1.attemptRateDTOS.content }
+      users = { ...users, usersData: users1.attemptRateDTOS }
     } else {
       let users1 = await axios
         .get(`${BASE_URL}regular/getRate?limitSecond=60&page=0&size=10`, {
@@ -38,7 +37,7 @@ export async function getServerSideProps({ req, res }) {
         })
         .then((res) => res.data);
 
-      users = { ...users, usersData: users1.regularDTOPage.content }
+      users = { ...users, usersData: users1.regularDTOPage }
     }
 
   } else {
@@ -47,17 +46,17 @@ export async function getServerSideProps({ req, res }) {
         .get(`${BASE_URL}attemptContest/rate/notUser/1?page=0&size=10`)
         .then((res) => res.data);
 
-      users = { ...users, usersData: users1.attemptRateDTOS.content }
+      users = { ...users, usersData: users1.attemptRateDTOS }
     } else {
       let users1 = await axios
         .get(`${BASE_URL}regular/getRateNotUser?limitSecond=60&page=0&size=10`)
         .then((res) => res.data);
 
-      users = { ...users, usersData: users1.regularDTOPage.content }
+      users = { ...users, usersData: users1.regularDTOPage }
     }
   }
+
   return {
     props: { users },
   };
 }
-

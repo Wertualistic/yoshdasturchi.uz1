@@ -31,20 +31,12 @@ const ContestDate = ({ isAdsShow, isHaveNavbar }) => {
       contest.status === "BOSHLANMAGAN"
         ? +new Date(contest.startAt) - +new Date()
         : +new Date(contest.endAt) - +new Date();
-
-    if (difference > 0) {
-      if (differenceTime) {
-        difference = +new Date(contest.startAt) - +new Date();
-        if (contest.status !== "BOSHLANMAGAN") {
-          updateContestStatus(contest.id, "BOSHLANMAGAN");
-        }
-      } else {
-        if (contest.status !== "JARAYONDA") {
-          updateContestStatus(contest.id, "JARAYONDA");
-        }
-      }
-    } else if (difference < 0 && contest.status !== "TUGADI") {
-      updateContestStatus(contest.id, "TUGADI");
+    if (contest.status === "BOSHLANMAGAN" && differenceTime === true) {
+      difference = +new Date(contest.startAt) - +new Date();
+    } else if (contest.status === "BOSHLANMAGAN" && differenceTime === false) {
+      difference = new Date() - new Date(contest.startAt);
+    } else if (contest.status === "JARAYONDA") {
+      difference = +new Date(contest.endAt) - +new Date();
     }
 
     let timeLeft = {};

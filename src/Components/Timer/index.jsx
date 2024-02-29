@@ -11,8 +11,7 @@ const Timer = ({ selectedTheme, startTime }) => {
   const router = useRouter();
   const { Countdown } = Statistic;
   const onChange = (val) => {
-    if ((val / 1000).toFixed() == 0) {
-
+    if ((val / 1000).toFixed() == 0 || val < 0) {
       router.push("/result");
     }
   };
