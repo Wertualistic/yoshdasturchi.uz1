@@ -65,13 +65,13 @@
     align-items: center !important;
     gap: 50px !important;
     width: 300px;
-    justify-content: end;
+    justify-content: flex-end;
   }
 
   &__content3 {
     display: flex !important;
     align-items: center !important;
-    justify-content: end;
+    justify-content: flex-end;
     gap: 90px !important;
     width: 180px;
   }
@@ -103,7 +103,7 @@
     // span {
     //   color: rgba(0, 0, 0, 0.5);
     // }
-    text-align: end;
+    text-align: flex-end;
     width: 40px;
   }
 
@@ -115,7 +115,7 @@
     margin-left: 20px;
     display: flex;
     flex-direction: column;
-    align-items: end;
+    align-items: flex-end;
     white-space: nowrap;
 
     span {
@@ -125,12 +125,12 @@
 
   &__viloyat {
     min-width: 80px;
-    text-align: end;
+    text-align: flex-end;
   }
 
   &__viloyatuser {
     min-width: 80px;
-    text-align: end;
+    text-align: flex-end;
   }
 
   &__profileimage {
@@ -150,7 +150,7 @@
     width: 100%;
     display: flex;
     align-items: center;
-    justify-content: end;
+    justify-content: flex-end;
   }
 
   &__seemore {

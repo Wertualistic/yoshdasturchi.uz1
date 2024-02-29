@@ -7,7 +7,7 @@ import { DataContext } from "@/DataContext";
 import dynamic from "next/dynamic";
 import axios from "axios";
 
-export default function Home(props) {
+export default function Home() {
   // console.log("123")
 
   const { hiddenInputRef, WriteTime, time,setStartTime, result, setResult, isKeyboardTrueChecked, isKeyboardFalseChecked } = useContext(DataContext);
@@ -136,29 +136,9 @@ export default function Home(props) {
         </div>
         <div className="ads_and_contest">
           <Ads isAdsShow={isAdsShow} isRight={false} />
-          <ContestDate endDate={props} isAdsShow={isAdsShow} isHaveNavbar={false} />
+          <ContestDate isAdsShow={isAdsShow} isHaveNavbar={false} />
         </div>
       </main>
     </>
   );
-}
-
-
-
-export async function getServerSideProps() {
-  // Fetch data from API
-  // Example fetch call
-  const dateContest = await axios.get('https://api.yoshdasturchi.uz/api/v1/contest/getLastContest').then(res=>res.data)
-  // const usersList = await axios.get('https://api.yoshdasturchi.uz/api/v1/contest/getLastContest').then(res=>res.data)
-
-  // const data = await response.json();
-  // For demonstration, setting a mock end date
-  // const endDate = new Date(data.endAt.replace(' ', 'T'));
-  // const mockEndDate = new Date("2024-03-28T11:10:00");
-  return {
-    props: {
-       dateContest,
-        // Pass the end date as props to the component
-    }
-  };
 }

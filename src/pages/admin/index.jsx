@@ -14,7 +14,6 @@ const Admin = () => {
           router.push("/");
         }
       } catch (err) {
-        console.error(err);
         if (err.response.status === 409) {
           router.push("/");
         }

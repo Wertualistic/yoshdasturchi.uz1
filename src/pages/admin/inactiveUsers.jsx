@@ -35,7 +35,7 @@ const FalseUsers = () => {
         }
         setUsers(res.data.content);
       } catch (err) {
-        console.log(err);
+        return false;
       }
     };
     getUsers();
@@ -62,7 +62,7 @@ const FalseUsers = () => {
         })
       );
     } catch (err) {
-      console.log(err);
+      return false;
     }
   };
 
@@ -74,7 +74,6 @@ const FalseUsers = () => {
           router.push("/");
         }
       } catch (err) {
-        console.error(err);
         if (err.response.status === 409) {
           router.push("/");
         }

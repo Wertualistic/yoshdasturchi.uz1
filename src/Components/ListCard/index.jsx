@@ -2,7 +2,6 @@ import React from "react";
 import styles from "./ListCard.module.css";
 
 const ListCard = ({ data, idx }) => {
-  // console.log(data?.user?.name);
   const getDate = (dateTimeString) => {
     const dateTime = new Date(dateTimeString);
     const options = { year: "numeric", month: "long", day: "numeric" };

@@ -13,7 +13,7 @@
 
   &__logo {
     display: flex;
-    align-items: end;
+    align-items: flex-end;
     gap: 20px;
     text-decoration: none;
     img {
@@ -184,8 +184,8 @@
   display: flex;
   gap: 10px;
   flex-direction: column;
-  align-items: start;
-  justify-content: start;
+  align-items: flex-start;
+  justify-content: flex-start;
   h3 {
     font-weight: 500;
     font-size: 1.1rem;
@@ -195,7 +195,7 @@
   .settings {
     display: flex;
     flex-direction: column;
-    align-items: start;
+    align-items: flex-start;
     justify-content: center;
     width: 100%;
     height: 100%;
@@ -377,7 +377,7 @@
     // display: flex;
     // flex-direction: column;
     width: 60px;
-    text-align: end;
+    text-align: flex-end;
     // span {
     //   color: rgba(0, 0, 0, 0.5);
     // }
@@ -387,7 +387,7 @@
     // display: flex;
     // flex-direction: column;
     width: 40px;
-    text-align: end;
+    text-align: flex-end;
     // span {
     //   color: rgba(0, 0, 0, 0.5);
     // }
@@ -402,7 +402,7 @@
     white-space: nowrap;
     display: flex;
     flex-direction: column;
-    align-items: end;
+    align-items: flex-end;
     // white-space: nowrap;
 
     span {
@@ -431,7 +431,7 @@
     width: 100%;
     display: flex;
     align-items: center;
-    justify-content: end;
+    justify-content: flex-end;
   }
 
   &__seemore {

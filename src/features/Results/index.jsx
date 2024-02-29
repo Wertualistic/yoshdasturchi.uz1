@@ -12,12 +12,14 @@ const Results = () => {
     const fetchUserData = async () => {
       try {
         setLoader(true);
-        const res = await api.get("/regular/getRegularByPage?page=0&size=100");
+        const res = await api.get(
+          "attemptContest/getAllAttemptByUserAndContestId/11/1?page=0&size=100"
+        );
         sessionStorage.setItem("userResult", JSON.stringify(res.data));
         setUserResult(res.data);
         setLoader(false);
       } catch (err) {
-        console.log(err);
+        return false;
       }
     };
 

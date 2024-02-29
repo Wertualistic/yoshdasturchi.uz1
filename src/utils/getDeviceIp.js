@@ -5,7 +5,6 @@ const getDeviceIp = async () => {
         const response = await axios.get("https://api.ipify.org?format=json");
         return response.data.ip;
     } catch (error) {
-        console.error("Error getting IP:", error);
         return "";
     }
 };

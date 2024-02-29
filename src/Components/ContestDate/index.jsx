@@ -7,24 +7,6 @@ const ContestDate = ({ isAdsShow, isHaveNavbar }) => {
     JSON.parse(sessionStorage.getItem("lastContest")) || {}
   );
 
-  const updateContestStatus = async (contestId, status) => {
-    try {
-      const headers = {
-        Authorization:
-          "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIrOTk4OTUwOTYwMTUzIiwiaWF0IjoxNzA4NzYxODM3LCJleHAiOjg2NDAwMDE3MDg3NjE4Mzd9.FB9OblciIcWYfarIocDil_FS3PWflFXGKon-bWZODbk",
-      };
-      const res = await axios.put(
-        `https://api.yoshdasturchi.uz/api/v1/contest/updateStatus/${contestId}?status=${status}`,
-        {},
-        { headers }
-      );
-      // Handle response if needed
-    } catch (err) {
-      console.log(err);
-      // Handle error
-    }
-  };
-
   const calculateTimeLeft = () => {
     const differenceTime = +new Date(contest.startAt) > +new Date();
     let difference =
