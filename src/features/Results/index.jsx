@@ -69,7 +69,7 @@ const Results = () => {
                       <tr key={idx}>
                         <td>{result.trueLetterCount}</td>
                         <td>{result.falseLetterCount}</td>
-                        <td>{result.limitSecondRegular}</td>
+                        <td>60</td>
                         <td>{new Date(result.endAt).toLocaleDateString()}</td>
                       </tr>
                     ))}
