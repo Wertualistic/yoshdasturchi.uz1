@@ -39,7 +39,7 @@ const Navbar = () => {
     setSelectedColor,
     setSelectedTheme,
     selectedTheme,
-    time
+    time,
   } = useContext(DataContext);
   const [isOpenUser, setIsOpenUser] = useState(false);
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
@@ -56,7 +56,6 @@ const Navbar = () => {
     );
     return cookieValue ? cookieValue.pop() : null;
   };
-
 
   const handleLogout = () => {
     document.cookie = "token=; expires=Thu, 01 Jan 1970 00:00:00 GMT";
@@ -93,25 +92,26 @@ const Navbar = () => {
 
   useEffect(() => {
     const token = getCookie("token");
+    const status = getCookie("status");
     const lastContest = JSON.parse(sessionStorage.getItem("lastContest")) || [];
-    if (token != null) {
+    if (token) {
       const fetchRating = async () => {
         try {
           setLoader(true);
           const response = await api.get(
-            lastContest.status === "JARAYONDA"
+            status === "JARAYONDA"
               ? "/attemptContest/rate/1?page=0&size=10"
               : "/regular/getRate?limitSecond=60&page=0&size=10"
           );
           if (
             Array.isArray(
-              lastContest.status === "JARAYONDA"
+              status === "JARAYONDA"
                 ? response.data.attemptRateDTOS.content
                 : response.data.regularDTOPage.content
             )
           ) {
             setCards(
-              lastContest.status === "JARAYONDA"
+              status === "JARAYONDA"
                 ? response.data.attemptRateDTOS.content
                 : response.data.regularDTOPage.content
             );
@@ -121,7 +121,6 @@ const Navbar = () => {
           if (error.response?.status == 401) {
             handleLogout();
           }
-          setLoader(false);
         }
       };
       fetchRating();
@@ -130,19 +129,19 @@ const Navbar = () => {
         try {
           setLoader(true);
           const response = await axios.get(
-            lastContest.status === "JARAYONDA"
+            status === "JARAYONDA"
               ? "https://api.yoshdasturchi.uz/api/v1/attemptContest/rate/notUser/1?page=0&size=10"
               : "https://api.yoshdasturchi.uz/api/v1/regular/getRateNotUser?limitSecond=60&page=0&size=10"
           );
           if (
             Array.isArray(
-              lastContest.status === "JARAYONDA"
+              status === "JARAYONDA"
                 ? response.data.attemptRateDTOS.content
                 : response.data.regularDTOPage.content
             )
           ) {
             setCards(
-              lastContest.status === "JARAYONDA"
+              status === "JARAYONDA"
                 ? response.data.attemptRateDTOS.content
                 : response.data.regularDTOPage.content
             );
@@ -215,9 +214,9 @@ const Navbar = () => {
 
   const ContestDate = dynamic(() => import("../../Components/ContestDate"));
 
-  const startTime = useMemo(()=> {
-    return time
-  },[time])
+  const startTime = useMemo(() => {
+    return time;
+  }, [time]);
 
   return (
     <>
@@ -333,7 +332,7 @@ const Navbar = () => {
                   <div className={styles.ContestDate}>
                     <ContestDate isHaveNavbar={true} />
                   </div>
-                  <Timer selectedTheme={selectedTheme} startTime={startTime}/>
+                  <Timer selectedTheme={selectedTheme} startTime={startTime} />
                   <div className={styles.navbar__setting}>
                     <button onClick={toggleDropdownSettings}>
                       {selectedTheme === "dark" ? (

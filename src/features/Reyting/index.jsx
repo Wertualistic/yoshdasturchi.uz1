@@ -2,21 +2,28 @@ import React, { useState, useRef, useEffect, useContext } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 
 import "swiper/css";
+import { Pagination } from "antd";
 import styles from "./Reyting.module.scss";
-import SwiperCore, { Pagination } from "swiper/core";
+// import SwiperCore, { Pagination } from "swiper/core";
 import "swiper/css/pagination";
 import CustomPagination from "./components/CustomPagination";
-import api from "@/utils/api";
+import api, { BASE_URL } from "@/utils/api";
 import axios from "axios";
 import Loader from "@/Components/Loader/Loader";
+import ListCard from "@/Components/ListCard";
 
-SwiperCore.use([Pagination]);
+// SwiperCore.use([Pagination]);
 
-const Reyting = () => {
+const Reyting = ({ users }) => {
   const [swiper, setSwiper] = useState(null);
+
   const [activeIndex, setActiveIndex] = useState(0);
-  const [cards, setCards] = useState([]);
+  const [cards, setCards] = useState(users.usersData);
+  console.log(cards);
+  const [pagination, setPagination] = useState(users);
   const [loader, setLoader] = useState(true);
+  // const [users
+  console.log("pagination:", pagination);
 
   const [token, setToken] = useState("");
 
@@ -39,70 +46,69 @@ const Reyting = () => {
   //   }
   // }, [swiper]);
 
-  useEffect(() => {
-    const token = getCookie("token");
-    const lastContest = JSON.parse(sessionStorage.getItem("lastContest")) || [];
-    if (token != null) {
-      const fetchRating = async () => {
-        try {
-          setLoader(true);
-          const response = await api.get(
-            lastContest.status === "JARAYONDA"
-              ? "/attemptContest/rate/1?page=0&size=100"
-              : "/regular/getRate?limitSecond=60&page=0&size=100"
-          );
-          if (
-            Array.isArray(
-              lastContest.status === "JARAYONDA"
-                ? response.data.attemptRateDTOS.content
-                : response.data.regularDTOPage.content
-            )
-          ) {
-            setCards(
-              lastContest.status === "JARAYONDA"
-                ? response.data.attemptRateDTOS.content
-                : response.data.regularDTOPage.content
-            );
-          }
-          setLoader(false);
-        } catch (error) {
-          if (error.response?.status == 401) {
-            handleLogout();
-          }
-        }
-      };
-      fetchRating();
-    } else {
-      const fetchRating = async () => {
-        try {
-          setLoader(true);
-          const response = await axios.get(
-            lastContest.status === "JARAYONDA"
-              ? "https://api.yoshdasturchi.uz/api/v1/attemptContest/rate/notUser/1?page=0&size=100"
-              : "https://api.yoshdasturchi.uz/api/v1/regular/getRateNotUser?limitSecond=60&page=0&size=100"
-          );
-          if (
-            Array.isArray(
-              lastContest.status === "JARAYONDA"
-                ? response.data.attemptRateDTOS.content
-                : response.data.regularDTOPage.content
-            )
-          ) {
-            setCards(
-              lastContest.status === "JARAYONDA"
-                ? response.data.attemptRateDTOS.content
-                : response.data.regularDTOPage.content
-            );
-          }
-          setLoader(false);
-        } catch (error) {
-          console.log(error);
-        }
-      };
-      fetchRating();
-    }
-  }, []);
-
+  // useEffect(() => {
+  //   const token = getCookie("token");
+  //   const lastContest = JSON.parse(sessionStorage.getItem("lastContest")) || [];
+  //   if (token != null) {
+  //     const fetchRating = async () => {
+  //       try {
+  //         setLoader(true);
+  //         const response = await api.get(
+  //           lastContest.status === "JARAYONDA"
+  //             ? "/attemptContest/rate/1?page=0&size=100"
+  //             : "/regular/getRate?limitSecond=60&page=0&size=100"
+  //         );
+  //         if (
+  //           Array.isArray(
+  //             lastContest.status === "JARAYONDA"
+  //               ? response.data.attemptRateDTOS.content
+  //               : response.data.regularDTOPage.content
+  //           )
+  //         ) {
+  //           setCards(
+  //             lastContest.status === "JARAYONDA"
+  //               ? response.data.attemptRateDTOS.content
+  //               : response.data.regularDTOPage.content
+  //           );
+  //         }
+  //         setLoader(false);
+  //       } catch (error) {
+  //         if (error.response?.status == 401) {
+  //           handleLogout();
+  //         }
+  //       }
+  //     };
+  //     fetchRating();
+  //   } else {
+  //     const fetchRating = async () => {
+  //       try {
+  //         setLoader(true);
+  //         const response = await axios.get(
+  //           lastContest.status === "JARAYONDA"
+  //             ? "https://api.yoshdasturchi.uz/api/v1/attemptContest/rate/notUser/1?page=0&size=100"
+  //             : "https://api.yoshdasturchi.uz/api/v1/regular/getRateNotUser?limitSecond=60&page=0&size=100"
+  //         );
+  //         if (
+  //           Array.isArray(
+  //             lastContest.status === "JARAYONDA"
+  //               ? response.data.attemptRateDTOS.content
+  //               : response.data.regularDTOPage.content
+  //           )
+  //         ) {
+  //           setCards(
+  //             lastContest.status === "JARAYONDA"
+  //               ? response.data.attemptRateDTOS.content
+  //               : response.data.regularDTOPage.content
+  //           );
+  //         }
+  //         setLoader(false);
+  //       } catch (error) {
+  //         console.log(error);
+  //       }
+  //     };
+  //     fetchRating();
+  //   }
+  // }, []);
   // function updateSlidesHeight() {
   //   const swiperWrapper = document.querySelector('.swiper-wrapper');
   //   let maxHeight = 0;
@@ -128,6 +134,60 @@ const Reyting = () => {
     return dateTime.toLocaleTimeString("en-US", options);
   };
 
+  const onPaginationsChange = async (page, pageSize) => {
+    console.log(pageSize);
+    const status = getCookie("status");
+    if (token) {
+      if (status === "JARAYONDA") {
+        let users1 = await axios
+          .get(`${BASE_URL}attemptContest/rate/1?page=${page - 1}&size=10`, {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          })
+          .then((res) => res.data);
+        setCards(users1.attemptRateDTOS);
+        console.log("false1", users1);
+      } else {
+        let users1 = await axios
+          .get(
+            `${BASE_URL}regular/getRate?limitSecond=60&page=${
+              page - 1
+            }&size=10`,
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            }
+          )
+          .then((res) => res.data);
+        setCards(users1.regularDTOPage);
+        console.log("false2", users1.regularDTOPage);
+      }
+    } else {
+      if (status === "JARAYONDA") {
+        let users1 = await axios
+          .get(
+            `${BASE_URL}attemptContest/rate/notUser/1?page=${page - 1}&size=10`
+          )
+          .then((res) => res.data);
+        setCards(users1.attemptRateDTOS);
+        console.log("false3", users1.attemptRateDTOS);
+      } else {
+        let users1 = await axios
+          .get(
+            `${BASE_URL}attemptContest/rate/notUser/1?page=${page - 1}&size=10`
+          )
+          .then((res) => res.data);
+        setCards(users1.attemptRateDTOS);
+        console.log("false4", page);
+      }
+    }
+  };
+
+  if (typeof window === undefined) return null;
+  console.log("Cards", cards);
+
   return (
     <>
       <div className={styles.reyting}>
@@ -139,7 +199,7 @@ const Reyting = () => {
                 Next update in : 6:50
               </p>
             </div>
-            {loader && <Loader />}
+            {/* {loader && <Loader />} */}
             <Swiper
               pagination={{
                 el: ".swiper-pagination",
@@ -154,75 +214,33 @@ const Reyting = () => {
               className={styles.swiper}
               onSwiper={(swiper) => setSwiper(swiper)}
               spaceBetween={50}>
-              {cards.reduce((acc, outerCard, index) => {
-                if (index % 10 === 0) {
-                  acc.push(
-                    <SwiperSlide key={`slide-${index / 10}`}>
-                      <div className={styles.reyting__table_top}>
-                        <div className={styles.reyting__content1}>
-                          <span className={styles.reyting__number}>#</span>
-                          <p className={styles.reyting__name}>Ism</p>
-                        </div>
-                        <div className={styles.reyting__content3}>
-                          <p className={styles.reyting__right}>To’g’ri</p>
-                          <p className={styles.reyting__wrong}>Xato</p>
-                        </div>
-                        <div className={styles.reyting__content2}>
-                          <p className={styles.reyting__date}>Sana</p>
-                          <p className={styles.reyting__viloyat}>Viloyat</p>
-                        </div>
-                      </div>
-                      <div className={styles.reyting__table}>
-                        {cards
-                          .slice(index, index + 10)
-                          .map((innerCard, idx) => (
-                            <div
-                              key={index + idx}
-                              className={`${styles.reyting__userreyt} ${
-                                idx % 2 === 0 ? styles.active : ""
-                              }`}>
-                              <div className={styles.reyting__content1}>
-                                <span className={styles.reyting__number}>
-                                  {index + idx + 1}
-                                </span>
-                                <p className={styles.reyting__profile}>
-                                  <div
-                                    className={
-                                      styles.reyting__profileimage
-                                    }></div>
-                                  {innerCard.user.name}
-                                </p>
-                              </div>
-                              <div className={styles.reyting__content3}>
-                                <p className={styles.reyting__rightuser}>
-                                  {innerCard.trueLetterCount}
-                                </p>
-                                <p className={styles.reyting__wronguser}>
-                                  {innerCard.falseLetterCount}
-                                </p>
-                              </div>
-                              <div className={styles.reyting__content2}>
-                                <p className={styles.reyting__dateuser}>
-                                  {getDate(innerCard.startAt)}
-                                  <span>{getTime(innerCard.startAt)}</span>
-                                </p>
-                                <p className={styles.reyting__viloyatuser}>
-                                  {innerCard.user.region}
-                                </p>
-                              </div>
-                            </div>
-                          ))}
-                      </div>
-                    </SwiperSlide>
-                  );
-                }
-                return acc;
-              }, [])}
+              <div className={styles.reyting__table_top}>
+                <div className={styles.reyting__content1}>
+                  <span className={styles.reyting__number}>#</span>
+                  <p className={styles.reyting__name}>Ism</p>
+                </div>
+                <div className={styles.reyting__content3}>
+                  <p className={styles.reyting__right}>To’g’ri</p>
+                  <p className={styles.reyting__wrong}>Xato</p>
+                </div>
+                <div className={styles.reyting__content2}>
+                  <p className={styles.reyting__date}>Sana</p>
+                  <p className={styles.reyting__viloyat}>Viloyat</p>
+                </div>
+              </div>
+              {cards?.content?.map((el, idx) => (
+                <ListCard key={idx} data={el} idx={idx} />
+              ))}
             </Swiper>
-            <CustomPagination
+            {/* <CustomPagination
               activeIndex={activeIndex}
               onClick={handlePaginationClick}
               swiper={swiper}
+            /> */}
+            <Pagination
+              onChange={onPaginationsChange}
+              defaultCurrent={1}
+              total={cards.totalElements}
             />
           </div>
         </div>
