@@ -145,13 +145,10 @@ const Register = () => {
           method="POST"
           className={styles.RegisterFormInputs}
           onSubmit={handleSubmit}>
-          {/* <div>
-            <h1>Lorem ipsum dolor sit amet</h1>
-            <p>
-              Lorem ipsum dolor sit amet consectetur, adipisicing elit. Quis,
-              non? Iure error eos suscipit magnam.
-            </p>
-          </div> */}
+          <div>
+            <h1>Ro’yxatda o’tish</h1>
+            <p>Ro’yxatdan o’tish uchun shaxsiy ma’lumotlaringizni kiriting</p>
+          </div>
           <div
             style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
             <div className={styles.RegisterFormInput}>

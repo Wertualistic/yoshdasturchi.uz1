@@ -68,13 +68,13 @@
     align-items: center !important;
     gap: 50px !important;
     width: 300px;
-    justify-content: end;
+    justify-content: flex-end;
 }
 
 .reyting__content3 {
   display: flex !important;
   align-items: center !important;
-  justify-content: end;
+  justify-content: flex-end;
   gap: 90px !important;
   width: 180px;
 }
@@ -95,7 +95,7 @@
 }
 
 .reyting__wronguser {
-  text-align: end;
+  text-align: flex-end;
   width: 40px;
 }
 
@@ -107,7 +107,7 @@
   margin-left: 20px;
   display: flex;
   flex-direction: column;
-  align-items: end;
+  align-items: flex-end;
   white-space: nowrap;
 }
 
@@ -117,12 +117,12 @@
 
 .reyting__viloyat {
     min-width: 80px;
-    text-align: end;
+    text-align: flex-end;
 }
 
 .reyting__viloyatuser {
     min-width: 80px;
-    text-align: end;
+    text-align: flex-end;
 }
 
 .reyting__profileimage {
@@ -142,7 +142,7 @@
   width: 100%;
   display: flex;
   align-items: center;
-  justify-content: end;
+  justify-content: flex-end;
 }
 
 .reyting__seemore {

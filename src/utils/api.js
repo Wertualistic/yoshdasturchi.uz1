@@ -5,7 +5,7 @@ export const BASE_URL = "https://api.yoshdasturchi.uz/api/v1/"
 const api = axios.create({
     baseURL: 'https://api.yoshdasturchi.uz/api/v1/',
     headers: {
-        'Content-Type': 'application/json',
+        'Content-Type': 'application/json'
     },
 });
 
@@ -41,9 +41,9 @@ api.interceptors.response.use(
 
 export default api;
 
-export const  API = {
+export const API = {
     ////////////////////  POST
-    login: (data) => api.post("/",data)
+    login: (data) => api.post("/", data)
 
     ////////////////////  GET
 

@@ -15,7 +15,7 @@ const Welcome = ({ handleEnterClick }) => {
         <hr />
         <div className={styles.bottom}>
           <h3>Boshlash uchun</h3>
-          <span onClick={handleEnterClick}>Boshlash</span>
+          <span onClick={handleEnterClick}>Enter</span>
           <h3>tugmasini bosing</h3>
         </div>
       </div>
