@@ -44,19 +44,25 @@ const nextConfig = {
 
   // TOD
   webpack: (config, { isServer }) => {
+    if (!isServer) {
+      config.stats = {
+        all: false,
+        builtAt: true,
+        errors: true,
+        warnings: true,
+        timings: true,
+      };
+    }
     config.module.rules.push({
       test: /\.mp3$/,
-      use: {
-        loader: 'file-loader',
-        options: {
-          publicPath: '/_next/src/assets/sounds',
-          name: 'static/media/[name].[hash].[ext]',
-          emitFile: !isServer,
-        },
+      loader: 'file-loader',
+      options: {
+        publicPath: '/_next/',
+        outputPath: 'static/media/',
+        name: '[name].[hash].[ext]',
+        emitFile: !isServer,
       },
     });
-
-
     return config;
   },
 };
