@@ -6,6 +6,7 @@ import { useRouter } from "next/router";
 import { DataContext } from "@/DataContext";
 import dynamic from "next/dynamic";
 import axios from "axios";
+import TelegramGroup from "@/Components/TelegramGroup";
 
 export default function Home() {
   // console.log("123")
@@ -136,6 +137,7 @@ export default function Home() {
         </div>
         <div className="ads_and_contest">
           <Ads isAdsShow={isAdsShow} isRight={false} />
+          {/* <TelegramGroup isAdsShow={isAdsShow} /> */}
           <ContestDate isAdsShow={isAdsShow} isHaveNavbar={false} />
         </div>
       </main>
