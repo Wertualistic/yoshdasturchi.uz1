@@ -1,9 +1,25 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Navbar from "../Navbar/index";
 import Footer from "../Footer";
 import api from "@/utils/api";
 
 const MainLayout = ({ children }) => {
+  const [isSmallScreen, setIsSmallScreen] = useState(false);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsSmallScreen(window.innerWidth < 768);
+    };
+
+    // Initial check
+    handleResize();
+
+    window.addEventListener("resize", handleResize);
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
   useEffect(() => {
     const getUserInfo = async () => {
       try {
@@ -79,9 +95,40 @@ const MainLayout = ({ children }) => {
 
   return (
     <>
-      <Navbar />
-      {children}
-      <Footer />
+      {isSmallScreen ? (
+        <div className="container">
+          <div className="row">
+            <div className="col-12 text-center">
+              <iframe
+                width="100%"
+                height="550"
+                src="https://www.youtube.com/embed/_MPmwJwISQw"
+                title="Yoshdasturchi.uz - tez yozish musobaqasi!"
+                frameborder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                allowfullscreen></iframe>
+              <marquee
+                className="text-success font-monospace"
+                behavior=""
+                direction="">
+                Musobaqada hamda klaviaturada yozish uchun, faqatgina kompyuter
+                orqali kira olasiz!
+              </marquee>
+              <a
+                className="btn btn-success btn-sm mb-3"
+                href="https://t.me/yoshdasturchiuz_group">
+                Telegram guruhga {`o\'tish`}
+              </a>
+            </div>
+          </div>
+        </div>
+      ) : (
+        <>
+          <Navbar />
+          {children}
+          <Footer />
+        </>
+      )}
     </>
   );
 };
