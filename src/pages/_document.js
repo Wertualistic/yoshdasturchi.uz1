@@ -3,14 +3,21 @@ import { createCache, extractStyle, StyleProvider } from '@ant-design/cssinjs';
 import Document, { Head, Html, Main, NextScript } from 'next/document';
 
 const MyDocument = () => (
-<Html lang="en">
-  <Head />
-  <body>
-    <Main />
-    <NextScript />
-    <script
-      dangerouslySetInnerHTML={{
-        __html: `
+  <Html lang="en">
+    <Head>
+      <link
+        href="https://cdn.jsdelivr.net/npm/remixicon@4.1.0/fonts/remixicon.css"
+        rel="stylesheet"
+      />
+      <link rel="icon" href="https://yt3.googleusercontent.com/AgmPvalR4GP06EtC2ZfWhs8eamhIBN6hQUF5yaEaMkDNkyyl_rdnkgi-oe9GJkSaRC58DiHuOE8=s176-c-k-c0x00ffffff-no-rj"
+        type="image/x-icon" />
+    </Head>
+    <body>
+      <Main />
+      <NextScript />
+      <script
+        dangerouslySetInnerHTML={{
+          __html: `
                 (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
                 m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
                 (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
@@ -23,15 +30,15 @@ const MyDocument = () => (
                       ecommerce: "dataLayer",
                 });
               `,
-      }}
-    />
-    <noscript>
-      <div>
-        <img src="https://mc.yandex.ru/watch/12345678" style={{ position: 'absolute', left: '-9999px' }} alt="" />
-      </div>
-    </noscript>
-  </body>
-</Html>
+        }}
+      />
+      <noscript>
+        <div>
+          <img src="https://mc.yandex.ru/watch/12345678" style={{ position: 'absolute', left: '-9999px' }} alt="" />
+        </div>
+      </noscript>
+    </body>
+  </Html>
 );
 
 MyDocument.getInitialProps = async (ctx) => {

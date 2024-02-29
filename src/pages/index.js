@@ -10,7 +10,7 @@ import axios from "axios";
 export default function Home() {
   // console.log("123")
 
-  const { hiddenInputRef, WriteTime, time,setStartTime, result, setResult, isKeyboardTrueChecked, isKeyboardFalseChecked } = useContext(DataContext);
+  const { setStartTime, result, setResult, isKeyboardTrueChecked, isKeyboardFalseChecked } = useContext(DataContext);
   const [hideWelcome, setHideWelcome] = useState(true);
   const [data, setData] = useState([]);
   const [key, setKey] = useState("");
@@ -19,7 +19,7 @@ export default function Home() {
   const router = useRouter();
   const [errors, setErrors] = useState(0);
 
-  
+
   let playOn = () => new Audio("/sounds/on.mp3").play();
   let playOff = () => new Audio("/sounds/off.mp3").play();
 
@@ -112,7 +112,7 @@ export default function Home() {
 
     generateRandomData();
   };
- 
+
 
   const ContestDate = dynamic(() => import('../Components/ContestDate'))
 
@@ -141,4 +141,4 @@ export default function Home() {
       </main>
     </>
   );
-}
+};
