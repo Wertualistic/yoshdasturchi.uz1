@@ -19,11 +19,8 @@ const Reyting = ({ users }) => {
 
   const [activeIndex, setActiveIndex] = useState(0);
   const [cards, setCards] = useState(users.usersData);
-  console.log(cards);
   const [pagination, setPagination] = useState(users);
   const [loader, setLoader] = useState(true);
-  // const [users
-  console.log("pagination:", pagination);
 
   const [token, setToken] = useState("");
 
@@ -135,7 +132,6 @@ const Reyting = ({ users }) => {
   };
 
   const onPaginationsChange = async (page, pageSize) => {
-    console.log(pageSize);
     const status = getCookie("status");
     if (token) {
       if (status === "JARAYONDA") {
@@ -147,7 +143,6 @@ const Reyting = ({ users }) => {
           })
           .then((res) => res.data);
         setCards(users1.attemptRateDTOS);
-        console.log("false1", users1);
       } else {
         let users1 = await axios
           .get(
@@ -162,7 +157,6 @@ const Reyting = ({ users }) => {
           )
           .then((res) => res.data);
         setCards(users1.regularDTOPage);
-        console.log("false2", users1.regularDTOPage);
       }
     } else {
       if (status === "JARAYONDA") {
@@ -172,7 +166,6 @@ const Reyting = ({ users }) => {
           )
           .then((res) => res.data);
         setCards(users1.attemptRateDTOS);
-        console.log("false3", users1.attemptRateDTOS);
       } else {
         let users1 = await axios
           .get(
@@ -180,13 +173,11 @@ const Reyting = ({ users }) => {
           )
           .then((res) => res.data);
         setCards(users1.attemptRateDTOS);
-        console.log("false4", page);
       }
     }
   };
 
   if (typeof window === undefined) return null;
-  console.log("Cards", cards);
 
   return (
     <>

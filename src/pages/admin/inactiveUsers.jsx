@@ -35,7 +35,7 @@ const FalseUsers = () => {
         }
         setUsers(res.data.content);
       } catch (err) {
-        console.log(err);
+        return false;
       }
     };
     getUsers();
@@ -62,7 +62,7 @@ const FalseUsers = () => {
         })
       );
     } catch (err) {
-      console.log(err);
+      return false;
     }
   };
 

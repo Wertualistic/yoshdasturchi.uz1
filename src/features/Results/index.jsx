@@ -19,7 +19,7 @@ const Results = () => {
         setUserResult(res.data);
         setLoader(false);
       } catch (err) {
-        console.log(err);
+        return false;
       }
     };
 

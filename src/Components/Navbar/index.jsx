@@ -83,7 +83,7 @@ const Navbar = () => {
         const response = await api.get("/contest/getLastContest");
         sessionStorage.setItem("lastContest", JSON.stringify(response.data));
       } catch (error) {
-        console.log(error);
+        return false;
       }
     };
 
