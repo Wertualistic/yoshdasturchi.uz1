@@ -136,8 +136,8 @@ export default function Home() {
           />
         </div>
         <div className="ads_and_contest">
-          <Ads isAdsShow={isAdsShow} isRight={false} />
-          {/* <TelegramGroup isAdsShow={isAdsShow} /> */}
+          {/* <Ads isAdsShow={isAdsShow} isRight={false} /> */}
+          <TelegramGroup isAdsShow={isAdsShow} />
           <ContestDate isAdsShow={isAdsShow} isHaveNavbar={false} />
         </div>
       </main>

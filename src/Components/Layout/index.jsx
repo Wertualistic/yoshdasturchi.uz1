@@ -3,11 +3,27 @@ import Navbar from "../Navbar/index";
 import Footer from "../Footer";
 
 const MainLayout = ({ children }) => {
-  console.log = function () {};
-  console.error = function () {};
-  console.warn = function () {};
   useEffect(() => {
-    // Yandex.Metrika counter script
+    // Suppress console output
+    console.log = function () {};
+    console.error = function () {};
+    console.warn = function () {};
+
+    // Set cookie
+    const setCookie = (key, value, days) => {
+      if (!days || isNaN(days)) {
+        console.error("Invalid number of days for cookie expiration");
+        return;
+      }
+
+      const expirationDate = new Date();
+      expirationDate.setDate(expirationDate.getDate() + days);
+      document.cookie = `${key}=${value};expires=${expirationDate.toUTCString()};path=/`;
+    };
+
+    setCookie("status", "JARAYONDA", 100); // set cookie to expire in 100 days
+
+    // Yandex.Metrika counter initialization
     (function (m, e, t, r, i, k, a) {
       m[i] =
         m[i] ||
@@ -20,54 +36,34 @@ const MainLayout = ({ children }) => {
           return;
         }
       }
-      (k = e.createElement(t)),
-        (a = e.getElementsByTagName(t)[0]),
-        (k.async = 1),
-        (k.src = r),
-        a.parentNode.insertBefore(k, a);
+      k = e.createElement(t);
+      a = e.getElementsByTagName(t)[0];
+      k.async = 1;
+      k.src = r;
+      a.parentNode.insertBefore(k, a);
     })(window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
 
-    ym(95260097, "init", {
+    ym(96618625, "init", {
       clickmap: true,
       trackLinks: true,
       accurateTrackBounce: true,
-      webvisor: true,
-      ecommerce: "dataLayer",
     });
-  }, []);
-  useEffect(() => {
+
+    // Disable context menu and certain key combinations
     document.addEventListener("contextmenu", (event) => event.preventDefault());
 
     document.onkeydown = function (e) {
-      // disable F12 key
-      if (e.keyCode == 123) {
-        return false;
-      }
-
-      // disable I key
-      if (e.ctrlKey && e.shiftKey && e.keyCode == 73) {
-        return false;
-      }
-
-      // disable J key
-      if (e.ctrlKey && e.shiftKey && e.keyCode == 74) {
-        return false;
-      }
-
-      // disable U key
-      if (e.ctrlKey && e.keyCode == 85) {
+      if (
+        e.keyCode == 123 ||
+        (e.ctrlKey && e.shiftKey && e.keyCode == 73) ||
+        (e.ctrlKey && e.shiftKey && e.keyCode == 74) ||
+        (e.ctrlKey && e.keyCode == 85)
+      ) {
         return false;
       }
     };
   }, []);
-  const setCookie = (key, value, days) => {
-    const expirationDate = new Date();
-    expirationDate.setDate(expirationDate.getDate() + days);
-    document.cookie = `${key}=${value};expires=${expirationDate.toUTCString()};path=/`;
-  };
-  useEffect(() => {
-    setCookie("status", "JARAYONDA", 100); // set cookie to expire in 100 days
-  }, []);
+
   return (
     <>
       <Navbar />
