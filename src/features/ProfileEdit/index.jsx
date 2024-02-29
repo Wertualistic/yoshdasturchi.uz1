@@ -55,7 +55,7 @@ const ProfileEdit = () => {
           });
         }
       } catch (err) {
-        console.error(err);
+        return false;
       }
     };
     getUserInfo();
@@ -106,7 +106,6 @@ const ProfileEdit = () => {
           router.push("/");
         }
       } catch (error) {
-        console.error("Error ProfileEditing:", error);
         if (error.response.status == 409) {
           setValidation(true);
         } else {

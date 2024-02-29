@@ -114,7 +114,6 @@ const Register = () => {
           router.push("/");
         }
       } catch (error) {
-        console.error("Error registering:", error);
         if (error.response.status == 409) {
           setValidation(true);
         } else {

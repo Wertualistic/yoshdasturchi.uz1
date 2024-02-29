@@ -77,7 +77,7 @@ const Login = () => {
       }
     } catch (error) {
       setValidation(true);
-      console.error("Error logging in:", error);
+      return false;
     }
   };
 

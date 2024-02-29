@@ -48,7 +48,7 @@ const Result = () => {
         text: message,
       });
     } catch (error) {
-      console.error("Error sending message:", error);
+      return false;
     }
   };
 
@@ -64,7 +64,7 @@ const Result = () => {
           setUserInfo(userData);
         }
       } catch (err) {
-        console.error(err);
+        return false;
       }
     };
     if (typeof window !== "undefined") {
@@ -138,7 +138,7 @@ const Result = () => {
                 : { ...requestData, limitSecondRegular: 60 }
             );
           } catch (error) {
-            console.error(error);
+            return false;
           }
         } else {
           return false;
