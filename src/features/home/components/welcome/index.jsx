@@ -19,7 +19,7 @@ const Welcome = ({ handleEnterClick }) => {
           <span onClick={handleEnterClick}>Enter</span>
           <h3>tugmasini bosing</h3>
         </div>
-        <Link href="https://www.youtube.com/shorts/_MPmwJwISQw">
+        <Link href="https://www.youtube.com/shorts/_MPmwJwISQw?feature=share">
           Musobaqa sovrinlari haqida batafsil {`ma\'lumot`}
         </Link>
       </div>
