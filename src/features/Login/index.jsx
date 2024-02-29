@@ -104,11 +104,8 @@ const Login = () => {
           className={styles.LoginFormInputs}
           onSubmit={handleSubmit}>
           <div>
-            <h1>Lorem ipsum dolor sit amet</h1>
-            <p>
-              Lorem ipsum dolor sit amet consectetur, adipisicing elit. Quis,
-              non? Iure error eos suscipit magnam.
-            </p>
+            <h1>Kirish</h1>
+            <p>Kirish uchun {`ma\'lumotlarni`} kiriting</p>
           </div>
           <div
             style={{ display: "flex", flexDirection: "column", gap: "20px" }}>

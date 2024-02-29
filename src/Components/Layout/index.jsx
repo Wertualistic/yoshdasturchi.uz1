@@ -1,9 +1,21 @@
 import React, { useEffect } from "react";
 import Navbar from "../Navbar/index";
 import Footer from "../Footer";
+import api from "@/utils/api";
 
 const MainLayout = ({ children }) => {
   useEffect(() => {
+    const getUserInfo = async () => {
+      try {
+        const res = await api.get("/user/getSelfInformation");
+        if (res.status == 200) {
+          const userData = res.data;
+          sessionStorage.setItem("userData", JSON.stringify(userData));
+        }
+      } catch (err) {
+        return false;
+      }
+    };
     // Suppress console output
     console.log = function () {};
     console.error = function () {};
@@ -62,6 +74,7 @@ const MainLayout = ({ children }) => {
         return false;
       }
     };
+    getUserInfo();
   }, []);
 
   return (

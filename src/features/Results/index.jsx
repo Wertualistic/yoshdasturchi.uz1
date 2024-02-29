@@ -9,11 +9,12 @@ const Results = () => {
   const [loader, setLoader] = useState(true);
 
   useEffect(() => {
+    const userData = JSON.parse(sessionStorage.getItem("userData"));
     const fetchUserData = async () => {
       try {
         setLoader(true);
         const res = await api.get(
-          "attemptContest/getAllAttemptByUserAndContestId/11/1?page=0&size=100"
+          `attemptContest/getAllAttemptByUserAndContestId/${userData.id}/1?page=0&size=100`
         );
         sessionStorage.setItem("userResult", JSON.stringify(res.data));
         setUserResult(res.data);

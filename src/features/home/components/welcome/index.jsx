@@ -1,5 +1,6 @@
 import React, { useContext } from "react";
 import styles from "./Welcome.module.scss";
+import Link from "next/link";
 
 const Welcome = ({ handleEnterClick }) => {
   return (
@@ -8,8 +9,8 @@ const Welcome = ({ handleEnterClick }) => {
         <div className={styles.top}>
           <h2>Xush kelibsiz</h2>
           <p>
-            Boshlash tugmasini bosing hamda kerakli vaqt tanlab quyida
-            chiqadigan harflarni klaviaturadan kiriting. Omad!
+            ENTER tugmasini bosing va quyida chiqadigan harflarni klaviaturadan
+            kiriting. Omad!
           </p>
         </div>
         <hr />
@@ -18,6 +19,9 @@ const Welcome = ({ handleEnterClick }) => {
           <span onClick={handleEnterClick}>Enter</span>
           <h3>tugmasini bosing</h3>
         </div>
+        <Link href="https://www.youtube.com/shorts/_MPmwJwISQw">
+          Musobaqa sovrinlari haqida batafsil {`ma\'lumot`}
+        </Link>
       </div>
     </div>
   );
