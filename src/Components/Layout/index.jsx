@@ -3,6 +3,9 @@ import Navbar from "../Navbar/index";
 import Footer from "../Footer";
 
 const MainLayout = ({ children }) => {
+  console.log = function () {};
+  console.error = function () {};
+  console.warn = function () {};
   useEffect(() => {
     // Yandex.Metrika counter script
     (function (m, e, t, r, i, k, a) {
