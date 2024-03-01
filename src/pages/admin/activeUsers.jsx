@@ -49,6 +49,7 @@ const TrueUsers = () => {
         {
           headers: {
             Authorization: `Bearer ${token}`,
+            Server: "webname",
           },
         }
       );

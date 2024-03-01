@@ -60,7 +60,8 @@ const Login = () => {
     try {
       const response = await axios.post(
         "https://api.yoshdasturchi.uz/api/v1/auth/login",
-        formData
+        formData,
+        { headers: { Server: "webname" } }
       );
       if (response.status === 200) {
         const data = response.data;

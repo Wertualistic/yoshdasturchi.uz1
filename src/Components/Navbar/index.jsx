@@ -131,7 +131,8 @@ const Navbar = () => {
           const response = await axios.get(
             status === "JARAYONDA"
               ? "https://api.yoshdasturchi.uz/api/v1/attemptContest/rate/notUser/1?page=0&size=10"
-              : "https://api.yoshdasturchi.uz/api/v1/regular/getRateNotUser?limitSecond=60&page=0&size=10"
+              : "https://api.yoshdasturchi.uz/api/v1/regular/getRateNotUser?limitSecond=60&page=0&size=10",
+            { headers: { Server: "webname" } }
           );
           if (
             Array.isArray(

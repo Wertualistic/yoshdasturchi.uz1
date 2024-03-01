@@ -5,7 +5,8 @@ export const BASE_URL = "https://api.yoshdasturchi.uz/api/v1/"
 const api = axios.create({
     baseURL: 'https://api.yoshdasturchi.uz/api/v1/',
     headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'Server': 'webname'
     },
 });
 
