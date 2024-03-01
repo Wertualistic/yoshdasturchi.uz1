@@ -147,11 +147,13 @@ const Reyting = ({ users }) => {
               onClick={handlePaginationClick}
               swiper={swiper}
             /> */}
-            <Pagination
-              onChange={onPaginationsChange}
-              defaultCurrent={1}
-              total={cards.totalElements}
-            />
+            <div className={styles.pagination_container}>
+              <Pagination
+                onChange={onPaginationsChange}
+                defaultCurrent={1}
+                total={cards.totalElements}
+              />
+            </div>
           </div>
         </div>
       </div>
