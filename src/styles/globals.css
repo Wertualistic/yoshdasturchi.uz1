@@ -462,3 +462,42 @@ li {
     clip-path: polygon(50% 50%, 0 0, 100% 0, 100% 100%, 0 100%, 0 0)
   }
 }
+
+.mobile_content {
+  display: none;
+}
+
+.scrolling-text-container {
+  overflow: hidden;
+  position: relative;
+  width: 100%;
+  height: 50px;
+  /* Adjust height as needed */
+}
+
+.scrolling-text {
+  position: absolute;
+  white-space: nowrap;
+  animation: scroll-left 15s linear infinite;
+}
+
+@keyframes scroll-left {
+  0% {
+    transform: translateX(100%);
+  }
+
+  100% {
+    transform: translateX(-100%);
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .mobile_content {
+    text-align: center;
+    display: block;
+  }
+
+  .hideSite {
+    display: none;
+  }
+}
