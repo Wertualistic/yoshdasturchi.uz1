@@ -4,7 +4,7 @@ import Image from "next/image";
 import api from "@/utils/api";
 import Loader from "@/Components/Loader/Loader";
 
-const Results = () => {
+const Results = ({ id }) => {
   const [userResult, setUserResult] = useState(null);
   const [loader, setLoader] = useState(true);
 
@@ -14,7 +14,9 @@ const Results = () => {
       try {
         setLoader(true);
         const res = await api.get(
-          `attemptContest/getAllAttemptByUserAndContestId/${userData.id}/1?page=0&size=100`
+          `attemptContest/getAllAttemptByUserAndContestId/${
+            id ? id : userData.id
+          }/1?page=0&size=100`
         );
         sessionStorage.setItem("userResult", JSON.stringify(res.data));
         setUserResult(res.data);

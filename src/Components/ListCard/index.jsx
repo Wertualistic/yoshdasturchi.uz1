@@ -1,5 +1,6 @@
 import React from "react";
 import styles from "./ListCard.module.css";
+import Link from "next/link";
 
 const ListCard = ({ data, idx }) => {
   const getDate = (dateTimeString) => {
@@ -38,6 +39,7 @@ const ListCard = ({ data, idx }) => {
               <span>{getTime(data.startAt)}</span>
             </p>
             <p className={styles.reyting__viloyatuser}>{data.user.region}</p>
+            <Link href={`/users/${data.user.id}`}>Batafsil</Link>
           </div>
         </div>
       </div>

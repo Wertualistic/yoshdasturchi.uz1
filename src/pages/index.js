@@ -77,8 +77,8 @@ export default function Home() {
             return false;
           }
           setErrors((prev) => prev + 1);
-          if (errors >= 20) {
-            alert('Sizning xatolaringiz 20 tadan oshib ketdi.');
+          if (errors >= 13) {
+            alert('Sizning xatolaringiz 12 tadan oshib ketdi.');
             router.reload();
           }
           setResult((prev) => [...prev, 0]);

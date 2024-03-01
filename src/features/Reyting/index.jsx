@@ -37,88 +37,6 @@ const Reyting = ({ users }) => {
     }
   };
 
-  // useEffect(() => {
-  //   if (swiper) {
-  //     updateSlidesHeight();
-  //   }
-  // }, [swiper]);
-
-  // useEffect(() => {
-  //   const token = getCookie("token");
-  //   const lastContest = JSON.parse(sessionStorage.getItem("lastContest")) || [];
-  //   if (token != null) {
-  //     const fetchRating = async () => {
-  //       try {
-  //         setLoader(true);
-  //         const response = await api.get(
-  //           lastContest.status === "JARAYONDA"
-  //             ? "/attemptContest/rate/1?page=0&size=100"
-  //             : "/regular/getRate?limitSecond=60&page=0&size=100"
-  //         );
-  //         if (
-  //           Array.isArray(
-  //             lastContest.status === "JARAYONDA"
-  //               ? response.data.attemptRateDTOS.content
-  //               : response.data.regularDTOPage.content
-  //           )
-  //         ) {
-  //           setCards(
-  //             lastContest.status === "JARAYONDA"
-  //               ? response.data.attemptRateDTOS.content
-  //               : response.data.regularDTOPage.content
-  //           );
-  //         }
-  //         setLoader(false);
-  //       } catch (error) {
-  //         if (error.response?.status == 401) {
-  //           handleLogout();
-  //         }
-  //       }
-  //     };
-  //     fetchRating();
-  //   } else {
-  //     const fetchRating = async () => {
-  //       try {
-  //         setLoader(true);
-  //         const response = await axios.get(
-  //           lastContest.status === "JARAYONDA"
-  //             ? "https://api.yoshdasturchi.uz/api/v1/attemptContest/rate/notUser/1?page=0&size=100"
-  //             : "https://api.yoshdasturchi.uz/api/v1/regular/getRateNotUser?limitSecond=60&page=0&size=100"
-  //         );
-  //         if (
-  //           Array.isArray(
-  //             lastContest.status === "JARAYONDA"
-  //               ? response.data.attemptRateDTOS.content
-  //               : response.data.regularDTOPage.content
-  //           )
-  //         ) {
-  //           setCards(
-  //             lastContest.status === "JARAYONDA"
-  //               ? response.data.attemptRateDTOS.content
-  //               : response.data.regularDTOPage.content
-  //           );
-  //         }
-  //         setLoader(false);
-  //       } catch (error) {
-  //         console.log(error);
-  //       }
-  //     };
-  //     fetchRating();
-  //   }
-  // }, []);
-  // function updateSlidesHeight() {
-  //   const swiperWrapper = document.querySelector('.swiper-wrapper');
-  //   let maxHeight = 0;
-
-  //   swiperWrapper.childNodes.forEach(node => {
-  //     if (node.offsetHeight > maxHeight) {
-  //       maxHeight = node.offsetHeight;
-  //     }
-  //   });
-
-  //   swiperWrapper.style.height = maxHeight + 'px';
-  // }
-
   const getDate = (dateTimeString) => {
     const dateTime = new Date(dateTimeString);
     const options = { year: "numeric", month: "long", day: "numeric" };
@@ -217,6 +135,7 @@ const Reyting = ({ users }) => {
                 <div className={styles.reyting__content2}>
                   <p className={styles.reyting__date}>Sana</p>
                   <p className={styles.reyting__viloyat}>Viloyat</p>
+                  <p className={styles.reyting__viloyat}>Batafsil</p>
                 </div>
               </div>
               {cards?.content?.map((el, idx) => (
