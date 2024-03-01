@@ -61,17 +61,17 @@ export default function Home() {
           });
           setData(newData);
           setKey("");
-          pressedKeyElement.classList.add("active");
+          pressedKeyElement.classList?.add("active");
           setTimeout(() => {
-            pressedKeyElement.classList.remove("active");
+            pressedKeyElement.classList?.remove("active");
           }, 200);
           setResult((prev) => [...prev, 1]);
           if (isKeyboardTrueChecked) playOn();
         } else {
           if (pressedKeyElement) {
-            pressedKeyElement.classList.add("inActive");
+            pressedKeyElement.classList?.add("inActive");
             setTimeout(() => {
-              pressedKeyElement.classList.remove("inActive");
+              pressedKeyElement.classList?.remove("inActive");
             }, 200);
           } else {
             return false;

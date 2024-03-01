@@ -88,9 +88,9 @@ const MainLayout = ({ children }) => {
                 height="550"
                 src="https://www.youtube.com/embed/_MPmwJwISQw"
                 title="Yoshdasturchi.uz - tez yozish musobaqasi!"
-                frameborder="0"
+                frameBorder="0"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                allowfullscreen></iframe>
+                allowFullScreen></iframe>
               <div className="scrolling-text-container">
                 <div className="scrolling-text">
                   Musobaqada hamda klaviaturada yozish uchun, faqatgina
