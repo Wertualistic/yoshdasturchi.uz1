@@ -23,6 +23,7 @@ import Image from "next/image";
 import axios from "axios";
 import Loader from "@/Components/Loader/Loader";
 import { testProsses } from "@/constants";
+import { numbers } from "@/utils/numbers";
 
 // Initialize Swiper core components
 SwiperCore.use([Navigation, Pagination, Autoplay]);
@@ -73,7 +74,7 @@ const Result = () => {
   }, [data1, data0]);
 
   useEffect(() => {
-    setStartTime(false)
+    setStartTime(false);
     const getCookie = (key) => {
       const cookieValue = document.cookie.match(
         `(^|;)\\s*${key}\\s*=\\s*([^;]+)`
@@ -93,61 +94,57 @@ const Result = () => {
   }, [result]);
 
   useEffect(() => {
-      const lastContest = JSON.parse(sessionStorage.getItem("lastContest"));
-      const getCurrentDateTime = () => {
-        const currentDateTime = new Date();
-        const year = currentDateTime.getFullYear();
-        const month = String(currentDateTime.getMonth() + 1).padStart(2, "0");
-        const day = String(currentDateTime.getDate()).padStart(2, "0");
-        const hours = String(currentDateTime.getHours()).padStart(2, "0");
-        const minutes = String(currentDateTime.getMinutes()).padStart(2, "0");
-        const seconds = String(currentDateTime.getSeconds()).padStart(2, "0");
-        return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+    const lastContest = JSON.parse(sessionStorage.getItem("lastContest"));
+    const getCurrentDateTime = () => {
+      const currentDateTime = new Date();
+      const year = currentDateTime.getFullYear();
+      const month = String(currentDateTime.getMonth() + 1).padStart(2, "0");
+      const day = String(currentDateTime.getDate()).padStart(2, "0");
+      const hours = String(currentDateTime.getHours()).padStart(2, "0");
+      const minutes = String(currentDateTime.getMinutes()).padStart(2, "0");
+      const seconds = String(currentDateTime.getSeconds()).padStart(2, "0");
+      return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+    };
+
+    const startAt = getCurrentDateTime();
+    const endAt = new Date(new Date().getTime() + 60000);
+    const formattedEndAt = `${endAt.getFullYear()}-${String(
+      endAt.getMonth() + 1
+    ).padStart(2, "0")}-${String(endAt.getDate()).padStart(2, "0")} ${String(
+      endAt.getHours()
+    ).padStart(2, "0")}:${String(endAt.getMinutes()).padStart(2, "0")}:${String(
+      endAt.getSeconds()
+    ).padStart(2, "0")}`;
+
+    const postData = async () => {
+      const requestData = {
+        trueLetterCount: numbers[data1.length],
+        falseLetterCount: numbers[data0.length],
+        startAt: startAt,
+        endAt: formattedEndAt,
       };
 
-      const startAt = getCurrentDateTime();
-      const endAt = new Date(new Date().getTime() + 60000);
-      const formattedEndAt = `${endAt.getFullYear()}-${String(
-        endAt.getMonth() + 1
-      ).padStart(2, "0")}-${String(endAt.getDate()).padStart(2, "0")} ${String(
-        endAt.getHours()
-      ).padStart(2, "0")}:${String(endAt.getMinutes()).padStart(
-        2,
-        "0"
-      )}:${String(endAt.getSeconds()).padStart(2, "0")}`;
-
-      const postData = async () => {
-        const requestData = {
-          trueLetterCount: data1.length,
-          falseLetterCount: data0.length,
-          startAt: startAt,
-          endAt: formattedEndAt,
-        };
-
-        if (
-          requestData.trueLetterCount > 0 ||
-          requestData.falseLetterCount > 0
-        ) {
-          try {
-            const response = await api.post(
-              lastContest.status === "JARAYONDA"
-                ? "/attemptContest/add"
-                : "/regular/add",
-              lastContest.status === "JARAYONDA"
-                ? { ...requestData, contestId: lastContest.id }
-                : { ...requestData, limitSecondRegular: 60 }
-            );
-          } catch (error) {
-            return false;
-          }
-        } else {
+      if (requestData.trueLetterCount > 0 || requestData.falseLetterCount > 0) {
+        try {
+          const response = await api.post(
+            lastContest.status === "JARAYONDA"
+              ? "/attemptContest/add"
+              : "/regular/add",
+            lastContest.status === "JARAYONDA"
+              ? { ...requestData, contestId: lastContest.id }
+              : { ...requestData, limitSecondRegular: 60 }
+          );
+        } catch (error) {
           return false;
         }
-      };
-
-      postData();
+      } else {
+        return false;
+      }
+    };
+    
+    postData();
   }, [data1, data0]);
-
+  
   useEffect(() => {
     const sessionData = JSON.parse(sessionStorage.getItem("sessionData")) || [];
     setData(sessionData);

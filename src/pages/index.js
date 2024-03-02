@@ -38,7 +38,6 @@ export default function Home() {
     setResult(value);
   };
 
-
   useEffect(() => {
     const handleKeyDown = (e) => {
       if (e.key === "Enter" && hideWelcome && !gameStarted) {
@@ -82,10 +81,6 @@ export default function Home() {
             return false;
           }
           setErrors((prev) => prev + 1);
-          if (errors >= 13) {
-            alert('Sizning xatolaringiz 12 tadan oshib ketdi.');
-            router.reload();
-          }
           calculateTrueAndFalseLetters((prev) => [...prev, 0])
           if (isKeyboardFalseChecked) playOff();
         }
