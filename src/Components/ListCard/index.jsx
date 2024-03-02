@@ -27,6 +27,7 @@ const ListCard = ({ data, idx }) => {
             <p className={styles.reyting__profile}>
               <img className={styles.reyting__profileimage} />
               {data.user.name}
+              <span>{data.user.surname}</span>
             </p>
           </div>
           <div className={styles.reyting__content3}>

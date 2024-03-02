@@ -134,6 +134,7 @@
 
 .reyting__profile {
   display: flex;
+  white-space: nowrap;
   align-items: center;
   gap: 5px;
 }

@@ -3,8 +3,10 @@ import styles from "./Results.module.scss";
 import Image from "next/image";
 import api from "@/utils/api";
 import Loader from "@/Components/Loader/Loader";
+import { useRouter } from "next/router";
 
 const Results = ({ id }) => {
+  const router = useRouter();
   const [userResult, setUserResult] = useState(null);
   const [loader, setLoader] = useState(true);
 
@@ -29,12 +31,14 @@ const Results = ({ id }) => {
     fetchUserData();
   }, []);
 
+  const goBack = () => {
+    router.back();
+  };
+
   return (
     <div className={styles.Result}>
       <div className="container">
-        <div
-          className={styles.ResultBack}
-          onClick={() => (window.location.href = "/")}>
+        <div className={styles.ResultBack} onClick={goBack}>
           <i className="ri-arrow-left-line"></i>
           <p>Orqaga</p>
         </div>
@@ -61,6 +65,7 @@ const Results = ({ id }) => {
                 <table>
                   <thead>
                     <tr>
+                      <td>Ism</td>
                       <td>{`To\'g\'ri`}</td>
                       <td>{`Noto\'g\'ri`}</td>
                       <td>Vaqt</td>
@@ -68,12 +73,15 @@ const Results = ({ id }) => {
                     </tr>
                   </thead>
                   <tbody>
-                    {userResult.content.map((result, idx) => (
+                    {userResult.map((result, idx) => (
                       <tr key={idx}>
-                        <td>{result.trueLetterCount}</td>
-                        <td>{result.falseLetterCount}</td>
+                        <td>{result.user.name}</td>
+                        <td>{result.content.trueLetterCount}</td>
+                        <td>{result.content.falseLetterCount}</td>
                         <td>60</td>
-                        <td>{new Date(result.endAt).toLocaleDateString()}</td>
+                        <td>
+                          {new Date(result.content.endAt).toLocaleDateString()}
+                        </td>
                       </tr>
                     ))}
                   </tbody>
