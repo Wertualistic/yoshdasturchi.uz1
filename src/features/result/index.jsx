@@ -124,27 +124,24 @@ const Result = () => {
         endAt: formattedEndAt,
       };
 
-      if (requestData.trueLetterCount > 0 || requestData.falseLetterCount > 0) {
-        try {
-          const response = await api.post(
-            lastContest.status === "JARAYONDA"
-              ? "/attemptContest/add"
-              : "/regular/add",
-            lastContest.status === "JARAYONDA"
-              ? { ...requestData, contestId: lastContest.id }
-              : { ...requestData, limitSecondRegular: 60 }
-          );
-        } catch (error) {
-          return false;
-        }
-      } else {
+      try {
+        const response = await api.post(
+          lastContest.status === "JARAYONDA"
+            ? "/attemptContest/add"
+            : "/regular/add",
+          lastContest.status === "JARAYONDA"
+            ? { ...requestData, contestId: lastContest.id }
+            : { ...requestData, limitSecondRegular: 60 }
+        );
+        console.log(response.data);
+      } catch (error) {
         return false;
       }
     };
-    
+
     postData();
   }, [data1, data0]);
-  
+
   useEffect(() => {
     const sessionData = JSON.parse(sessionStorage.getItem("sessionData")) || [];
     setData(sessionData);
