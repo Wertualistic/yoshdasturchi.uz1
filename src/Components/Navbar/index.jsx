@@ -262,9 +262,9 @@ const Navbar = () => {
                         <h2 className={styles.reytingdropdown__title}>
                           Reyting
                         </h2>
-                        <p className={styles.reytingdropdown__timeupdate}>
+                        {/* <p className={styles.reytingdropdown__timeupdate}>
                           Next update in : 6:50
-                        </p>
+                        </p> */}
                       </div>
 
                       <div className={styles.reytingdropdown__table}>
@@ -299,7 +299,7 @@ const Navbar = () => {
                                   className={
                                     styles.reytingdropdown__profileimage
                                   }></div>
-                                {card.user.name}
+                                {card.user.name.slice(0, 8)}
                               </p>
                             </div>
                             <div className={styles.reytingdropdown__content1}>
