@@ -432,7 +432,7 @@ li {
   inset: 0px;
   border-radius: 50%;
   border: 5px solid var(--black-color);
-  animation: prixClipFix 2s linear infinite;
+  animation: prixClipFix 2s  linear infinite;
 }
 
 @keyframes rotate {
