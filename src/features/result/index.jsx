@@ -125,7 +125,7 @@ const Result = () => {
       };
 
       if (
-        requestData.trueLetterCount === "AmwFI7nrCdM5a/478d5xXA==" ||
+        requestData.trueLetterCount === "AmwFI7nrCdM5a/478d5xXA==" &&
         requestData.falseLetterCount === "AmwFI7nrCdM5a/478d5xXA=="
       ) {
         return false;
