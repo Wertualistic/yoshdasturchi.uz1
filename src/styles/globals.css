@@ -506,7 +506,12 @@ li {
   color: var(--black-color) !important;
 }
 
+.ant-pagination-item-ellipsis {
+  color: var(--black-color) !important;
+}
+
 .ant-pagination-item-active a {
+  border-radius: 5px;
   background-color: var(--black-color) !important;
   color: var(--white-color) !important;
 }
