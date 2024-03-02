@@ -92,6 +92,7 @@ const FalseUsers = () => {
             <th>Name</th>
             <th>Surname</th>
             <th>Region</th>
+            <th>Phone number</th>
             <th>Status</th>
             <th>Update Status</th>
           </tr>
@@ -103,6 +104,7 @@ const FalseUsers = () => {
               <td>{user.name}</td>
               <td>{user.surname}</td>
               <td>{user.region}</td>
+              <td>{user.phoneNumber}</td>
               <td>{user.status ? "Active" : "Inactive"}</td>
               <td>
                 <input

@@ -22,7 +22,7 @@ const MyDocument = () => (
                 m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
                 (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
       
-                ym(95260097, "init", {
+                ym(96618625, "init", {
                       clickmap:true,
                       trackLinks:true,
                       accurateTrackBounce:true
@@ -34,7 +34,7 @@ const MyDocument = () => (
       />
       <noscript>
         <div>
-          <img src="https://mc.yandex.ru/watch/12345678" style={{ position: 'absolute', left: '-9999px' }} alt="" />
+          <img src="https://mc.yandex.ru/watch/96618625" style={{ position: 'absolute', left: '-9999px' }} alt="" />
         </div>
       </noscript>
     </body>
