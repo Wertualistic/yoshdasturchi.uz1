@@ -23,6 +23,7 @@ import Image from "next/image";
 import axios from "axios";
 import Loader from "@/Components/Loader/Loader";
 import { testProsses } from "@/constants";
+import { numbers } from "@/utils/numbers";
 
 // Initialize Swiper core components
 SwiperCore.use([Navigation, Pagination, Autoplay]);
@@ -117,26 +118,22 @@ const Result = () => {
 
     const postData = async () => {
       const requestData = {
-        trueLetterCount: data1.length,
-        falseLetterCount: data0.length,
+        trueLetterCount: numbers[data1.length],
+        falseLetterCount: numbers[data0.length],
         startAt: startAt,
         endAt: formattedEndAt,
       };
 
-      if (requestData.trueLetterCount > 0 || requestData.falseLetterCount > 0) {
-        try {
-          const response = await api.post(
-            lastContest.status === "JARAYONDA"
-              ? "/attemptContest/add"
-              : "/regular/add",
-            lastContest.status === "JARAYONDA"
-              ? { ...requestData, contestId: lastContest.id }
-              : { ...requestData, limitSecondRegular: 60 }
-          );
-        } catch (error) {
-          return false;
-        }
-      } else {
+      try {
+        const response = await api.post(
+          lastContest.status === "JARAYONDA"
+            ? "/attemptContest/add"
+            : "/regular/add",
+          lastContest.status === "JARAYONDA"
+            ? { ...requestData, contestId: lastContest.id }
+            : { ...requestData, limitSecondRegular: 60 }
+        );
+      } catch (error) {
         return false;
       }
     };
