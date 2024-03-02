@@ -1,5 +1,5 @@
 import Head from "next/head";
-import { Ads, Keyboard } from "@/Components";
+import { Ads, Keyboard, TrueAndFalseLetters } from "@/Components";
 import { Letters, Welcome } from "@/features/home";
 import { useContext, useEffect, useState } from "react";
 import { useRouter } from "next/router";
@@ -34,6 +34,11 @@ export default function Home() {
     // WriteTime()
   }
 
+  const calculateTrueAndFalseLetters = (value) => {
+    setResult(value);
+  };
+
+
   useEffect(() => {
     const handleKeyDown = (e) => {
       if (e.key === "Enter" && hideWelcome && !gameStarted) {
@@ -65,7 +70,7 @@ export default function Home() {
           setTimeout(() => {
             pressedKeyElement.classList?.remove("active");
           }, 200);
-          setResult((prev) => [...prev, 1]);
+          calculateTrueAndFalseLetters((prev) => [...prev, 1])
           if (isKeyboardTrueChecked) playOn();
         } else {
           if (pressedKeyElement) {
@@ -81,7 +86,7 @@ export default function Home() {
             alert('Sizning xatolaringiz 12 tadan oshib ketdi.');
             router.reload();
           }
-          setResult((prev) => [...prev, 0]);
+          calculateTrueAndFalseLetters((prev) => [...prev, 0])
           if (isKeyboardFalseChecked) playOff();
         }
       }
@@ -137,6 +142,7 @@ export default function Home() {
         </div>
         <div className="ads_and_contest">
           {/* <Ads isAdsShow={isAdsShow} isRight={false} /> */}
+          <TrueAndFalseLetters result={result} isAdsShow={isAdsShow} />
           <TelegramGroup isAdsShow={isAdsShow} />
           <ContestDate isAdsShow={isAdsShow} isHaveNavbar={false} />
         </div>
