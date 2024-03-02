@@ -124,17 +124,24 @@ const Result = () => {
         endAt: formattedEndAt,
       };
 
-      try {
-        const response = await api.post(
-          lastContest.status === "JARAYONDA"
-            ? "/attemptContest/add"
-            : "/regular/add",
-          lastContest.status === "JARAYONDA"
-            ? { ...requestData, contestId: lastContest.id }
-            : { ...requestData, limitSecondRegular: 60 }
-        );
-      } catch (error) {
+      if (
+        requestData.trueLetterCount === "AmwFI7nrCdM5a/478d5xXA==" ||
+        requestData.falseLetterCount === "AmwFI7nrCdM5a/478d5xXA=="
+      ) {
         return false;
+      } else {
+        try {
+          const response = await api.post(
+            lastContest.status === "JARAYONDA"
+              ? "/attemptContest/add"
+              : "/regular/add",
+            lastContest.status === "JARAYONDA"
+              ? { ...requestData, contestId: lastContest.id }
+              : { ...requestData, limitSecondRegular: 60 }
+          );
+        } catch (error) {
+          return false;
+        }
       }
     };
 
