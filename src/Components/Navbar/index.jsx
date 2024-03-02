@@ -299,7 +299,7 @@ const Navbar = () => {
                                   className={
                                     styles.reytingdropdown__profileimage
                                   }></div>
-                                {card.user.name.slice(0, 8)}
+                                {card.user.name.slice(0, 6)}...
                               </p>
                             </div>
                             <div className={styles.reytingdropdown__content1}>

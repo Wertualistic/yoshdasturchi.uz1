@@ -104,9 +104,9 @@ const Reyting = ({ users }) => {
           <div className={styles.reyting__inner}>
             <div className={styles.reyting__top}>
               <h2 className={styles.reyting__title}>Reyting</h2>
-              <p className={styles.reyting__timeupdate}>
+             {/* <p className={styles.reyting__timeupdate}>
                 Next update in : 6:50
-              </p>
+              </p> */}
             </div>
             {/* {loader && <Loader />} */}
             <Swiper
