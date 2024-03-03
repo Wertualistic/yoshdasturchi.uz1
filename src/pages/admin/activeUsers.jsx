@@ -4,6 +4,8 @@ import styles from "./admin.module.scss"; // Import your module.scss file
 import Link from "next/link";
 import api from "@/utils/api";
 import { useRouter } from "next/router";
+import Image from "next/image";
+import { Prev } from "@/assets";
 
 const TrueUsers = () => {
   const [users, setUsers] = useState([]);
@@ -23,7 +25,7 @@ const TrueUsers = () => {
     const getUsers = async () => {
       try {
         const res = await axios.get(
-          "https://api.yoshdasturchi.uz/api/v1/user/getUserByStatus?status=true&page=0&size=100",
+          "https://api.yoshdasturchi.uz/api/v1/user/getUserByStatus?status=true&page=0&size=1000",
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -35,7 +37,7 @@ const TrueUsers = () => {
         }
         setUsers(res.data.content);
       } catch (err) {
-        return false;
+        console.log(err);
       }
     };
     getUsers();
@@ -49,7 +51,6 @@ const TrueUsers = () => {
         {
           headers: {
             Authorization: `Bearer ${token}`,
-            Server: "webname",
           },
         }
       );
@@ -63,7 +64,7 @@ const TrueUsers = () => {
         })
       );
     } catch (err) {
-      return false;
+      console.log(err);
     }
   };
 
@@ -75,7 +76,8 @@ const TrueUsers = () => {
           router.push("/");
         }
       } catch (err) {
-        if (err.response?.status === 409) {
+        console.error(err);
+        if (err.response.status === 409) {
           router.push("/");
         }
       }
@@ -85,7 +87,12 @@ const TrueUsers = () => {
 
   return (
     <div className={styles["users-container"]}>
-      <Link href="/admin">back</Link>
+      <button className={styles.cta2}>
+        <Image src={Prev} alt="img" />
+        <Link className={styles.hover_underline_animation2} href="/admin">
+          back
+        </Link>
+      </button>
       <table className={styles["users-table"]}>
         <thead>
           <tr>
@@ -93,7 +100,6 @@ const TrueUsers = () => {
             <th>Name</th>
             <th>Surname</th>
             <th>Region</th>
-            <th>Phone number</th>
             <th>Status</th>
             <th>Update Status</th>
           </tr>
@@ -105,7 +111,6 @@ const TrueUsers = () => {
               <td>{user.name}</td>
               <td>{user.surname}</td>
               <td>{user.region}</td>
-              <td>{user.phoneNumber}</td>
               <td>{user.status ? "Active" : "Inactive"}</td>
               <td>
                 <input

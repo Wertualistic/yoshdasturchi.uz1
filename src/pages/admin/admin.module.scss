@@ -1,5 +1,10 @@
+.adminmenu {
+  width: 100%;
+  height: 100vh;
+}
+
 .users-container {
-  margin-top: 20px;
+  padding: 20px;
   overflow-x: auto;
 }
 
@@ -12,7 +17,7 @@
 .users-table th,
 .users-table td {
   padding: 10px;
-  text-align: left;
+  text-align: center;
   border-bottom: 1px solid #ddd;
 }
 
@@ -39,4 +44,108 @@
 .users-table input[type="checkbox"]:checked {
   background-color: #007bff;
   border-color: #007bff;
+}
+
+.cta {
+  border: none;
+  background: none;
+  cursor: pointer;
+}
+
+.cta a {
+  padding-bottom: 7px;
+  letter-spacing: 2px;
+  font-size: 14px;
+  padding-right: 15px;
+  text-transform: uppercase;
+}
+
+.cta img {
+  transform: translateX(-8px);
+  transition: all 0.3s ease;
+}
+
+.cta:hover img {
+  transform: translateX(0);
+}
+
+.cta:active img {
+  transform: scale(0.9);
+}
+
+.hover_underline_animation {
+  position: relative;
+  color: black;
+  padding-bottom: 20px;
+}
+
+.hover_underline_animation:after {
+  content: "";
+  position: absolute;
+  width: 100%;
+  transform: scaleX(0);
+  height: 2px;
+  bottom: 0;
+  left: 0;
+  background-color: #000000;
+  transform-origin: bottom right;
+  transition: transform 0.25s ease-out;
+}
+
+.cta:hover .hover_underline_animation:after {
+  transform: scaleX(1);
+  transform-origin: bottom left;
+}
+
+.cta2 {
+  border: none;
+  background: none;
+  cursor: pointer;
+
+  margin-bottom: 30px;
+}
+
+.cta2 a {
+  padding-bottom: 7px;
+  letter-spacing: 2px;
+  font-size: 14px;
+  padding-left: 5px;
+  text-transform: uppercase;
+}
+
+.cta2 img {
+  transform: translateX(0);
+  transition: all 0.3s ease;
+}
+
+.cta2:hover img {
+  transform: translateX(-8px);
+}
+
+.cta2:active img {
+  transform: scale(0.9);
+}
+
+.hover_underline_animation2 {
+  position: relative;
+  color: black;
+  padding-bottom: 20px;
+}
+
+.hover_underline_animation2:after {
+  content: "";
+  position: absolute;
+  width: 100%;
+  transform: scaleX(0);
+  height: 2px;
+  bottom: 0;
+  left: 0;
+  background-color: #000000;
+  transform-origin: bottom right;
+  transition: transform 0.25s ease-out;
+}
+
+.cta2:hover .hover_underline_animation2:after {
+  transform: scaleX(1);
+  transform-origin: bottom left;
 }

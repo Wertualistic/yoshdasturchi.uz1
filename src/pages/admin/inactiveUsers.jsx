@@ -2,8 +2,10 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import styles from "./admin.module.scss"; // Import your module.scss file
 import Link from "next/link";
+import Image from "next/image";
 import api from "@/utils/api";
 import { useRouter } from "next/router";
+import { Prev } from "@/assets";
 
 const FalseUsers = () => {
   const [users, setUsers] = useState([]);
@@ -23,7 +25,7 @@ const FalseUsers = () => {
     const getUsers = async () => {
       try {
         const res = await axios.get(
-          "https://api.yoshdasturchi.uz/api/v1/user/getUserByStatus?status=false&page=0&size=100",
+          "https://api.yoshdasturchi.uz/api/v1/user/getUserByStatus?status=false&page=0&size=1000",
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -35,7 +37,7 @@ const FalseUsers = () => {
         }
         setUsers(res.data.content);
       } catch (err) {
-        return false;
+        console.log(err);
       }
     };
     getUsers();
@@ -62,7 +64,7 @@ const FalseUsers = () => {
         })
       );
     } catch (err) {
-      return false;
+      console.log(err);
     }
   };
 
@@ -74,7 +76,8 @@ const FalseUsers = () => {
           router.push("/");
         }
       } catch (err) {
-        if (err.response?.status === 409) {
+        console.error(err);
+        if (err.response.status === 409) {
           router.push("/");
         }
       }
@@ -84,7 +87,12 @@ const FalseUsers = () => {
 
   return (
     <div className={styles["users-container"]}>
-      <Link href="/admin">back</Link>
+      <button className={styles.cta2}>
+        <Image src={Prev} alt="img" />
+        <Link className={styles.hover_underline_animation2} href="/admin">
+          back
+        </Link>
+      </button>
       <table className={styles["users-table"]}>
         <thead>
           <tr>
@@ -92,7 +100,6 @@ const FalseUsers = () => {
             <th>Name</th>
             <th>Surname</th>
             <th>Region</th>
-            <th>Phone number</th>
             <th>Status</th>
             <th>Update Status</th>
           </tr>
@@ -104,7 +111,6 @@ const FalseUsers = () => {
               <td>{user.name}</td>
               <td>{user.surname}</td>
               <td>{user.region}</td>
-              <td>{user.phoneNumber}</td>
               <td>{user.status ? "Active" : "Inactive"}</td>
               <td>
                 <input
