@@ -7,6 +7,7 @@ import { DataContext } from "@/DataContext";
 import dynamic from "next/dynamic";
 import axios from "axios";
 import TelegramGroup from "@/Components/TelegramGroup";
+import ContestWInners from "@/Components/ContestWInners";
 
 export default function Home() {
   // console.log("123")
@@ -140,6 +141,7 @@ export default function Home() {
           <TrueAndFalseLetters result={result} isAdsShow={isAdsShow} />
           <TelegramGroup isAdsShow={isAdsShow} />
           <ContestDate isAdsShow={isAdsShow} isHaveNavbar={false} />
+          <ContestWInners isAdsShow={isAdsShow} />
         </div>
       </main>
     </>
