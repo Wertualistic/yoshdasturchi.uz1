@@ -17,9 +17,9 @@ const MainLayout = ({ children }) => {
       }
     };
     // Suppress console output
-    console.log = function () {};
-    console.error = function () {};
-    console.warn = function () {};
+    // console.log = function () {};
+    // console.error = function () {};
+    // console.warn = function () {};
 
     // Set cookie
     const setCookie = (key, value, days) => {
