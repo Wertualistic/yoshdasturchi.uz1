@@ -12,7 +12,7 @@ const Timer = ({ selectedTheme, startTime }) => {
   const { Countdown } = Statistic;
   const onChange = (val) => {
     if (val < 0) {
-      router.push("/result");
+      router.push("/result", undefined, { shallow: true });
     }
   };
 
