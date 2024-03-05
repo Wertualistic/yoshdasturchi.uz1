@@ -28,6 +28,10 @@ body {
   color: var(--body_color);
 }
 
+p {
+  color: var(--black-color);
+}
+
 main {
   max-width: 1440px;
   margin: auto;
@@ -432,7 +436,7 @@ li {
   inset: 0px;
   border-radius: 50%;
   border: 5px solid var(--black-color);
-  animation: prixClipFix 2s  linear infinite;
+  animation: prixClipFix 2s linear infinite;
 }
 
 @keyframes rotate {
