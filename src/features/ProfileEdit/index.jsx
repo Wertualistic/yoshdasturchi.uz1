@@ -3,6 +3,8 @@ import styles from "./ProfileEdit.module.scss";
 import Image from "next/image";
 import api from "@/utils/api";
 import { useRouter } from "next/router";
+import "react-toastify/dist/ReactToastify.css";
+import { toast } from "react-toastify";
 
 const ProfileEdit = () => {
   const [image, setImage] = useState(null);
@@ -10,19 +12,14 @@ const ProfileEdit = () => {
   const [showPasswordRepeat, setShowPasswordRepeat] = useState(false);
   const router = useRouter();
   const [userInfo, setUserInfo] = useState(null);
-  const [validation, setValidation] = useState(false);
-  const [repeatPassword, setRepeatPassword] = useState("");
-  const [phoneError, setPhoneError] = useState(false);
-  const [passwordValidation, setPasswordValidation] = useState(false);
-  const [passwordNotSame, setPasswordNotSame] = useState(false);
-  const [otherErrors, setOtherErrors] = useState({});
+  const [repeatPassword, setRepeatPassword] = useState(null);
   const [formData, setFormData] = useState({
     region: "",
     surname: "",
     name: "",
     age: "",
     phoneNumber: "",
-    password: "",
+    passwords: null,
   });
 
   const updateToken = (token) => {
@@ -51,7 +48,7 @@ const ProfileEdit = () => {
             name: userData.name,
             age: userData.age,
             phoneNumber: userData.phoneNumber,
-            password: "",
+            passwords: null,
           });
         }
       } catch (err) {
@@ -63,40 +60,17 @@ const ProfileEdit = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // Phone number validation
-    const phonePattern = /^\+998\d{9}$/;
-    const isValidPhone = phonePattern.test(formData.phoneNumber);
-    setPhoneError(!isValidPhone);
-
-    const isPasswordValid =
-      formData.password?.length >= 8 &&
-      /\d/.test(formData.password) &&
-      /[A-Z]/.test(formData.password);
-    setPasswordValidation(!isPasswordValid);
-    setValidation(false);
-    if (formData.password !== repeatPassword) {
-      setPasswordNotSame(true);
-      setPasswordValidation(false);
-    } else {
-      setPasswordValidation(true);
-      setPasswordNotSame(false);
-    }
-
-    // Check for other required fields and set errors
-    setOtherErrors({
-      region: !formData.region,
-      name: !formData.name,
-      surname: !formData.surname,
-      age: !formData.age,
-    });
-
-    if (
-      !isValidPhone ||
-      !isPasswordValid ||
-      formData.password !== repeatPassword ||
-      Object.values(otherErrors).some(Boolean)
-    ) {
-      return;
+    if (formData.passwords !== repeatPassword) {
+      toast.error("Parol bir xil emas!", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
     } else {
       try {
         const response = await api.put("/user/updateInformation", formData);
@@ -105,20 +79,24 @@ const ProfileEdit = () => {
           updateToken(newToken);
           router.push("/");
         }
+        console.log(response.data, formData);
       } catch (error) {
         if (error.response.status == 409) {
-          setValidation(true);
-        } else {
-          setValidation(false);
+          toast.error(error.response.data.message, {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "colored",
+          });
         }
       }
     }
   };
 
-  const handleImageUpload = (event) => {
-    const selectedImage = event.target.files[0];
-    setImage(selectedImage);
-  };
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };
@@ -161,7 +139,6 @@ const ProfileEdit = () => {
                   <option value="Samarqand">Samarqand</option>
                   <option value="Surxandaryo">Surxondaryo</option>
                   <option value="Sirdaryo">Sirdaryo</option>
-                  <option value="ToshkentRegion">Toshkent Viloyati</option>
                   <option value="Fargona">{`Farg'ona`}</option>
                   <option value="Xorazm">Xorazm</option>
                 </select>
@@ -203,105 +180,44 @@ const ProfileEdit = () => {
             </div>
             <div className={styles.ProfileEditFormInput}>
               <label htmlFor="phone">Telefon Raqam</label>
-              {phoneError || validation ? (
-                <div>
-                  <input
-                    style={{ border: "1px solid red" }}
-                    type="text"
-                    name="phoneNumber"
-                    placeholder="Telefon raqamingizni kiriting"
-                    value={formData.phoneNumber}
-                    onChange={handleChange}
-                    required
-                  />
-                </div>
-              ) : (
-                <input
-                  type="text"
-                  name="phoneNumber"
-                  placeholder="Telefon raqamingizni kiriting"
-                  value={formData.phoneNumber}
-                  onChange={handleChange}
-                  required
-                />
-              )}
-              {phoneError && (
-                <p style={{ color: "red", margin: "0", fontSize: "0.7rem" }}>
-                  Telefon raqam formati: +998999999999
-                </p>
-              )}
-              {validation && (
-                <p style={{ color: "red", margin: "0", fontSize: "0.7rem" }}>
-                  Bunday raqamli foydalanuvchi mavjud!
-                </p>
-              )}
+              <input
+                type="text"
+                name="phoneNumber"
+                placeholder="Telefon raqamingizni kiriting"
+                value={formData.phoneNumber}
+                onChange={handleChange}
+                required
+              />
             </div>
             <div className={styles.ProfileEditFormInput}>
               <label htmlFor="password">Parol</label>
               <div className={styles.passwordInputContainer}>
-                {passwordValidation || passwordNotSame ? (
-                  <input
-                    style={{ border: "1px solid red" }}
-                    type={showPassword ? "text" : "password"}
-                    name="password"
-                    placeholder="Parol kiriting"
-                    value={formData.password}
-                    onChange={handleChange}
-                    autoComplete="password"
-                  />
-                ) : (
-                  <input
-                    type={showPassword ? "text" : "password"}
-                    name="password"
-                    placeholder="Parol kiriting"
-                    value={formData.password}
-                    onChange={handleChange}
-                    autoComplete="password"
-                  />
-                )}
+                <input
+                  type={showPassword ? "text" : "password"}
+                  name="passwords"
+                  placeholder="Parol kiriting"
+                  value={formData.passwords}
+                  onChange={handleChange}
+                  autoComplete="password"
+                />
                 <div
                   className={styles.eyeIcon}
                   onClick={togglePasswordVisibility}>
                   <i className={`ri-eye-${showPassword ? "off-" : ""}line`}></i>
                 </div>
               </div>
-              {passwordValidation && (
-                <p style={{ color: "red", margin: "0", fontSize: "0.7rem" }}>
-                  Parol 8 ta belgidan {`ko\'p`}, 1 ta raqam va 1 ta katta harf
-                  kerak.
-                </p>
-              )}
-              {passwordNotSame ? (
-                <p style={{ color: "red", margin: "0", fontSize: "0.7rem" }}>
-                  Parol bir xil emas!
-                </p>
-              ) : (
-                ""
-              )}
             </div>
             <div className={styles.ProfileEditFormInput}>
               <label htmlFor="passwordRepeat">Parolni takrorlang</label>
               <div className={styles.passwordInputContainer}>
-                {passwordValidation || passwordNotSame ? (
-                  <input
-                    style={{ border: "1px solid red" }}
-                    type={showPasswordRepeat ? "text" : "password"}
-                    name="passwordRepeat"
-                    value={repeatPassword}
-                    onChange={handlePasswordChange}
-                    placeholder="Parol takrorlang"
-                    autoComplete="new-password"
-                  />
-                ) : (
-                  <input
-                    type={showPasswordRepeat ? "text" : "password"}
-                    name="passwordRepeat"
-                    value={repeatPassword}
-                    onChange={handlePasswordChange}
-                    placeholder="Parol takrorlang"
-                    autoComplete="new-password"
-                  />
-                )}
+                <input
+                  type={showPasswordRepeat ? "text" : "password"}
+                  name="passwordRepeat"
+                  value={repeatPassword}
+                  onChange={handlePasswordChange}
+                  placeholder="Parol takrorlang"
+                  autoComplete="new-password"
+                />
                 <div
                   className={styles.eyeIcon}
                   onClick={togglePasswordVisibilityRepeat}>
@@ -311,17 +227,6 @@ const ProfileEdit = () => {
                     }line`}></i>
                 </div>
               </div>
-              {passwordValidation && (
-                <p style={{ color: "red", margin: "0", fontSize: "0.7rem" }}>
-                  Parol 8 ta belgidan {`ko\'p`}, 1 ta raqam va 1 ta katta harf
-                  kerak.
-                </p>
-              )}
-              {passwordNotSame && (
-                <p style={{ color: "red", margin: "0", fontSize: "0.7rem" }}>
-                  Parol bir xil emas!
-                </p>
-              )}
             </div>
           </div>
           <button name="submit">Saqlash</button>

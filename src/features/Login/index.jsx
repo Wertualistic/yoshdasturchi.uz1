@@ -6,7 +6,8 @@ import getDeviceIp from "@/utils/getDeviceIp";
 import { useRouter } from "next/router";
 import Image from "next/image";
 import { RegisterFrame } from "@/assets";
-import { API } from "@/utils/api";
+import "react-toastify/dist/ReactToastify.css";
+import { toast } from "react-toastify";
 
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -64,9 +65,12 @@ const Login = () => {
         { headers: { Server: "webname" } }
       );
       if (response.status === 200) {
+        const lastContest = JSON.parse(
+          sessionStorage.getItem("lastContest") || []
+        );
         const data = response.data;
         setCookie("token", data.object, 100); // set cookie to expire in 100 days
-        setCookie("status", "JARAYONDA", 100); // set cookie to expire in 100 days
+        setCookie("status", lastContest.status, 100); // set cookie to expire in 100 days
         window.location.href = "/";
       }
       if (
@@ -77,7 +81,16 @@ const Login = () => {
       } else {
       }
     } catch (error) {
-      setValidation(true);
+      toast.error(error.response.data.message, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
       return false;
     }
   };
@@ -112,55 +125,28 @@ const Login = () => {
             style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
             <div className={styles.LoginFormInput}>
               <label htmlFor="phone">Telefon Raqam</label>
-              {validation ? (
-                <div>
-                  <input
-                    style={{ border: "1px solid red" }}
-                    type="text"
-                    name="phoneNumber"
-                    placeholder="Telefon raqamingizni kiriting"
-                    value={formData.phoneNumber}
-                    onChange={handleChange}
-                    required
-                  />
-                </div>
-              ) : (
-                <input
-                  type="text"
-                  name="phoneNumber"
-                  placeholder="Telefon raqamingizni kiriting"
-                  value={formData.phoneNumber}
-                  onChange={handleChange}
-                  required
-                />
-              )}
+              <input
+                type="text"
+                name="phoneNumber"
+                placeholder="Telefon raqamingizni kiriting"
+                value={formData.phoneNumber}
+                onChange={handleChange}
+                required
+              />
             </div>
 
             <div className={styles.LoginFormInput}>
               <label htmlFor="password">Parol</label>
               <div className={styles.passwordInputContainer}>
-                {validation ? (
-                  <input
-                    style={{ border: "1px solid red" }}
-                    type={showPassword ? "text" : "password"}
-                    name="password"
-                    placeholder="Parol kiriting"
-                    value={formData.password}
-                    onChange={handleChange}
-                    autoComplete="new-password"
-                    required
-                  />
-                ) : (
-                  <input
-                    type={showPassword ? "text" : "password"}
-                    name="password"
-                    placeholder="Parol kiriting"
-                    value={formData.password}
-                    onChange={handleChange}
-                    autoComplete="new-password"
-                    required
-                  />
-                )}
+                <input
+                  type={showPassword ? "text" : "password"}
+                  name="password"
+                  placeholder="Parol kiriting"
+                  value={formData.password}
+                  onChange={handleChange}
+                  autoComplete="new-password"
+                  required
+                />
                 <div
                   className={styles.eyeIcon}
                   onClick={togglePasswordVisibility}>
@@ -168,13 +154,6 @@ const Login = () => {
                 </div>
               </div>
             </div>
-            {validation ? (
-              <p style={{ color: "red", margin: "0", fontSize: "1rem" }}>
-                Telefon raqam yoki parol xato!
-              </p>
-            ) : (
-              ""
-            )}
           </div>
           <button name="submit">Kirish</button>
           <p className={styles.LoginSignIn}>

@@ -6,17 +6,14 @@ import Image from "next/image";
 import { RegisterFrame } from "@/assets";
 import { useRouter } from "next/router";
 import getDeviceIp from "@/utils/getDeviceIp";
+import "react-toastify/dist/ReactToastify.css";
+import { toast } from "react-toastify";
 
 const Register = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showPasswordRepeat, setShowPasswordRepeat] = useState(false);
   const router = useRouter();
-  const [validation, setValidation] = useState(false);
   const [repeatPassword, setRepeatPassword] = useState("");
-  const [phoneError, setPhoneError] = useState(false);
-  const [passwordValidation, setPasswordValidation] = useState(false);
-  const [passwordNotSame, setPasswordNotSame] = useState(false);
-  const [otherErrors, setOtherErrors] = useState({});
   const [formData, setFormData] = useState({
     region: "",
     name: "",
@@ -67,41 +64,17 @@ const Register = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // Phone number validation
-    const phonePattern = /^\+998\d{9}$/;
-    const isValidPhone = phonePattern.test(formData.phoneNumber);
-    setPhoneError(!isValidPhone);
-
-    const isPasswordValid =
-      formData.password.length >= 8 &&
-      /\d/.test(formData.password) &&
-      /[A-Z]/.test(formData.password);
-    setPasswordValidation(!isPasswordValid);
-    setValidation(false);
-
     if (formData.password !== repeatPassword) {
-      setPasswordNotSame(true);
-      setPasswordValidation(false);
-    } else {
-      setPasswordValidation(true);
-      setPasswordNotSame(false);
-    }
-
-    // Check for other required fields and set errors
-    setOtherErrors({
-      region: !formData.region,
-      name: !formData.name,
-      surname: !formData.surname,
-      age: !formData.age,
-    });
-
-    if (
-      !isValidPhone ||
-      !isPasswordValid ||
-      formData.password !== repeatPassword ||
-      Object.values(otherErrors).some(Boolean)
-    ) {
-      return;
+      toast.error("Parol bir xil emas!", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
     } else {
       try {
         const response = await axios.post(
@@ -115,10 +88,18 @@ const Register = () => {
           router.push("/");
         }
       } catch (error) {
+        console.log(error);
         if (error.response.status == 409) {
-          setValidation(true);
-        } else {
-          setValidation(false);
+          toast.error(error.response.data.message, {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "colored",
+          });
         }
       }
     }
@@ -177,7 +158,6 @@ const Register = () => {
                   <option value="Samarqand">Samarqand</option>
                   <option value="Surxandaryo">Surxondaryo</option>
                   <option value="Sirdaryo">Sirdaryo</option>
-                  <option value="ToshkentRegion">Toshkent Viloyati</option>
                   <option value="Fargona">{`Farg'ona`}</option>
                   <option value="Xorazm">Xorazm</option>
                 </select>
@@ -219,19 +199,7 @@ const Register = () => {
             </div>
             <div className={styles.RegisterFormInput}>
               <label htmlFor="phone">Telefon Raqam</label>
-              {phoneError || validation ? (
-                <div>
-                  <input
-                    style={{ border: "1px solid red" }}
-                    type="text"
-                    name="phoneNumber"
-                    placeholder="Telefon raqamingizni kiriting"
-                    value={formData.phoneNumber}
-                    onChange={handleChange}
-                    required
-                  />
-                </div>
-              ) : (
+              <div>
                 <input
                   type="text"
                   name="phoneNumber"
@@ -240,88 +208,39 @@ const Register = () => {
                   onChange={handleChange}
                   required
                 />
-              )}
-              {phoneError && (
-                <p style={{ color: "red", margin: "0", fontSize: "0.7rem" }}>
-                  Telefon raqam formati: +998999999999
-                </p>
-              )}
-              {validation && (
-                <p style={{ color: "red", margin: "0", fontSize: "0.7rem" }}>
-                  Bunday raqamli foydalanuvchi mavjud!
-                </p>
-              )}
+              </div>
             </div>
             <div className={styles.RegisterFormInput}>
               <label htmlFor="password">Parol</label>
               <div className={styles.passwordInputContainer}>
-                {passwordValidation || passwordNotSame ? (
-                  <input
-                    style={{ border: "1px solid red" }}
-                    type={showPassword ? "text" : "password"}
-                    name="password"
-                    placeholder="Parol kiriting"
-                    value={formData.password}
-                    onChange={handleChange}
-                    autoComplete="new-password"
-                    required
-                  />
-                ) : (
-                  <input
-                    type={showPassword ? "text" : "password"}
-                    name="password"
-                    placeholder="Parol kiriting"
-                    value={formData.password}
-                    onChange={handleChange}
-                    autoComplete="new-password"
-                    required
-                  />
-                )}
+                <input
+                  type={showPassword ? "text" : "password"}
+                  name="password"
+                  placeholder="Parol kiriting"
+                  value={formData.password}
+                  onChange={handleChange}
+                  autoComplete="new-password"
+                  required
+                />
                 <div
                   className={styles.eyeIcon}
                   onClick={togglePasswordVisibility}>
                   <i className={`ri-eye-${showPassword ? "off-" : ""}line`}></i>
                 </div>
               </div>
-              {passwordValidation && (
-                <p style={{ color: "red", margin: "0", fontSize: "0.7rem" }}>
-                  Parol 8 ta belgidan {`ko\'p`}, 1 ta raqam va 1 ta katta harf
-                  kerak.
-                </p>
-              )}
-              {passwordNotSame ? (
-                <p style={{ color: "red", margin: "0", fontSize: "0.7rem" }}>
-                  Parol bir xil emas!
-                </p>
-              ) : (
-                ""
-              )}
             </div>
             <div className={styles.RegisterFormInput}>
               <label htmlFor="passwordRepeat">Parolni takrorlang</label>
               <div className={styles.passwordInputContainer}>
-                {passwordValidation || passwordNotSame ? (
-                  <input
-                    style={{ border: "1px solid red" }}
-                    type={showPasswordRepeat ? "text" : "password"}
-                    name="passwordRepeat"
-                    value={repeatPassword}
-                    onChange={handlePasswordChange}
-                    placeholder="Parol takrorlang"
-                    autoComplete="new-password"
-                    required
-                  />
-                ) : (
-                  <input
-                    type={showPasswordRepeat ? "text" : "password"}
-                    name="passwordRepeat"
-                    value={repeatPassword}
-                    onChange={handlePasswordChange}
-                    placeholder="Parol takrorlang"
-                    autoComplete="new-password"
-                    required
-                  />
-                )}
+                <input
+                  type={showPasswordRepeat ? "text" : "password"}
+                  name="passwordRepeat"
+                  value={repeatPassword}
+                  onChange={handlePasswordChange}
+                  placeholder="Parol takrorlang"
+                  autoComplete="new-password"
+                  required
+                />
                 <div
                   className={styles.eyeIcon}
                   onClick={togglePasswordVisibilityRepeat}>
@@ -331,17 +250,6 @@ const Register = () => {
                     }line`}></i>
                 </div>
               </div>
-              {passwordValidation && (
-                <p style={{ color: "red", margin: "0", fontSize: "0.7rem" }}>
-                  Parol 8 ta belgidan {`ko\'p`}, 1 ta raqam va 1 ta katta harf
-                  kerak.
-                </p>
-              )}
-              {passwordNotSame && (
-                <p style={{ color: "red", margin: "0", fontSize: "0.7rem" }}>
-                  Parol bir xil emas!
-                </p>
-              )}
             </div>
           </div>
           <button name="submit">Akkaunt yaratish</button>

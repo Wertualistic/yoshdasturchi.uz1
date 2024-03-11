@@ -1,58 +1,67 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Navbar from "../Navbar/index";
 import Footer from "../Footer";
 import api from "@/utils/api";
+import { ToastContainer } from "react-toastify";
 
 const MainLayout = ({ children }) => {
   useEffect(() => {
     const getUserInfo = async () => {
       try {
         const res = await api.get("/user/getSelfInformation");
-        if (res.status == 200) {
+        if (res.status === 200) {
           const userData = res.data;
-          sessionStorage.setItem("userData", JSON.stringify(userData));
+          if (typeof window !== "undefined") {
+            sessionStorage.setItem("userData", JSON.stringify(userData));
+          }
         }
       } catch (err) {
-        return false;
+        console.error("Failed to fetch user information:", err);
       }
     };
-    // Suppress console output
-    // console.log = function () {};
-    // console.error = function () {};
-    // console.warn = function () {};
 
-    // Set cookie
-    const setCookie = (key, value, days) => {
-      if (!days || isNaN(days)) {
-        console.error("Invalid number of days for cookie expiration");
-        return;
-      }
+    if (typeof window !== "undefined") {
+      const lastContest = JSON.parse(
+        sessionStorage.getItem("lastContest") || []
+      );
 
-      const expirationDate = new Date();
-      expirationDate.setDate(expirationDate.getDate() + days);
-      document.cookie = `${key}=${value};expires=${expirationDate.toUTCString()};path=/`;
-    };
+      // Set cookie
+      const setCookie = (key, value, days) => {
+        if (!days || isNaN(days)) {
+          console.error("Invalid number of days for cookie expiration");
+          return;
+        }
 
-    setCookie("status", "JARAYONDA", 100); // set cookie to expire in 100 days
+        const expirationDate = new Date();
+        expirationDate.setDate(expirationDate.getDate() + days);
+        document.cookie = `${key}=${value};expires=${expirationDate.toUTCString()};path=/`;
+      };
 
-    // Disable context menu and certain key combinations
-    document.addEventListener("contextmenu", (event) => event.preventDefault());
+      setCookie("status", lastContest.status, 100); // set cookie to expire in 100 days
 
-    document.onkeydown = function (e) {
-      if (
-        e.keyCode == 123 ||
-        (e.ctrlKey && e.shiftKey && e.keyCode == 73) ||
-        (e.ctrlKey && e.shiftKey && e.keyCode == 74) ||
-        (e.ctrlKey && e.keyCode == 85)
-      ) {
-        return false;
-      }
-    };
-    getUserInfo();
+      // Disable context menu and certain key combinations
+      document.addEventListener("contextmenu", (event) =>
+        event.preventDefault()
+      );
+
+      document.onkeydown = function (e) {
+        if (
+          e.keyCode === 123 ||
+          (e.ctrlKey && e.shiftKey && e.keyCode === 73) ||
+          (e.ctrlKey && e.shiftKey && e.keyCode === 74) ||
+          (e.ctrlKey && e.keyCode === 85)
+        ) {
+          return false;
+        }
+      };
+
+      getUserInfo();
+    }
   }, []);
 
   return (
     <>
+      <ToastContainer />
       <div className="mobile_content">
         <div className="container">
           <div className="row">
