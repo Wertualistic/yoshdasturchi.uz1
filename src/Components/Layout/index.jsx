@@ -21,9 +21,8 @@ const MainLayout = ({ children }) => {
     };
 
     if (typeof window !== "undefined") {
-      const lastContest = JSON.parse(
-        sessionStorage.getItem("lastContest") || []
-      );
+      const lastContest =
+        JSON.parse(sessionStorage.getItem("lastContest")) || [];
 
       // Set cookie
       const setCookie = (key, value, days) => {
