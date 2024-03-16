@@ -87,10 +87,12 @@ const Reyting = ({ users }) => {
       } else {
         let users1 = await axios
           .get(
-            `${BASE_URL}attemptContest/rate/notUser/1?page=${page - 1}&size=10`
+            `${BASE_URL}regular/getRateNotUser?limitSecond=60&page=${
+              page - 1
+            }&size=10`
           )
           .then((res) => res.data);
-        setCards(users1.attemptRateDTOS);
+        setCards(users1.regularDTOPage);
       }
     }
   };
@@ -104,7 +106,7 @@ const Reyting = ({ users }) => {
           <div className={styles.reyting__inner}>
             <div className={styles.reyting__top}>
               <h2 className={styles.reyting__title}>Reyting</h2>
-             {/* <p className={styles.reyting__timeupdate}>
+              {/* <p className={styles.reyting__timeupdate}>
                 Next update in : 6:50
               </p> */}
             </div>
