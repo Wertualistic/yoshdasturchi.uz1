@@ -158,7 +158,7 @@ const Result = () => {
     const sessionData = JSON.parse(sessionStorage.getItem("sessionData")) || [];
     setData(sessionData);
     if (result.length === 0) {
-      // window.location.href = "/";
+      window.location.href = "/";
     } else {
       calculateStatistics();
     }
