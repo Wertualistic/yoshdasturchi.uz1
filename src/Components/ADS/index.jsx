@@ -35,11 +35,6 @@ const Ads = ({ isAdsShow, isRight }) => {
                   alt="Video Preview"
                 />
               </a>
-              <span
-                className={isRight ? styles.right : styles.left}
-                onClick={() => handleSpanClick(index)}>
-                <Image alt="Video Preview" src={ArrowRight} />
-              </span>
             </div>
           ))}
         </div>

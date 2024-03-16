@@ -96,6 +96,7 @@ const TrueUsers = () => {
       <table className={styles["users-table"]}>
         <thead>
           <tr>
+            <th>No</th>
             <th>ID</th>
             <th>Name</th>
             <th>Surname</th>
@@ -106,8 +107,9 @@ const TrueUsers = () => {
           </tr>
         </thead>
         <tbody>
-          {users.map((user) => (
+          {users.map((user, idx) => (
             <tr key={user.id}>
+              <td>{idx}</td>
               <td>{user.id}</td>
               <td>{user.name}</td>
               <td>{user.surname}</td>

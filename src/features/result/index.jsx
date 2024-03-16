@@ -158,7 +158,7 @@ const Result = () => {
     const sessionData = JSON.parse(sessionStorage.getItem("sessionData")) || [];
     setData(sessionData);
     if (result.length === 0) {
-      window.location.href = "/";
+      // window.location.href = "/";
     } else {
       calculateStatistics();
     }
@@ -219,6 +219,9 @@ const Result = () => {
               </AreaChart>
             </div>
           </div>
+          <center>
+            <Link href="/">Yana {`o'ynash`}</Link>
+          </center>
           <div className={styles.bottom}>
             {token ? (
               ""

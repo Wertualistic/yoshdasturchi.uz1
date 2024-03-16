@@ -10,11 +10,36 @@ const Results = ({ id }) => {
   const [userResult, setUserResult] = useState(null);
   const [loader, setLoader] = useState(true);
 
+  const getCookie = (key) => {
+    const cookieValue = document.cookie.match(
+      `(^|;)\\s*${key}\\s*=\\s*([^;]+)`
+    );
+    return cookieValue ? cookieValue.pop() : null;
+  };
+
   useEffect(() => {
     const userData = JSON.parse(sessionStorage.getItem("userData"));
+    const status = getCookie("status");
     const fetchUserData = async () => {
       try {
         setLoader(true);
+        if (status === "JARAYONDA") {
+          const res = await api.get(
+            `attemptContest/getAllAttemptByUserAndContestId/${
+              id ? id : userData.id
+            }/1?page=0&size=100`
+          );
+          sessionStorage.setItem("userResult", JSON.stringify(res.data));
+          setUserResult(res.data);
+        } else {
+          const res = await api.get(
+            `attemptContest/getAllAttemptByUserAndContestId/${
+              id ? id : userData.id
+            }/1?page=0&size=100`
+          );
+          sessionStorage.setItem("userResult", JSON.stringify(res.data));
+          setUserResult(res.data);
+        }
         const res = await api.get(
           `attemptContest/getAllAttemptByUserAndContestId/${
             id ? id : userData.id

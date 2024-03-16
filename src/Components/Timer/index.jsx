@@ -1,46 +1,66 @@
-import React, { useState, useEffect, useRef, useContext, memo } from "react";
-import TimerImage from "../../assets/timer.svg";
+import React, { useEffect, useState, memo } from "react";
 import { Statistic } from "antd";
 import Image from "next/image";
 import styles from "../Navbar/Navbar.module.scss";
-import { DataContext } from "@/DataContext";
-import { TimerImageDark } from "@/assets";
 import { useRouter } from "next/router";
+import { TimerImageDark } from "@/assets";
+import TimerImage from "../../assets/timer.svg";
+
+const { Countdown } = Statistic;
 
 const Timer = ({ selectedTheme, startTime }) => {
   const router = useRouter();
-  const { Countdown } = Statistic;
-  const onChange = (val) => {
-    if (val < 0) {
-      router.push("/result", undefined, { shallow: true });
+  const [timerFinished, setTimerFinished] = useState(false);
+
+  useEffect(() => {
+    const handleKeyPress = (event) => {
+      if (timerFinished) {
+        event.preventDefault();
+      }
+    };
+
+    const handleKeyDown = (event) => {
+      if (timerFinished) {
+        event.preventDefault();
+      }
+    };
+
+    if (timerFinished) {
+      document.addEventListener("keypress", handleKeyPress);
+      document.addEventListener("keydown", handleKeyDown);
     }
+
+    return () => {
+      document.removeEventListener("keypress", handleKeyPress);
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [timerFinished]);
+
+  const handleFinish = () => {
+    router.push("/result", undefined, { shallow: true });
   };
 
   return (
-    <>
-      <div className={styles.navbar__time}>
-        {selectedTheme === "dark" ? (
-          <Image src={TimerImageDark} alt="img" />
-        ) : (
-          <Image src={TimerImage} alt="img" />
-        )}
-        <p>Vaqt</p>
-        {/* {WriteTime()} */}
-        <p>
+    <div className={styles.navbar__time}>
+      {selectedTheme === "dark" ? (
+        <Image src={TimerImageDark} alt="img" />
+      ) : (
+        <Image src={TimerImage} alt="img" />
+      )}
+      <p>Vaqt</p>
+       <p>
           {startTime ? (
             <Countdown
               className={styles.count}
               value={Date.now() + 60 * 1000}
               format="ss"
-              onChange={onChange}
+              onFinish={handleFinish}
             />
           ) : (
             60
           )}
         </p>
-        {/* <p>{time} sec</p> */}
-      </div>
-    </>
+    </div>
   );
 };
 
