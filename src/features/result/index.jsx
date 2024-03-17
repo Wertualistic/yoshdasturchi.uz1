@@ -100,7 +100,7 @@ const Result = () => {
   }, [result]);
 
   useEffect(() => {
-    const lastContest = JSON.parse(sessionStorage.getItem("lastContest") || []);
+    const lastContest = JSON.parse(sessionStorage.getItem("lastContest")) || [];
     const getCurrentDateTime = () => {
       const currentDateTime = new Date();
       const year = currentDateTime.getFullYear();

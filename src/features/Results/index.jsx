@@ -27,27 +27,21 @@ const Results = ({ id }) => {
           const res = await api.get(
             `attemptContest/getAllAttemptByUserAndContestId/${
               id ? id : userData.id
-            }/1?page=0&size=100`
+            }/1?page=0&size=500`
           );
           sessionStorage.setItem("userResult", JSON.stringify(res.data));
           setUserResult(res.data);
+          setLoader(false);
         } else {
           const res = await api.get(
-            `attemptContest/getAllAttemptByUserAndContestId/${
+            `/regular/getRegularByUserId/${
               id ? id : userData.id
-            }/1?page=0&size=100`
+            }?page=0&size=500`
           );
           sessionStorage.setItem("userResult", JSON.stringify(res.data));
           setUserResult(res.data);
+          setLoader(false);
         }
-        const res = await api.get(
-          `attemptContest/getAllAttemptByUserAndContestId/${
-            id ? id : userData.id
-          }/1?page=0&size=100`
-        );
-        sessionStorage.setItem("userResult", JSON.stringify(res.data));
-        setUserResult(res.data);
-        setLoader(false);
       } catch (err) {
         return false;
       }

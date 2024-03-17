@@ -37,6 +37,7 @@ const Timer = ({ selectedTheme, startTime }) => {
   }, [timerFinished]);
 
   const handleFinish = () => {
+    setTimerFinished(true);
     router.push("/result", undefined, { shallow: true });
   };
 
@@ -48,18 +49,18 @@ const Timer = ({ selectedTheme, startTime }) => {
         <Image src={TimerImage} alt="img" />
       )}
       <p>Vaqt</p>
-       <p>
-          {startTime ? (
-            <Countdown
-              className={styles.count}
-              value={Date.now() + 60 * 1000}
-              format="ss"
-              onFinish={handleFinish}
-            />
-          ) : (
-            60
-          )}
-        </p>
+      <p>
+        {startTime ? (
+          <Countdown
+            className={styles.count}
+            value={Date.now() + 60 * 1000}
+            format="ss"
+            onFinish={handleFinish}
+          />
+        ) : (
+          60
+        )}
+      </p>
     </div>
   );
 };
