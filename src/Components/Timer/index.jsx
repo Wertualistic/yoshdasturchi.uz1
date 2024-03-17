@@ -1,44 +1,22 @@
-import React, { useEffect, useState, memo } from "react";
+import React, { useEffect, useState, memo, useRef } from "react";
 import { Statistic } from "antd";
 import Image from "next/image";
 import styles from "../Navbar/Navbar.module.scss";
 import { useRouter } from "next/router";
 import { TimerImageDark } from "@/assets";
 import TimerImage from "../../assets/timer.svg";
+import { DataContext } from "@/DataContext";
 
 const { Countdown } = Statistic;
 
-const Timer = ({ selectedTheme, startTime }) => {
+const Timer = ({ selectedTheme, startTime, setStartTime }) => {
   const router = useRouter();
-  const [timerFinished, setTimerFinished] = useState(false);
 
-  useEffect(() => {
-    const handleKeyPress = (event) => {
-      if (timerFinished) {
-        event.preventDefault();
-      }
-    };
-
-    const handleKeyDown = (event) => {
-      if (timerFinished) {
-        event.preventDefault();
-      }
-    };
-
-    if (timerFinished) {
-      document.addEventListener("keypress", handleKeyPress);
-      document.addEventListener("keydown", handleKeyDown);
+  const onChange = (val) => {
+    if (val < 1000) {
+      setStartTime(false);
+      return router.push("/result", undefined, { shallow: true });
     }
-
-    return () => {
-      document.removeEventListener("keypress", handleKeyPress);
-      document.removeEventListener("keydown", handleKeyDown);
-    };
-  }, [timerFinished]);
-
-  const handleFinish = () => {
-    setTimerFinished(true);
-    router.push("/result", undefined, { shallow: true });
   };
 
   return (
@@ -55,7 +33,7 @@ const Timer = ({ selectedTheme, startTime }) => {
             className={styles.count}
             value={Date.now() + 60 * 1000}
             format="ss"
-            onFinish={handleFinish}
+            onChange={onChange}
           />
         ) : (
           60

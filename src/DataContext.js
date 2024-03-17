@@ -23,17 +23,13 @@ export const DataProvider = ({ children }) => {
             setSelectedTheme(theme);
         }
     }, []);
-
-const onChange =()=>{
-
-}
     const WriteTime = ()=>{
         // const handleKeyDown = (e) =
         // return  <Countdown value={Date.now() + 60 * 1000} format="ss" onChange={onChange} />
       }
     
     return (
-        <DataContext.Provider value={{ hiddenInputRef, setisKeyboardFalseChecked, isKeyboardFalseChecked, isKeyboardTrueChecked, setisKeyboardTrueChecked, selectedTheme, setSelectedTheme, selectedColor, setSelectedColor, handSignOpen, setHandSignOpen, setIsHandSignChecked, isHandSignChecked, time,setStartTime, result, setResult, WriteTime }}>
+        <DataContext.Provider value={{ setStartTime, hiddenInputRef, setisKeyboardFalseChecked, isKeyboardFalseChecked, isKeyboardTrueChecked, setisKeyboardTrueChecked, selectedTheme, setSelectedTheme, selectedColor, setSelectedColor, handSignOpen, setHandSignOpen, setIsHandSignChecked, isHandSignChecked, time,setStartTime, result, setResult, WriteTime }}>
             {children}
         </DataContext.Provider>
     );

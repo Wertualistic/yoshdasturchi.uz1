@@ -40,6 +40,7 @@ const Navbar = () => {
     setSelectedTheme,
     selectedTheme,
     time,
+    setStartTime,
   } = useContext(DataContext);
   const [isOpenUser, setIsOpenUser] = useState(false);
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
@@ -78,6 +79,9 @@ const Navbar = () => {
   }, [router.pathname]);
 
   useEffect(() => {
+    if (!setStartTime) {
+      console.log(startTime);
+    }
     const fetchContest = async () => {
       try {
         const response = await api.get("/contest/getLastContest");
@@ -335,7 +339,11 @@ const Navbar = () => {
                   <div className={styles.ContestDate}>
                     <ContestDate isHaveNavbar={true} />
                   </div>
-                  <Timer selectedTheme={selectedTheme} startTime={startTime} />
+                  <Timer
+                    selectedTheme={selectedTheme}
+                    setStartTime={setStartTime}
+                    startTime={startTime}
+                  />
                   <div className={styles.navbar__setting}>
                     <button onClick={toggleDropdownSettings}>
                       {selectedTheme === "dark" ? (
