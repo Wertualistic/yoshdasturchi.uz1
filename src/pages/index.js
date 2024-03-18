@@ -140,7 +140,7 @@ export default function Home() {
           {/* <Ads isAdsShow={isAdsShow} isRight={false} /> */}
           <TrueAndFalseLetters result={result} isAdsShow={isAdsShow} />
           <TelegramGroup isAdsShow={isAdsShow} />
-          <ContestDate isAdsShow={isAdsShow} isHaveNavbar={false} />
+          {/* <ContestDate isAdsShow={isAdsShow} isHaveNavbar={false} /> */}
           <ContestWInners isAdsShow={isAdsShow} />
         </div>
       </main>
