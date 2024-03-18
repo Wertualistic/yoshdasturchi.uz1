@@ -16,7 +16,7 @@ const Timer = ({ selectedTheme, startTime, setStartTime }) => {
     console.log("value: " + val / 1000);
     if ((val/1000) < 1) {
       setStartTime(false);
-      return router.push("/result", "/result", { shallow: true });
+      return router.push("/result", undefined, { shallow: true });
     }
   };
 
