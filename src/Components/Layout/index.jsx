@@ -37,6 +37,7 @@ const MainLayout = ({ children }) => {
       };
 
       setCookie("status", lastContest.status, 100); // set cookie to expire in 100 days
+      setCookie("contestId", lastContest.id, 100); // set cookie to expire in 100 days
 
       // Disable context menu and certain key combinations
       document.addEventListener("contextmenu", (event) =>

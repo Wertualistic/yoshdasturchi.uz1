@@ -20,7 +20,7 @@ export async function getServerSideProps({ req, res }) {
   if (req.cookies["token"]) {
     if (req.cookies["status"] === "JARAYONDA") {
       let users1 = await axios
-        .get(`${BASE_URL}attemptContest/rate/1?page=0&size=10`, {
+        .get(`${BASE_URL}attemptContest/rate/${req.cookies['contestId']}?page=0&size=10`, {
           headers: {
             Authorization: `Bearer ${req.cookies["token"]}`
           }
@@ -43,7 +43,7 @@ export async function getServerSideProps({ req, res }) {
   } else {
     if (req.cookies["status"] === "JARAYONDA") {
       let users1 = await axios
-        .get(`${BASE_URL}attemptContest/rate/notUser/1?page=0&size=10`)
+        .get(`${BASE_URL}attemptContest/rate/notUser/${req.cookies['contestId']}?page=0&size=10`)
         .then((res) => res.data);
 
       users = { ...users, usersData: users1.attemptRateDTOS }

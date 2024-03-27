@@ -18,7 +18,8 @@ const Results = ({ id }) => {
   };
 
   useEffect(() => {
-    const userData = JSON.parse(sessionStorage.getItem("userData"));
+    const userData = JSON.parse(sessionStorage.getItem("userData")) || [];
+    const lastContest = JSON.parse(sessionStorage.getItem("lastContest")) || [];
     const status = getCookie("status");
     const fetchUserData = async () => {
       try {
@@ -27,7 +28,7 @@ const Results = ({ id }) => {
           const res = await api.get(
             `attemptContest/getAllAttemptByUserAndContestId/${
               id ? id : userData.id
-            }/1?page=0&size=500`
+            }/${lastContest.id}?page=0&size=500`
           );
           sessionStorage.setItem("userResult", JSON.stringify(res.data));
           setUserResult(res.data);

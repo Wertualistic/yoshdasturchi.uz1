@@ -104,7 +104,7 @@ const Navbar = () => {
           setLoader(true);
           const response = await api.get(
             status === "JARAYONDA"
-              ? "/attemptContest/rate/1?page=0&size=10"
+              ? `/attemptContest/rate/${lastContest.id}?page=0&size=10`
               : "/regular/getRate?limitSecond=60&page=0&size=10"
           );
           if (
@@ -134,7 +134,7 @@ const Navbar = () => {
           setLoader(true);
           const response = await axios.get(
             status === "JARAYONDA"
-              ? "https://api.yoshdasturchi.uz/api/v1/attemptContest/rate/notUser/1?page=0&size=10"
+              ? `https://api.yoshdasturchi.uz/api/v1/attemptContest/rate/notUser/${lastContest.id}?page=0&size=10`
               : "https://api.yoshdasturchi.uz/api/v1/regular/getRateNotUser?limitSecond=60&page=0&size=10",
             { headers: { Server: "webname" } }
           );

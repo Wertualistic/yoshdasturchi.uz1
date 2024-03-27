@@ -51,14 +51,20 @@ const Reyting = ({ users }) => {
 
   const onPaginationsChange = async (page, pageSize) => {
     const status = getCookie("status");
+    const lastContest = JSON.parse(sessionStorage.getItem("lastContest")) || [];
     if (token) {
       if (status === "JARAYONDA") {
         let users1 = await axios
-          .get(`${BASE_URL}attemptContest/rate/1?page=${page - 1}&size=10`, {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          })
+          .get(
+            `${BASE_URL}attemptContest/rate/${lastContest.id}?page=${
+              page - 1
+            }&size=10`,
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            }
+          )
           .then((res) => res.data);
         setCards(users1.attemptRateDTOS);
       } else {
@@ -80,7 +86,7 @@ const Reyting = ({ users }) => {
       if (status === "JARAYONDA") {
         let users1 = await axios
           .get(
-            `${BASE_URL}attemptContest/rate/notUser/1?page=${page - 1}&size=10`
+            `${BASE_URL}attemptContest/rate/notUser/${lastContest.id}?page=${page - 1}&size=10`
           )
           .then((res) => res.data);
         setCards(users1.attemptRateDTOS);
